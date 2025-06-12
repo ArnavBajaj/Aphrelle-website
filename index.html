@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aphrelle Log in</title>
+    <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(1, 1, 1, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px #fea41c(0, 0, 0, 0.1);
+            padding: 60px 40px;
+            text-align: center;
+            max-width: 450px;
+            width: 100%;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .logo {
+            font-family: 'Imperial Script', sans-serif;
+            font-size: 4.5rem;
+            font-weight: 800;
+            background: linear-gradient( #fea41c, #fff700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 40px;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+            text-decoration: none;
+            display: inline-block;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .button:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #667eea;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        .divider {
+            margin: 30px 0;
+            position: relative;
+            color: #999;
+            font-size: 0.9rem;
+        }
+
+        .divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #ddd;
+            z-index: 1;
+        }
+
+        .divider span {
+            background: rgba(3, 3, 3, 0.95);
+            padding: 0 20px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .guest-link {
+            color: #999;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .guest-link:hover {
+            color: #667eea;
+        }
+
+        .guest-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 50%;
+            background: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .guest-link:hover::after {
+            width: 100%;
+            left: 0;
+        }
+
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 40px 25px;
+                margin: 10px;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .button {
+                padding: 14px 20px;
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logoimage"><img src="logo.png" alt="Description" width="100"></div>
+        <div class="logo">Aphrelle</div>
+        <div class="tagline">Swipe Your Style.</div>
+        
+        <button class="button btn-primary" onclick="handleLogin()">
+            Log In
+        </button>
+        
+        <button class="button btn-secondary" onclick="handleSignUp()">
+            Sign Up
+        </button>
+        
+        <div class="divider">
+            <span>OR</span>
+        </div>
+        
+        <a href="#" class="guest-link" onclick="handleGuest()">Continue as Guest</a>
+        
+       
+    </div>
+
+    <script>
+        function handleLogin() {
+            // Add your login logic here
+            alert('Login functionality would be implemented here');
+        }
+
+        function handleSignUp() {
+            // Add your sign up logic here
+            alert('Sign up functionality would be implemented here');
+        }
+
+        function handleGuest() {
+            // Add your guest continuation logic here
+            alert('Guest mode functionality would be implemented here');
+        }
+
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.button');
+            
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-2px) scale(1.02)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0) scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Your Profile - Aphrelle</title>
+  <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(1, 1, 1, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(254, 164, 28, 0.1);
+      padding: 40px;
+      max-width: 800px;
+      margin: 20px auto;
+      color: white;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    .profile-section {
+      margin-bottom: 30px;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-left: -2px;
+      margin-bottom: 20px;
+      color: #fea41c;
+    }
+    h1.section-title {
+      text-align: center;
+    }
+
+    .photo-upload {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .photo-preview {
+      width: 150px;
+      height: 150px;
+      border-radius: 75px;
+      background: #2c2c2c;
+      margin: 0 auto 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .photo-preview img {
+      max-width: 100%;
+      max-height: 100%;
+      display: none;
+    }
+
+    .upload-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 15px;
+    }
+
+    .upload-btn {
+      background: rgba(102, 126, 234, 0.1);
+      border: 2px solid #667eea;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      color: white;
+    }
+
+    .upload-btn:hover {
+      background: rgba(102, 126, 234, 0.2);
+    }
+
+    .body-types {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .body-type-option {
+      flex: 1;
+      padding: 15px;
+      text-align: center;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .body-type-option:hover {
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .body-type-option.selected {
+      background: rgba(102, 126, 234, 0.2);
+      border: 2px solid #667eea;
+    }
+
+
+
+    .gender-selection {
+      display: flex;
+      gap: 20px;
+      margin-top: 15px;
+    }
+
+    .gender-option {
+      flex: 1;
+      padding: 15px;
+      text-align: center;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .gender-option.selected {
+      background: rgba(102, 126, 234, 0.2);
+      border-color: #667eea;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .form-select {
+      width: 100%;
+      padding: 12px;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    .button {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-top: 30px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+    }
+
+    .button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      background: rgba(5, 5, 5, 0.95);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.5s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .container {
+        padding: 20px;
+      }
+      .body-types {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .gender-selection {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1 class="section-title">Create Your Profile</h1>
+
+  <form id="profileForm" onsubmit="handleProfileSubmit(event)">
+    <div class="profile-section">
+      <h2 class="section-title">Profile Photo</h2>
+      <div class="photo-upload">
+        <div class="photo-preview">
+          <img id="preview" alt="Profile preview">
+        </div>
+        <div class="upload-buttons">
+          <input type="file" id="photoInput" accept="image/*" style="display: none">
+          <label for="photoInput" class="upload-btn">
+            <i class="fas fa-upload"></i> Upload Photo
+          </label>
+          <button type="button" class="upload-btn" onclick="openCamera()">
+            <i class="fas fa-camera"></i> Take Photo
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2 class="section-title">Gender</h2>
+      <div class="gender-selection">
+        <div class="gender-option" onclick="selectGender('male')" data-gender="male">
+          Male
+        </div>
+        <div class="gender-option" onclick="selectGender('female')" data-gender="female">
+          Female
+        </div>
+        <div class="gender-option" onclick="selectGender('other')" data-gender="other">
+          Other
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2 class="section-title">Body Type</h2>
+      <div class="body-types">
+        <div class="body-type-option" onclick="selectBodyType('petite')">
+          <div>Petite</div>
+        </div>
+        <div class="body-type-option" onclick="selectBodyType('athletic')">
+          <div>Athletic</div>
+        </div>
+        <div class="body-type-option" onclick="selectBodyType('curvy')">
+          <div>Curvy</div>
+        </div>
+        <div class="body-type-option" onclick="selectBodyType('lean')">
+          <div>Lean</div>
+        </div>
+        <div class="body-type-option" onclick="selectBodyType('plus-size')">
+          <div>Plus-size</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="profile-section">
+      <h2 class="section-title">Size Preferences</h2>
+      <div class="form-group">
+        <label class="form-label" for="topSize">Top Size</label>
+        <select id="topSize" class="form-select" required>
+          <option value="">Select size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+          <option value="XXXL">XXXL</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="bottomSize">Bottom Size</label>
+        <select id="bottomSize" class="form-select" required>
+          <option value="">Select size</option>
+          <option value="XS">XS</option>
+          <option value="S">S</option>
+          <option value="M">M</option>
+          <option value="L">L</option>
+          <option value="XL">XL</option>
+          <option value="XXL">XXL</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="shoeSize">Shoe Size</label>
+        <select id="shoeSize" class="form-select" required>
+          <option value="">Select size</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="9">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+          <option value="13">13</option>
+          <option value="14">14</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="submit" class="button">Create Profile</button>
+  </form>
+</div>
+
+<script>
+  let selectedGender = null;
+  let selectedBodyType = null;
+
+  // Handle file upload and preview
+  document.getElementById('photoInput').addEventListener('change', function(e) {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const preview = document.getElementById('preview');
+        preview.src = e.target.result;
+        preview.style.display = 'block';
+      }
+      reader.readAsDataURL(file);
+    }
+  });
+
+  // Camera functionality
+  async function openCamera() {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      const video = document.createElement('video');
+      video.srcObject = stream;
+      video.play();
+
+      // Create a camera preview modal
+      const modal = document.createElement('div');
+      modal.style = `
+                    position: fixed;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    background: rgba(0,0,0,0.9);
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                `;
+
+      const captureBtn = document.createElement('button');
+      captureBtn.textContent = 'Capture';
+      captureBtn.className = 'upload-btn';
+      captureBtn.style.marginTop = '20px';
+
+      modal.appendChild(video);
+      modal.appendChild(captureBtn);
+      document.body.appendChild(modal);
+
+      captureBtn.onclick = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        canvas.getContext('2d').drawImage(video, 0, 0);
+
+        // Update preview
+        const preview = document.getElementById('preview');
+        preview.src = canvas.toDataURL('image/png');
+        preview.style.display = 'block';
+
+        // Clean up
+        stream.getTracks().forEach(track => track.stop());
+        document.body.removeChild(modal);
+      };
+    } catch (err) {
+      alert('Camera access denied or not available');
+    }
+  }
+
+  // Gender selection
+  function selectGender(gender) {
+    selectedGender = gender;
+    document.querySelectorAll('.gender-option').forEach(option => {
+      option.classList.remove('selected');
+    });
+    document.querySelector(`[data-gender="${gender}"]`).classList.add('selected');
+  }
+
+  // Body type selection
+  function selectBodyType(type) {
+    selectedBodyType = type;
+    document.querySelectorAll('.body-type-option').forEach(option => {
+      option.classList.remove('selected');
+    });
+    event.currentTarget.classList.add('selected');
+  }
+
+  // Form submission
+  function handleProfileSubmit(event) {
+    event.preventDefault();
+
+    if (!selectedGender || !selectedBodyType) {
+      alert('Please select both gender and body type');
+      return;
+    }
+
+    const formData = {
+      gender: selectedGender,
+      bodyType: selectedBodyType,
+      topSize: document.getElementById('topSize').value,
+      bottomSize: document.getElementById('bottomSize').value,
+      shoeSize: document.getElementById('shoeSize').value,
+      photo: document.getElementById('preview').src
+    };
+
+    console.log('Profile data:', formData);
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = 'Account created successfully!';
+    document.body.appendChild(notification);
+
+    // Show notification
+    setTimeout(() => notification.classList.add('show'), 100);
+
+    // Hide notification and redirect after 2 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 300);
+    }, 1000);
+  }
+</script>
+</body>
+</html>

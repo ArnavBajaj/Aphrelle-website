@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aphrelle Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      background: rgba(1, 1, 1, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(254, 164, 28, 0.1);
+      padding: 40px;
+      text-align: center;
+      max-width: 450px;
+      width: 100%;
+      animation: slideUp 0.8s ease-out;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      color: #999;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding-left: 35px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      user-select: none;
+    }
+
+    .checkbox-container input {
+      position: absolute;
+      opacity: 0;
+      cursor: pointer;
+      height: 0;
+      width: 0;
+    }
+
+    .checkmark {
+      position: absolute;
+      left: 0;
+      height: 20px;
+      width: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 4px;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-container:hover input ~ .checkmark {
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .checkbox-container input:checked ~ .checkmark {
+      background: #667eea;
+      border-color: #667eea;
+    }
+
+    .checkmark:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+
+    .checkbox-container input:checked ~ .checkmark:after {
+      display: block;
+    }
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .logo {
+      font-family: 'Imperial Script', sans-serif;
+      font-size: 3.5rem;
+      font-weight: 800;
+      background: linear-gradient(#fea41c, #fff700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      text-align: left;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .button {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 16px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .forgot-password {
+      display: block;
+      text-align: right;
+      color: #667eea;
+      text-decoration: none;
+      font-size: 0.9rem;
+      margin-top: -15px;
+      margin-bottom: 20px;
+    }
+
+    .signup-link {
+      color: #999;
+      text-decoration: none;
+      font-size: 0.95rem;
+      transition: color 0.3s ease;
+    }
+
+    .signup-link:hover {
+      color: #667eea;
+    }
+
+    .error-message {
+      color: #ff4444;
+      font-size: 0.9rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 30px 20px;
+      }
+
+      .logo {
+        font-size: 2.5rem;
+      }
+
+      .form-input {
+        padding: 12px;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="logoimage"><img src="logo.png" alt="Description" width="80"></div>
+  <div class="logo">Aphrelle</div>
+
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <div class="form-group">
+      <label class="form-label" for="email">Email Address</label>
+      <input type="email" id="email" class="form-input" required>
+      <div class="error-message" id="emailError"></div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label" for="password">Password</label>
+      <input type="password" id="password" class="form-input" required>
+      <div class="error-message" id="passwordError"></div>
+    </div>
+
+    <a href="#" class="forgot-password">Forgot Password?</a>
+
+    <button type="submit" class="button btn-primary">Log In</button>
+  </form>
+  <div class="remember-me">
+    <label class="checkbox-container">
+      <input type="checkbox" id="rememberMe">
+      <span class="checkmark"></span>
+      Remember Me
+    </label>
+  </div>
+
+  <a href="signup.html" class="signup-link">Don't have an account? Sign up</a>
+</div>
+
+<script>
+  function handleLogin(event) {
+    event.preventDefault();
+
+    // Reset error messages
+    document.querySelectorAll('.error-message').forEach(elem => {
+      elem.style.display = 'none';
+    });
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    const rememberMe = document.getElementById('rememberMe').checked;
+
+    // Basic validation
+    if (!isValidEmail(email)) {
+      showError('emailError', 'Please enter a valid email address');
+      return;
+    }
+
+    if (password.length < 6) {
+      showError('passwordError', 'Password must be at least 6 characters');
+      return;
+    }
+
+    // If remember me is checked, save the email
+    if (rememberMe) {
+      localStorage.setItem('rememberedEmail', email);
+    } else {
+      localStorage.removeItem('rememberedEmail');
+    }
+
+    // Here you would typically send the login request to your backend
+    console.log('Login attempt:', { email, rememberMe });
+    // For demo purposes, simulate successful login
+    alert('Login successful!');
+  }
+
+
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  }
+
+  function showError(elementId, message) {
+    const errorElement = document.getElementById(elementId);
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+  }
+
+  // Add form input animations
+  document.querySelectorAll('.form-input').forEach(input => {
+    input.addEventListener('focus', function() {
+      this.style.transform = 'translateY(-2px)';
+    });
+
+    input.addEventListener('blur', function() {
+      this.style.transform = 'translateY(0)';
+    });
+  });
+  document.addEventListener('DOMContentLoaded', function() {
+    const rememberedEmail = localStorage.getItem('rememberedEmail');
+    if (rememberedEmail) {
+      document.getElementById('email').value = rememberedEmail;
+      document.getElementById('rememberMe').checked = true;
+    }
+  });
+
+</script>
+</body>
+</html>

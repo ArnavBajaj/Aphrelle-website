@@ -200,49 +200,36 @@
         <div class="logoimage"><img src="logo.png" alt="Description" width="100"></div>
         <div class="logo">Aphrelle</div>
         <div class="tagline">Swipe Your Style.</div>
-        
-        <button class="button btn-primary" onclick="handleLogin()">
+        <a href="login.html" class="button btn-primary">
             Log In
-        </button>
-        
-        <button class="button btn-secondary" onclick="handleSignUp()">
+        </a>
+
+        <a href="signup.html" class="button btn-secondary">
             Sign Up
-        </button>
-        
+        </a>
+
         <div class="divider">
             <span>OR</span>
         </div>
-        
+
         <a href="#" class="guest-link" onclick="handleGuest()">Continue as Guest</a>
-        
-       
+
+
+
     </div>
 
     <script>
-        function handleLogin() {
-            // Add your login logic here
-            alert('Login functionality would be implemented here');
-        }
 
-        function handleSignUp() {
-            // Add your sign up logic here
-            alert('Sign up functionality would be implemented here');
-        }
-
-        function handleGuest() {
-            // Add your guest continuation logic here
-            alert('Guest mode functionality would be implemented here');
-        }
 
         // Add some interactive elements
         document.addEventListener('DOMContentLoaded', function() {
             const buttons = document.querySelectorAll('.button');
-            
+
             buttons.forEach(button => {
                 button.addEventListener('mouseenter', function() {
                     this.style.transform = 'translateY(-2px) scale(1.02)';
                 });
-                
+
                 button.addEventListener('mouseleave', function() {
                     this.style.transform = 'translateY(0) scale(1)';
                 });

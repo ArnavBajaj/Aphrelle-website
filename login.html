@@ -23,6 +23,7 @@
     }
 
     .container {
+      position: relative;
       background: rgba(1, 1, 1, 0.95);
       backdrop-filter: blur(10px);
       border-radius: 20px;
@@ -94,6 +95,21 @@
     .checkbox-container input:checked ~ .checkmark:after {
       display: block;
     }
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #666666;
+      text-decoration: none;
+      font-size: 24px;
+      transition: transform 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      transform: translateX(-5px);
+      color: #999999;
+    }
+
     @keyframes slideUp {
       from {
         opacity: 0;
@@ -196,6 +212,8 @@
       display: none;
     }
 
+
+
     @media (max-width: 480px) {
       .container {
         padding: 30px 20px;
@@ -213,6 +231,7 @@
 </head>
 <body>
 <div class="container">
+  <a href="index.html" class="back-arrow">←</a>
   <div class="logoimage"><img src="logo.png" alt="Description" width="80"></div>
   <div class="logo">Aphrelle</div>
 
@@ -233,6 +252,8 @@
 
     <button type="submit" class="button btn-primary">Log In</button>
   </form>
+
+
   <div class="remember-me">
     <label class="checkbox-container">
       <input type="checkbox" id="rememberMe">

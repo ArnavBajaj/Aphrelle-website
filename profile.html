@@ -20,6 +20,7 @@
     }
 
     .container {
+      position: relative;
       background: rgba(1, 1, 1, 0.95);
       backdrop-filter: blur(10px);
       border-radius: 20px;
@@ -30,6 +31,21 @@
       color: white;
       animation: slideUp 0.8s ease-out;
     }
+    .back-arrow {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      color: #666666;
+      text-decoration: none;
+      font-size: 24px;
+      transition: transform 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      transform: translateX(-5px);
+      color: #999999;
+    }
+
 
     .profile-section {
       margin-bottom: 30px;
@@ -223,6 +239,7 @@
 </head>
 <body>
 <div class="container">
+  <a href="signup.html" class="back-arrow">←</a>
   <h1 class="section-title">Create Your Profile</h1>
 
   <form id="profileForm" onsubmit="handleProfileSubmit(event)">

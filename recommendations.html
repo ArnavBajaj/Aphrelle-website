@@ -1,0 +1,862 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aphrelle - Discover</title>
+    <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: rgba(1, 1, 1, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(254, 164, 28, 0.1);
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            height: 80vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card-stack {
+            position: relative;
+            width: 100%;
+            height: calc(100% - 60px);
+        }
+
+        .product-card {
+            width: 90%;
+            height: 100%;
+            background: #fff;
+            border-radius: 15px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            transform-origin: 50% 100%;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            will-change: transform;
+            backface-visibility: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .product-card:nth-child(1) {
+            z-index: 3;
+            transform: translateX(-50%) scale(1);
+        }
+
+        .product-card:nth-child(2) {
+            z-index: 2;
+            transform: translateX(-50%) scale(0.95) translateY(10px);
+            opacity: 0.8;
+        }
+
+        .product-card:nth-child(3) {
+            z-index: 1;
+            transform: translateX(-50%) scale(0.9) translateY(20px);
+            opacity: 0.6;
+        }
+
+        .product-card:nth-child(n+4) {
+            z-index: 0;
+            transform: translateX(-50%) scale(0.85) translateY(30px);
+            opacity: 0.4;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 60%;
+            border-radius: 15px 15px 0 0;
+            object-fit: cover;
+        }
+
+        .product-info {
+            padding: 20px;
+            color: #333;
+            overflow: hidden;
+        }
+
+        .product-title {
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .product-brand {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fea41c;
+            margin-bottom: 10px;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .product-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .size-option, .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .color-option {
+            border: none;
+        }
+
+        .swipe-indicators {
+            position: absolute;
+            top: 50%;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 30px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .swipe-indicator {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: white;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: scale(0.8);
+        }
+
+        .swipe-indicator.active {
+            transform: scale(1);
+        }
+
+        .swipe-left {
+            background: rgba(255, 87, 87, 0.8);
+        }
+
+        .swipe-right {
+            background: rgba(70, 195, 120, 0.8);
+        }
+
+        .swipe-up {
+            background: rgba(102, 126, 234, 0.8);
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .overlay-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: bold;
+            padding: 15px 30px;
+            border-radius: 10px;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+        }
+
+        .overlay-nope {
+            color: #ff5757;
+            border: 3px solid #ff5757;
+            transform: translate(-50%, -50%) rotate(-20deg);
+        }
+
+        .overlay-like {
+            color: #46c378;
+            border: 3px solid #46c378;
+            transform: translate(-50%, -50%) rotate(20deg);
+        }
+
+        .overlay-info {
+            color: #667eea;
+            border: 3px solid #667eea;
+        }
+
+        .stats {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255,255,255,0.9);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+
+
+
+        @keyframes swipeLeft {
+            from {
+                transform: translateX(-50%) translate(0) rotate(0deg);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translate(-150%, 0) rotate(-30deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes swipeRight {
+            from {
+                transform: translateX(-50%) translate(0) rotate(0deg);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translate(150%, 0) rotate(30deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes swipeUp {
+            from {
+                transform: translateX(-50%) translate(0, 0) scale(1);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(-50%) translate(0, -150%) scale(0.8);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <button id="viewCartBtn" style="
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    background-color: #fea41c;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+">
+        View Cart
+    </button>
+    <div class="card-stack" id="cardStack">
+        <!-- Cards will be dynamically generated here -->
+    </div>
+    <div class="swipe-indicators">
+        <div class="swipe-indicator swipe-left"><i class="fas fa-times"></i></div>
+        <div class="swipe-indicator swipe-up"><i class="fas fa-info"></i></div>
+        <div class="swipe-indicator swipe-right"><i class="fas fa-heart"></i></div>
+    </div>
+    <div class="stats">
+        <span id="cardCounter">1 of 15</span>
+    </div>
+</div>
+<div id="cartModal" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 999;
+    width: 80%;
+    max-width: 400px;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+">
+    <h2 style="margin-bottom: 10px;">Your Cart</h2>
+    <div id="cartItems"></div>
+    <button onclick="document.getElementById('cartModal').style.display='none'" style="
+        margin-top: 15px;
+        background: #fea41c;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+    ">Close</button>
+</div>
+<div id="productDetailModal" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 12px;
+    z-index: 9999;
+    width: 80%;
+    max-width: 400px;
+    max-height: 80vh;
+    overflow-y: auto;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+">
+    <h2 id="detailTitle"></h2>
+    <p id="detailBrand" style="color: #666; font-size: 0.9rem;"></p>
+    <img id="detailImage" style="width: 100%; border-radius: 10px; margin: 10px 0;" />
+    <p id="detailPrice" style="color: #fea41c; font-weight: bold;"></p>
+    <p id="detailDescription" style="margin: 10px 0;"></p>
+    <button onclick="document.getElementById('productDetailModal').style.display='none'" style="
+        margin-top: 10px;
+        background: #fea41c;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+    ">Close</button>
+</div>
+</body>
+
+
+<script>
+
+    let cart = [];
+    const products = [
+        {
+            image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop",
+            title: "Elegant Summer Dress",
+            brand: "Bella Vista",
+            price: "$89.99",
+            description: "Light and breezy summer dress with floral pattern. Perfect for casual outings.",
+            sizes: ["S", "M", "L"],
+            colors: ["#000", "#fff", "#ff6b6b"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop",
+            title: "Classic Denim Jacket",
+            brand: "Urban Style",
+            price: "$124.99",
+            description: "Timeless denim jacket with a modern fit. A wardrobe essential for any season.",
+            sizes: ["XS", "S", "M", "L"],
+            colors: ["#4169E1", "#000080", "#6495ED"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=500&fit=crop",
+            title: "Bohemian Maxi Dress",
+            brand: "Free Spirit",
+            price: "$156.00",
+            description: "Flowing maxi dress with intricate patterns. Perfect for festivals and beach days.",
+            sizes: ["S", "M", "L", "XL"],
+            colors: ["#8B4513", "#DAA520", "#CD853F"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=500&fit=crop",
+            title: "Minimalist Blazer",
+            brand: "Modern Edge",
+            price: "$198.50",
+            description: "Clean lines and sharp tailoring define this sophisticated blazer.",
+            sizes: ["XS", "S", "M"],
+            colors: ["#000", "#2F4F4F", "#696969"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop",
+            title: "Vintage Band Tee",
+            brand: "Retro Vibes",
+            price: "$45.99",
+            description: "Authentic vintage band t-shirt with distressed finish. Rock your style.",
+            sizes: ["S", "M", "L", "XL"],
+            colors: ["#000", "#8B0000", "#FFFFFF"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=400&h=500&fit=crop",
+            title: "Silk Evening Gown",
+            brand: "Luxe Collection",
+            price: "$425.00",
+            description: "Luxurious silk gown perfect for special occasions and elegant evenings.",
+            sizes: ["XS", "S", "M"],
+            colors: ["#8B008B", "#000", "#B22222"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&h=500&fit=crop",
+            title: "Casual Knit Sweater",
+            brand: "Cozy Corner",
+            price: "$78.99",
+            description: "Soft knit sweater perfect for layering. Comfort meets style.",
+            sizes: ["S", "M", "L"],
+            colors: ["#DEB887", "#F5DEB3", "#D2691E"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1581338834647-b0fb40704e21?w=400&h=500&fit=crop",
+            title: "Athletic Yoga Set",
+            brand: "Active Life",
+            price: "$92.00",
+            description: "High-performance yoga set with moisture-wicking fabric. Move with confidence.",
+            sizes: ["XS", "S", "M", "L"],
+            colors: ["#000", "#4B0082", "#00CED1"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1617922001439-4a2e6562f328?w=400&h=500&fit=crop",
+            title: "Leather Biker Jacket",
+            brand: "Rebel Edge",
+            price: "$289.99",
+            description: "Genuine leather biker jacket with classic detailing. Timeless rebellion.",
+            sizes: ["S", "M", "L"],
+            colors: ["#000", "#8B4513", "#2F4F4F"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=500&fit=crop",
+            title: "Floral Print Blouse",
+            brand: "Garden Party",
+            price: "$67.50",
+            description: "Delicate floral print blouse with flowing silhouette. Feminine and fresh.",
+            sizes: ["XS", "S", "M", "L"],
+            colors: ["#FFB6C1", "#FFFFFF", "#98FB98"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=400&h=500&fit=crop",
+            title: "High-Waisted Jeans",
+            brand: "Denim Dreams",
+            price: "$89.99",
+            description: "Classic high-waisted jeans with perfect fit. A staple for every wardrobe.",
+            sizes: ["24", "26", "28", "30"],
+            colors: ["#4169E1", "#000080", "#87CEEB"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?w=400&h=500&fit=crop",
+            title: "Cocktail Party Dress",
+            brand: "Night Out",
+            price: "$165.00",
+            description: "Stunning cocktail dress perfect for parties and special events.",
+            sizes: ["XS", "S", "M"],
+            colors: ["#000", "#8B008B", "#B22222"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=400&h=500&fit=crop",
+            title: "Oversized Hoodie",
+            brand: "Comfort Zone",
+            price: "$55.99",
+            description: "Ultra-soft oversized hoodie perfect for lounging and casual outings.",
+            sizes: ["S", "M", "L", "XL"],
+            colors: ["#708090", "#FFFFFF", "#F5F5DC"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1566479179817-0dbe1754e2fe?w=400&h=500&fit=crop",
+            title: "Striped Midi Skirt",
+            brand: "Classic Stripes",
+            price: "$72.00",
+            description: "Timeless striped midi skirt that pairs perfectly with any top.",
+            sizes: ["XS", "S", "M", "L"],
+            colors: ["#000", "#4169E1", "#B22222"]
+        },
+        {
+            image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&h=500&fit=crop",
+            title: "Statement Earrings",
+            brand: "Sparkle & Shine",
+            price: "$34.99",
+            description: "Bold statement earrings to elevate any outfit. Make your mark.",
+            sizes: ["One Size"],
+            colors: ["#FFD700", "#C0C0C0", "#CD7F32"]
+        }
+    ];
+
+    let currentCardIndex = 0;
+    let cardStack = [];
+
+    // Initialize the app
+    document.addEventListener('DOMContentLoaded', () => {
+        generateInitialCards();
+        setupSwipeHandlers();
+        updateCounter();
+    });
+
+    function generateInitialCards() {
+        const stackContainer = document.getElementById('cardStack');
+
+        // Generate first 4 cards for the stack
+        for (let i = 0; i < Math.min(4, products.length); i++) {
+            const card = createCard(products[i], i);
+            stackContainer.appendChild(card);
+            cardStack.push(card);
+        }
+    }
+
+    function createCard(product, index) {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.dataset.index = index;
+
+        card.innerHTML = `
+            <img src="${product.image}" alt="${product.title}" class="product-image">
+            <div class="product-info">
+                <h2 class="product-title">${product.title}</h2>
+                <p class="product-brand">${product.brand}</p>
+                <p class="product-price">${product.price}</p>
+                <p class="product-description">${product.description}</p>
+                <div class="product-options">
+                    ${product.sizes.map(size => `<div class="size-option">${size}</div>`).join('')}
+                </div>
+                <div class="product-options">
+                    ${product.colors.map(color => `<div class="color-option" style="background: ${color}${color === '#fff' ? '; border: 1px solid #ddd' : ''}"></div>`).join('')}
+                </div>
+            </div>
+        `;
+
+        // Add overlay texts
+        const overlays = {
+            nope: createOverlay('NOPE', 'overlay-nope'),
+            like: createOverlay('LIKE', 'overlay-like'),
+            info: createOverlay('MORE INFO', 'overlay-info')
+        };
+
+        Object.values(overlays).forEach(overlay => card.appendChild(overlay));
+        card.overlays = overlays;
+
+        return card;
+    }
+
+    function createOverlay(text, className) {
+        const overlay = document.createElement('div');
+        overlay.textContent = text;
+        overlay.className = `overlay-text ${className}`;
+        return overlay;
+    }
+
+    function addNewCard() {
+        const nextIndex = currentCardIndex + cardStack.length;
+        if (nextIndex < products.length) {
+            const newCard = createCard(products[nextIndex], nextIndex);
+            const stackContainer = document.getElementById('cardStack');
+            stackContainer.appendChild(newCard);
+            cardStack.push(newCard);
+            updateCardPositions();
+        }
+    }
+
+    function removeTopCard() {
+        if (cardStack.length > 0) {
+            const topCard = cardStack.shift();
+            setTimeout(() => {
+                if (topCard.parentNode) {
+                    topCard.parentNode.removeChild(topCard);
+                }
+            }, 500);
+
+            currentCardIndex++;
+            updateCardPositions();
+            addNewCard();
+            updateCounter();
+        }
+    }
+
+    function updateCardPositions() {
+        cardStack.forEach((card, index) => {
+            card.style.zIndex = cardStack.length - index;
+
+            if (index === 0) {
+                card.style.transform = 'translateX(-50%) scale(1)';
+                card.style.opacity = '1';
+            } else if (index === 1) {
+                card.style.transform = 'translateX(-50%) scale(0.95) translateY(10px)';
+                card.style.opacity = '0.8';
+            } else if (index === 2) {
+                card.style.transform = 'translateX(-50%) scale(0.9) translateY(20px)';
+                card.style.opacity = '0.6';
+            } else {
+                card.style.transform = 'translateX(-50%) scale(0.85) translateY(30px)';
+                card.style.opacity = '0.4';
+            }
+        });
+    }
+
+    function updateCounter() {
+        const counter = document.getElementById('cardCounter');
+        counter.textContent = `${currentCardIndex + 1} of ${products.length}`;
+    }
+
+    function setupSwipeHandlers() {
+        let startX = 0;
+        let startY = 0;
+        let moveX = 0;
+        let moveY = 0;
+        let velocity = { x: 0, y: 0 };
+        let lastPos = { x: 0, y: 0 };
+        let lastTime = Date.now();
+        let isDragging = false;
+
+        const indicators = document.querySelector('.swipe-indicators');
+
+        function updateVelocity(x, y) {
+            const now = Date.now();
+            const dt = now - lastTime;
+            if (dt > 0) {
+                velocity.x = (x - lastPos.x) / dt;
+                velocity.y = (y - lastPos.y) / dt;
+            }
+            lastPos = { x, y };
+            lastTime = now;
+        }
+
+        function handleTouchStart(e) {
+            if (cardStack.length === 0) return;
+
+            const touch = e.type === 'mousedown' ? e : e.touches[0];
+            startX = touch.clientX;
+            startY = touch.clientY;
+            lastPos = { x: startX, y: startY };
+            lastTime = Date.now();
+            isDragging = true;
+
+            const topCard = cardStack[0];
+            topCard.style.transition = 'none';
+            indicators.style.opacity = '0.3';
+        }
+
+        function handleTouchMove(e) {
+            if (!isDragging || cardStack.length === 0) return;
+            e.preventDefault();
+
+            const touch = e.type === 'mousemove' ? e : e.touches[0];
+            moveX = touch.clientX - startX;
+            moveY = touch.clientY - startY;
+
+            updateVelocity(touch.clientX, touch.clientY);
+
+            const topCard = cardStack[0];
+            const rotation = moveX * 0.1;
+            const scale = Math.max(0.85, 1 - Math.abs(moveX) * 0.001);
+
+            topCard.style.transform = `translateX(-50%) translate(${moveX}px, ${moveY}px) rotate(${rotation}deg) scale(${scale})`;
+
+            // Update overlays
+            const absX = Math.abs(moveX);
+            const absY = Math.abs(moveY);
+
+            if (absX > absY) {
+                topCard.overlays.nope.style.opacity = moveX < 0 ? Math.min(absX / 100, 1) : 0;
+                topCard.overlays.like.style.opacity = moveX > 0 ? Math.min(absX / 100, 1) : 0;
+                topCard.overlays.info.style.opacity = 0;
+            } else if (moveY < 0) {
+                topCard.overlays.info.style.opacity = Math.min(absY / 100, 1);
+                topCard.overlays.nope.style.opacity = 0;
+                topCard.overlays.like.style.opacity = 0;
+            }
+
+            updateIndicators(moveX, moveY);
+        }
+
+        function updateIndicators(moveX, moveY) {
+            const absX = Math.abs(moveX);
+            const absY = Math.abs(moveY);
+
+            const leftInd = indicators.querySelector('.swipe-left');
+            const rightInd = indicators.querySelector('.swipe-right');
+            const upInd = indicators.querySelector('.swipe-up');
+
+            if (absX > absY) {
+                leftInd.classList.toggle('active', moveX < -50);
+                rightInd.classList.toggle('active', moveX > 50);
+                upInd.classList.remove('active');
+            } else {
+                upInd.classList.toggle('active', moveY < -50);
+                leftInd.classList.remove('active');
+                rightInd.classList.remove('active');
+            }
+        }
+
+        function handleTouchEnd() {
+            if (!isDragging || cardStack.length === 0) return;
+
+            const absX = Math.abs(moveX);
+            const absY = Math.abs(moveY);
+            const threshold = 100;
+            const velocityThreshold = 0.5;
+
+            let animation = '';
+
+            if (absX > absY) {
+                if (absX > threshold || Math.abs(velocity.x) > velocityThreshold) {
+                    animation = moveX > 0 ? 'swipeRight' : 'swipeLeft';
+                }
+            } else if (moveY < -threshold || velocity.y < -velocityThreshold) {
+                animation = 'swipeUp';
+            }
+
+            if (animation) {
+                handleSwipe(animation);
+            } else {
+                resetCard();
+            }
+
+            // Reset states
+            startX = startY = moveX = moveY = 0;
+            velocity = { x: 0, y: 0 };
+            isDragging = false;
+
+            if (cardStack[0]) {
+                Object.values(cardStack[0].overlays).forEach(overlay => overlay.style.opacity = 0);
+            }
+            indicators.style.opacity = '0';
+
+            // Reset indicator states
+            indicators.querySelectorAll('.swipe-indicator').forEach(ind => ind.classList.remove('active'));
+        }
+
+        function handleSwipe(animation) {
+            const topCard = cardStack[0];
+
+            const productIndex = parseInt(topCard.dataset.index);
+
+            if (animation === 'swipeRight') {
+                const product = {
+                    ...products[productIndex],
+                    cartId: `${Date.now()}-${Math.floor(Math.random() * 10000)}`
+                };
+                cart.push(product);
+            }
+
+            if (animation === 'swipeUp') {
+                const product = products[productIndex];
+                document.getElementById('detailTitle').textContent = product.title;
+                document.getElementById('detailBrand').textContent = product.brand;
+                document.getElementById('detailImage').src = product.image;
+                document.getElementById('detailPrice').textContent = product.price;
+                document.getElementById('detailDescription').textContent = product.description;
+                document.getElementById('productDetailModal').style.display = 'block';
+                return; // Don't remove card on info swipe
+            }
+
+            topCard.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            topCard.style.animation = `${animation} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
+
+            removeTopCard();
+        }
+
+
+        function resetCard() {
+            if (cardStack[0]) {
+                const topCard = cardStack[0];
+                topCard.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                topCard.style.transform = 'translateX(-50%) scale(1)';
+            }
+        }
+
+        // Mouse events
+        document.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.product-card')) {
+                handleTouchStart(e);
+            }
+        });
+        document.addEventListener('mousemove', handleTouchMove);
+        document.addEventListener('mouseup', handleTouchEnd);
+
+        // Touch events
+        document.addEventListener('touchstart', (e) => {
+            if (e.target.closest('.product-card')) {
+                handleTouchStart(e);
+            }
+        });
+        document.addEventListener('touchmove', handleTouchMove);
+        document.addEventListener('touchend', handleTouchEnd);
+    }
+    document.getElementById('viewCartBtn').addEventListener('click', renderCart);
+
+    window.deleteCartItem = function(id) {
+        cart = cart.filter(item => item.cartId !== id);
+        renderCart();
+    };
+
+    window.editCartItem = function(id) {
+        const item = cart.find(p => p.cartId === id);
+        if (!item) return;
+
+        const newTitle = prompt("Edit product title:", item.title);
+        if (newTitle !== null && newTitle.trim() !== "") {
+            item.title = newTitle;
+        }
+
+        const newPrice = prompt("Edit product price:", item.price);
+        if (newPrice !== null && newPrice.trim() !== "") {
+            item.price = newPrice;
+        }
+
+        renderCart();
+    };
+
+    function renderCart() {
+        const cartItemsContainer = document.getElementById('cartItems');
+        cartItemsContainer.innerHTML = '';
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+        } else {
+            cart.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.style.marginBottom = '10px';
+                itemDiv.innerHTML = `
+                <strong>${item.title}</strong><br>
+                <span>${item.price}</span><br>
+                <small style="color: #666;">${item.brand}</small><br>
+                <button onclick="editCartItem('${item.cartId}')" style="margin-top: 5px; margin-right: 5px; background: #ffcc00; color: black; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer;">Edit</button>
+                <button onclick="deleteCartItem('${item.cartId}')" style="margin-top: 5px; background: #ff4d4d; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer;">Delete</button>
+                <hr style="margin-top: 5px;">
+            `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+        }
+
+        document.getElementById('cartModal').style.display = 'block';
+    }
+
+</script>
+</body>
+</html>

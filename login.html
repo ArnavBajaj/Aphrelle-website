@@ -211,6 +211,25 @@
       margin-top: 5px;
       display: none;
     }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      background: rgba(5, 5, 5, 0.95);
+      color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      opacity: 0;
+      transform: translateY(-20px);
+      transition: all 0.5s ease;
+      z-index: 1000;
+    }
+
+    .notification.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
 
 
@@ -296,11 +315,28 @@
       localStorage.removeItem('rememberedEmail');
     }
 
-    // Here you would typically send the login request to your backend
-    console.log('Login attempt:', { email, rememberMe });
-    // For demo purposes, simulate successful login
-    alert('Login successful!');
+    // Save email for profile page
+    localStorage.setItem('email', email);
+
+    // Create and show notification
+    const notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = 'Login successful!';
+    document.body.appendChild(notification);
+
+    // Show notification
+    setTimeout(() => notification.classList.add('show'), 100);
+
+    // Hide notification and redirect after 1.5 seconds
+    setTimeout(() => {
+      notification.style.opacity = '0';
+      setTimeout(() => {
+        window.location.href = 'profile_summary.html';
+      }, 300);
+    }, 1000);
   }
+
+
 
 
   function isValidEmail(email) {

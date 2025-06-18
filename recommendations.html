@@ -292,6 +292,21 @@
 ">
         View Cart
     </button>
+    <button id="Wishlist" style="
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    background-color: #fea41c;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 15px;
+    font-size: 0.9rem;
+    cursor: pointer;
+" onclick="window.location.href='Wishlist.html'">
+        Wishlist
+    </button>
     <div class="card-stack" id="cardStack">
         <!-- Cards will be dynamically generated here -->
     </div>
@@ -323,6 +338,14 @@
 ">
     <h2 style="margin-bottom: 10px;">Your Cart</h2>
     <div id="cartItems"></div>
+    <button onclick="window.location.href='cart.html'" style="
+        margin-top: 15px;
+        background: #fea41c;
+        color: white;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 6px;
+        cursor: pointer;">To Cart</button>
     <button onclick="document.getElementById('cartModal').style.display='none'" style="
         margin-top: 15px;
         background: #fea41c;

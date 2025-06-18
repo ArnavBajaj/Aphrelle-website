@@ -1,0 +1,725 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aphrelle - Wishlist</title>
+    <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .logo {
+            font-family: 'Imperial Script', cursive;
+            font-size: 2.5rem;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+        }
+
+        .nav-btn {
+            background: rgba(0,0,0,1);
+            color: white;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+            border-radius: 25px;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-btn:hover {
+            background: rgba(0,0,0,1);
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(254, 164, 28, 0.1);
+            padding: 30px;
+            min-height: 70vh;
+        }
+
+        .wishlist-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .wishlist-title {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .wishlist-subtitle {
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 80px 20px;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: #ddd;
+            margin-bottom: 20px;
+        }
+
+        .empty-message {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .empty-submessage {
+            font-size: 1rem;
+            margin-bottom: 30px;
+        }
+
+        .discover-btn {
+            background: linear-gradient(135deg, #fea41c, #fc7e00);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 12px 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .discover-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(254, 164, 28, 0.3);
+        }
+
+        .wishlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .wishlist-item {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .wishlist-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .item-info {
+            padding: 20px;
+        }
+
+        .item-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .item-brand {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .item-price {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #fea41c;
+            margin-bottom: 15px;
+        }
+
+        .item-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 10px;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+
+        .add-to-cart-btn {
+            background: #fea41c;
+            color: white;
+        }
+
+        .add-to-cart-btn:hover {
+            background: #e6930a;
+        }
+
+        .remove-btn {
+            background: #ff4757;
+            color: white;
+        }
+
+        .remove-btn:hover {
+            background: #ff3742;
+        }
+
+        .heart-icon {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            color: #ff4757;
+            font-size: 1.2rem;
+            animation: heartbeat 1.5s ease-in-out infinite;
+        }
+
+        @keyframes heartbeat {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .wishlist-stats {
+            background: rgba(254, 164, 28, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stats-item {
+            text-align: center;
+        }
+
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fea41c;
+        }
+
+        .stats-label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-btn {
+            background: rgba(254, 164, 28, 0.1);
+            color: #fea41c;
+            border: 2px solid rgba(254, 164, 28, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: #fea41c;
+            color: white;
+        }
+
+        .filter-btn:hover {
+            background: #fea41c;
+            color: white;
+        }
+
+        .sort-select {
+            padding: 8px 12px;
+            border: 2px solid rgba(254, 164, 28, 0.3);
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            cursor: pointer;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .wishlist-title {
+                font-size: 2rem;
+            }
+
+            .wishlist-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .filter-bar {
+                justify-content: center;
+            }
+
+            .container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <div class="logo">Aphrelle</div>
+    <div class="nav-buttons">
+        <a href="recommendations.html" class="nav-btn">
+            <i class="fas fa-search"></i>
+            Recommendations
+        </a>
+        <button class="nav-btn" onclick="viewCart()">
+            <i class="fas fa-shopping-cart"></i>
+            Cart (<span id="cartCount">0</span>)
+        </button>
+    </div>
+</div>
+
+<div class="container">
+    <div class="wishlist-header">
+        <h1 class="wishlist-title">My Wishlist</h1>
+        <p class="wishlist-subtitle">Your favorite items saved for later</p>
+    </div>
+
+    <div id="wishlistStats" class="wishlist-stats" style="display: none;">
+        <div class="stats-item">
+            <div class="stats-number" id="totalItems">0</div>
+            <div class="stats-label">Items</div>
+        </div>
+        <div class="stats-item">
+            <div class="stats-number" id="totalValue">$0</div>
+            <div class="stats-label">Total Value</div>
+        </div>
+        <div class="stats-item">
+            <div class="stats-number" id="avgPrice">$0</div>
+            <div class="stats-label">Avg Price</div>
+        </div>
+    </div>
+
+    <div id="filterBar" class="filter-bar" style="display: none;">
+        <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
+        <button class="filter-btn" onclick="filterByCategory('dress')">Dresses</button>
+        <button class="filter-btn" onclick="filterByCategory('jacket')">Jackets</button>
+        <button class="filter-btn" onclick="filterByCategory('casual')">Casual</button>
+        <select class="sort-select" onchange="sortWishlist(this.value)">
+            <option value="recent">Recently Added</option>
+            <option value="price-low">Price: Low to High</option>
+            <option value="price-high">Price: High to Low</option>
+            <option value="name">Name A-Z</option>
+        </select>
+    </div>
+
+    <div id="emptyState" class="empty-state">
+        <div class="empty-icon">
+            <i class="fas fa-heart"></i>
+        </div>
+        <div class="empty-message">Your wishlist is empty</div>
+        <div class="empty-submessage">Start discovering amazing products to add to your wishlist!</div>
+        <a href="discover.html" class="discover-btn">
+            <i class="fas fa-search"></i>
+            Start Discovering
+        </a>
+    </div>
+
+    <div id="wishlistGrid" class="wishlist-grid"></div>
+</div>
+
+<!-- Cart Modal -->
+<div id="cartModal" style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.5);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    ">
+    <div style="
+            background: white;
+            color: black;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        ">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2>Shopping Cart</h2>
+            <button onclick="closeCart()" style="
+                    background: none;
+                    border: none;
+                    font-size: 1.5rem;
+                    cursor: pointer;
+                    color: #666;
+                ">×</button>
+        </div>
+        <div id="cartItems"></div>
+        <div style="text-align: center; margin-top: 20px;">
+            <button onclick="closeCart()" style="
+                    background: #fea41c;
+                    color: white;
+                    border: none;
+                    padding: 12px 24px;
+                    border-radius: 8px;
+                    cursor: pointer;
+                    font-size: 1rem;
+                ">Continue Shopping</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Sample wishlist data (in a real app, this would come from localStorage or a database)
+    let wishlist = [];
+    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let currentFilter = 'all';
+    let currentSort = 'recent';
+
+    // Sample products that could be in wishlist
+    const sampleProducts = [
+        {
+            id: 1,
+            image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop",
+            title: "Elegant Summer Dress",
+            brand: "Bella Vista",
+            price: 89.99,
+            priceStr: "$89.99",
+            category: "dress",
+            dateAdded: new Date('2024-01-15')
+        },
+        {
+            id: 2,
+            image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop",
+            title: "Classic Denim Jacket",
+            brand: "Urban Style",
+            price: 124.99,
+            priceStr: "$124.99",
+            category: "jacket",
+            dateAdded: new Date('2024-01-12')
+        },
+        {
+            id: 3,
+            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop",
+            title: "Vintage Band Tee",
+            brand: "Retro Vibes",
+            price: 45.99,
+            priceStr: "$45.99",
+            category: "casual",
+            dateAdded: new Date('2024-01-10')
+        }
+    ];
+
+    // Initialize the page
+    document.addEventListener('DOMContentLoaded', () => {
+        // Load wishlist from localStorage or use sample data
+        const savedWishlist = localStorage.getItem('wishlist');
+        if (savedWishlist) {
+            wishlist = JSON.parse(savedWishlist);
+            // Convert dateAdded strings back to Date objects
+            wishlist = wishlist.map(item => ({
+                ...item,
+                dateAdded: new Date(item.dateAdded)
+            }));
+        } else {
+            // For demo purposes, add some sample items
+            wishlist = [...sampleProducts];
+            saveWishlist();
+        }
+
+        updateCartCount();
+        renderWishlist();
+    });
+
+    function saveWishlist() {
+        localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    }
+
+    function updateCartCount() {
+        document.getElementById('cartCount').textContent = cart.length;
+    }
+
+    function renderWishlist() {
+        const emptyState = document.getElementById('emptyState');
+        const wishlistGrid = document.getElementById('wishlistGrid');
+        const wishlistStats = document.getElementById('wishlistStats');
+        const filterBar = document.getElementById('filterBar');
+
+        if (wishlist.length === 0) {
+            emptyState.style.display = 'block';
+            wishlistGrid.style.display = 'none';
+            wishlistStats.style.display = 'none';
+            filterBar.style.display = 'none';
+            return;
+        }
+
+        emptyState.style.display = 'none';
+        wishlistGrid.style.display = 'grid';
+        wishlistStats.style.display = 'flex';
+        filterBar.style.display = 'flex';
+
+        // Update stats
+        updateStats();
+
+        // Filter and sort wishlist
+        let filteredWishlist = filterWishlist(wishlist, currentFilter);
+        filteredWishlist = sortWishlist(filteredWishlist, currentSort);
+
+        // Render items
+        wishlistGrid.innerHTML = '';
+        filteredWishlist.forEach(item => {
+            const itemElement = createWishlistItem(item);
+            wishlistGrid.appendChild(itemElement);
+        });
+    }
+
+    function updateStats() {
+        const totalItems = wishlist.length;
+        const totalValue = wishlist.reduce((sum, item) => sum + item.price, 0);
+        const avgPrice = totalItems > 0 ? totalValue / totalItems : 0;
+
+        document.getElementById('totalItems').textContent = totalItems;
+        document.getElementById('totalValue').textContent = `$${totalValue.toFixed(2)}`;
+        document.getElementById('avgPrice').textContent = `$${avgPrice.toFixed(2)}`;
+    }
+
+    function createWishlistItem(item) {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'wishlist-item';
+        itemDiv.innerHTML = `
+                <div class="heart-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <img src="${item.image}" alt="${item.title}" class="item-image">
+                <div class="item-info">
+                    <h3 class="item-title">${item.title}</h3>
+                    <p class="item-brand">${item.brand}</p>
+                    <p class="item-price">${item.priceStr}</p>
+                    <div class="item-actions">
+                        <button class="action-btn add-to-cart-btn" onclick="addToCart(${item.id})">
+                            <i class="fas fa-shopping-cart"></i>
+                            Add to Cart
+                        </button>
+                        <button class="action-btn remove-btn" onclick="removeFromWishlist(${item.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        return itemDiv;
+    }
+
+    function filterWishlist(items, category) {
+        if (category === 'all') return items;
+        return items.filter(item => item.category === category);
+    }
+
+    function sortWishlist(items, sortBy) {
+        const sorted = [...items];
+        switch (sortBy) {
+            case 'recent':
+                return sorted.sort((a, b) => b.dateAdded - a.dateAdded);
+            case 'price-low':
+                return sorted.sort((a, b) => a.price - b.price);
+            case 'price-high':
+                return sorted.sort((a, b) => b.price - a.price);
+            case 'name':
+                return sorted.sort((a, b) => a.title.localeCompare(b.title));
+            default:
+                return sorted;
+        }
+    }
+
+    function filterByCategory(category) {
+        currentFilter = category;
+
+        // Update active filter button
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        event.target.classList.add('active');
+
+        renderWishlist();
+    }
+
+    function sortWishlist(value) {
+        currentSort = value;
+        renderWishlist();
+    }
+
+    function addToCart(itemId) {
+        const item = wishlist.find(item => item.id === itemId);
+        if (item) {
+            const cartItem = {
+                ...item,
+                cartId: `${Date.now()}-${Math.floor(Math.random() * 10000)}`
+            };
+            cart.push(cartItem);
+            localStorage.setItem('cart', JSON.stringify(cart));
+            updateCartCount();
+
+            // Show success feedback
+            const button = event.target;
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Added!';
+            button.style.background = '#2ecc71';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.background = '#fea41c';
+            }, 1500);
+        }
+    }
+
+    function removeFromWishlist(itemId) {
+        if (confirm('Remove this item from your wishlist?')) {
+            wishlist = wishlist.filter(item => item.id !== itemId);
+            saveWishlist();
+            renderWishlist();
+        }
+    }
+
+    function viewCart() {
+        renderCart();
+        document.getElementById('cartModal').style.display = 'flex';
+    }
+
+    function closeCart() {
+        document.getElementById('cartModal').style.display = 'none';
+    }
+
+    function renderCart() {
+        const cartItemsContainer = document.getElementById('cartItems');
+        cartItemsContainer.innerHTML = '';
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p style="text-align: center; color: #666;">Your cart is empty.</p>';
+        } else {
+            cart.forEach(item => {
+                const itemDiv = document.createElement('div');
+                itemDiv.style.cssText = 'display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee;';
+                itemDiv.innerHTML = `
+                        <img src="${item.image}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 15px;" />
+                        <div style="flex: 1;">
+                            <strong>${item.title}</strong><br>
+                            <span style="color: #666; font-size: 0.9rem;">${item.brand}</span><br>
+                            <span style="color: #fea41c; font-weight: bold;">${item.priceStr}</span>
+                        </div>
+                        <button onclick="deleteCartItem('${item.cartId}')" style="
+                            background: #ff4757;
+                            color: white;
+                            border: none;
+                            padding: 8px 12px;
+                            border-radius: 6px;
+                            cursor: pointer;
+                            font-size: 0.8rem;
+                        ">Remove</button>
+                    `;
+                cartItemsContainer.appendChild(itemDiv);
+            });
+        }
+    }
+
+    function deleteCartItem(cartId) {
+        cart = cart.filter(item => item.cartId !== cartId);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        updateCartCount();
+        renderCart();
+    }
+
+    // Add some sample items for demo (remove this in production)
+    function addSampleItem() {
+        const newItem = {
+            id: Date.now(),
+            image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=500&fit=crop",
+            title: "Minimalist Blazer",
+            brand: "Modern Edge",
+            price: 198.50,
+            priceStr: "$198.50",
+            category: "jacket",
+            dateAdded: new Date()
+        };
+        wishlist.unshift(newItem);
+        saveWishlist();
+        renderWishlist();
+    }
+
+    // Keyboard shortcuts for demo
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'a' && e.ctrlKey) {
+            e.preventDefault();
+            addSampleItem();
+        }
+    });
+</script>
+</body>
+</html>

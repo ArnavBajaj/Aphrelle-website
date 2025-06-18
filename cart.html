@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aphrelle - Checkout Cart</title>
+  <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      gap: 30px;
+      animation: slideUp 0.8s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .cart-section, .checkout-section {
+      background: rgba(1, 1, 1, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      box-shadow: 0 20px 40px rgba(254, 164, 28, 0.1);
+      padding: 30px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .back-arrow {
+      color: #666666;
+      text-decoration: none;
+      font-size: 24px;
+      margin-right: 20px;
+      transition: transform 0.3s ease;
+    }
+
+    .back-arrow:hover {
+      transform: translateX(-5px);
+      color: #999999;
+    }
+
+    .logo {
+      font-family: 'Imperial Script', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(#fea41c, #fff700);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-title {
+      color: #fff;
+      font-size: 1.8rem;
+      margin-bottom: 25px;
+      font-weight: 600;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 12px;
+      margin-bottom: 15px;
+      background: rgba(255, 255, 255, 0.05);
+      transition: all 0.3s ease;
+    }
+
+    .cart-item:hover {
+      border-color: #667eea;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .item-left {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-right: 20px;
+    }
+
+    .item-image {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+    }
+
+    .size-display {
+      color: #fea41c;
+      font-size: 0.9rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    .item-details {
+      flex: 1;
+    }
+
+    .item-name {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .item-description {
+      color: #999;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .item-price {
+      color: #fea41c;
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+    }
+
+    .quantity-btn {
+      background: rgba(102, 126, 234, 0.3);
+      border: none;
+      color: #fff;
+      width: 35px;
+      height: 35px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .quantity-btn:hover {
+      background: #667eea;
+      transform: scale(1.1);
+    }
+
+    .quantity-display {
+      color: #fff;
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0 15px;
+      min-width: 30px;
+      text-align: center;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-left: 20px;
+    }
+
+    .add-btn, .cancel-btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      min-width: 70px;
+    }
+
+    .add-btn {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      box-shadow: 0 4px 10px rgba(102, 126, 234, 0.3);
+    }
+
+    .add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 15px rgba(102, 126, 234, 0.4);
+    }
+
+    .cancel-btn {
+      background: rgba(255, 68, 68, 0.3);
+      color: #ff4444;
+      border: 1px solid rgba(255, 68, 68, 0.5);
+    }
+
+    .cancel-btn:hover {
+      background: #ff4444;
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .cart-summary {
+      border-top: 2px solid rgba(102, 126, 234, 0.3);
+      padding-top: 20px;
+      margin-top: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      color: #999;
+    }
+
+    .summary-row.total {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #fff;
+      border-top: 1px solid rgba(102, 126, 234, 0.3);
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 8px;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 14px;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      color: #fff;
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #667eea;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 15px;
+    }
+
+    .button {
+      width: 100%;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      margin-bottom: 16px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: #667eea;
+    }
+
+    .payment-methods {
+      margin-bottom: 20px;
+    }
+
+    .payment-option {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      border: 2px solid rgba(102, 126, 234, 0.3);
+      border-radius: 8px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .payment-option:hover {
+      border-color: #667eea;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .payment-option.selected {
+      border-color: #667eea;
+      background: rgba(102, 126, 234, 0.1);
+    }
+
+    .payment-radio {
+      margin-right: 15px;
+    }
+
+    .payment-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 8px;
+      margin-right: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.2rem;
+    }
+
+    .payment-label {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 50px 20px;
+      color: #999;
+    }
+
+    .empty-cart-icon {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      color: #667eea;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .cart-item {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .item-left {
+        margin-right: 0;
+        margin-bottom: 15px;
+        flex-direction: row;
+        gap: 15px;
+      }
+
+      .item-image {
+        margin-bottom: 0;
+      }
+
+      .action-buttons {
+        margin-left: 0;
+        margin-top: 15px;
+        flex-direction: row;
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- Cart Section -->
+  <div class="cart-section">
+    <div class="header">
+      <a href="recommendations.html" class="back-arrow">←</a>
+      <div class="logo">Aphrelle</div>
+    </div>
+
+    <h2 class="section-title">Shopping Cart</h2>
+
+    <div id="cartItems">
+      <div class="cart-item">
+        <div class="item-left">
+          <div class="item-image">👕</div>
+          <div class="size-display">Size: M</div>
+        </div>
+        <div class="item-details">
+          <div class="item-name">Premium Cotton T-Shirt</div>
+          <div class="item-description">100% Organic Cotton • Black</div>
+          <div class="item-price">$49.99</div>
+          <div class="quantity-controls">
+            <button class="quantity-btn" onclick="updateQuantity(0, -1)">-</button>
+            <div class="quantity-display">1</div>
+            <button class="quantity-btn" onclick="updateQuantity(0, 1)">+</button>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button class="add-btn" onclick="addToWishlist(0)">Add</button>
+          <button class="cancel-btn" onclick="removeItem(0)">Cancel</button>
+        </div>
+      </div>
+
+      <div class="cart-item">
+        <div class="item-left">
+          <div class="item-image">👖</div>
+          <div class="size-display">Size: 32</div>
+        </div>
+        <div class="item-details">
+          <div class="item-name">Slim Fit Jeans</div>
+          <div class="item-description">Premium Denim • Dark Blue</div>
+          <div class="item-price">$89.99</div>
+          <div class="quantity-controls">
+            <button class="quantity-btn" onclick="updateQuantity(1, -1)">-</button>
+            <div class="quantity-display">1</div>
+            <button class="quantity-btn" onclick="updateQuantity(1, 1)">+</button>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button class="add-btn" onclick="addToWishlist(1)">Add</button>
+          <button class="cancel-btn" onclick="removeItem(1)">Cancel</button>
+        </div>
+      </div>
+
+      <div class="cart-item">
+        <div class="item-left">
+          <div class="item-image">👗</div>
+          <div class="size-display">Size: S</div>
+        </div>
+        <div class="item-details">
+          <div class="item-name">Summer Dress</div>
+          <div class="item-description">Silk Blend • Floral Print</div>
+          <div class="item-price">$129.99</div>
+          <div class="quantity-controls">
+            <button class="quantity-btn" onclick="updateQuantity(2, -1)">-</button>
+            <div class="quantity-display">1</div>
+            <button class="quantity-btn" onclick="updateQuantity(2, 1)">+</button>
+          </div>
+        </div>
+        <div class="action-buttons">
+          <button class="add-btn" onclick="addToWishlist(2)">Add</button>
+          <button class="cancel-btn" onclick="removeItem(2)">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-summary">
+      <div class="summary-row">
+        <span>Subtotal:</span>
+        <span id="subtotal">$269.97</span>
+      </div>
+      <div class="summary-row">
+        <span>Shipping:</span>
+        <span>$9.99</span>
+      </div>
+      <div class="summary-row">
+        <span>Tax:</span>
+        <span id="tax">$21.60</span>
+      </div>
+      <div class="summary-row total">
+        <span>Total:</span>
+        <span id="total">$301.56</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Section -->
+  <div class="checkout-section">
+    <h2 class="section-title">Checkout</h2>
+
+    <form id="checkoutForm">
+      <h3 style="color: #fff; margin-bottom: 15px;">Shipping Information</h3>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="firstName">First Name</label>
+          <input type="text" id="firstName" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="lastName">Last Name</label>
+          <input type="text" id="lastName" class="form-input" required>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="email">Email Address</label>
+        <input type="email" id="email" class="form-input" required>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label" for="address">Street Address</label>
+        <input type="text" id="address" class="form-input" required>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label" for="city">City</label>
+          <input type="text" id="city" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="zip">ZIP Code</label>
+          <input type="text" id="zip" class="form-input" required>
+        </div>
+      </div>
+
+      <h3 style="color: #fff; margin: 30px 0 15px;">Payment Method</h3>
+
+      <div class="payment-methods">
+        <div class="payment-option selected" onclick="selectPayment(this)">
+          <input type="radio" name="payment" value="card" class="payment-radio" checked>
+          <div class="payment-icon">💳</div>
+          <div class="payment-label">Credit/Debit Card</div>
+        </div>
+
+        <div class="payment-option" onclick="selectPayment(this)">
+          <input type="radio" name="payment" value="paypal" class="payment-radio">
+          <div class="payment-icon">🅿️</div>
+          <div class="payment-label">PayPal</div>
+        </div>
+
+        <div class="payment-option" onclick="selectPayment(this)">
+          <input type="radio" name="payment" value="apple" class="payment-radio">
+          <div class="payment-icon">🍎</div>
+          <div class="payment-label">Apple Pay</div>
+        </div>
+      </div>
+
+      <div id="cardDetails">
+        <div class="form-group">
+          <label class="form-label" for="cardNumber">Card Number</label>
+          <input type="text" id="cardNumber" class="form-input" placeholder="1234 5678 9012 3456" required>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label" for="expiry">Expiry Date</label>
+            <input type="text" id="expiry" class="form-input" placeholder="MM/YY" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="cvv">CVV</label>
+            <input type="text" id="cvv" class="form-input" placeholder="123" required>
+          </div>
+        </div>
+      </div>
+
+      <button type="submit" class="button btn-primary">Complete Purchase</button>
+      <button type="button" class="button btn-secondary">Continue Shopping</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  let cartItems = [
+    { name: "Premium Cotton T-Shirt", price: 49.99, quantity: 1 },
+    { name: "Slim Fit Jeans", price: 89.99, quantity: 1 },
+    { name: "Summer Dress", price: 129.99, quantity: 1 }
+  ];
+
+  function updateQuantity(index, change) {
+    cartItems[index].quantity += change;
+    if (cartItems[index].quantity < 1) {
+      cartItems[index].quantity = 1;
+    }
+
+    const quantityDisplay = document.querySelectorAll('.quantity-display')[index];
+    quantityDisplay.textContent = cartItems[index].quantity;
+
+    updateTotals();
+  }
+
+  function addToWishlist(index) {
+    const itemName = cartItems[index].name;
+    alert(`${itemName} added to wishlist!`);
+  }
+
+  function removeItem(index) {
+    const itemElement = document.querySelectorAll('.cart-item')[index];
+    itemElement.style.animation = 'slideUp 0.3s ease-out reverse';
+    setTimeout(() => {
+      cartItems.splice(index, 1);
+      renderCart();
+      updateTotals();
+    }, 300);
+  }
+
+  function updateTotals() {
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const shipping = 9.99;
+    const tax = subtotal * 0.08;
+    const total = subtotal + shipping + tax;
+
+    document.getElementById('subtotal').textContent = `${subtotal.toFixed(2)}`;
+    document.getElementById('tax').textContent = `${tax.toFixed(2)}`;
+    document.getElementById('total').textContent = `${total.toFixed(2)}`;
+  }
+
+  function renderCart() {
+    const cartContainer = document.getElementById('cartItems');
+    if (cartItems.length === 0) {
+      cartContainer.innerHTML = `
+          <div class="empty-cart">
+            <div class="empty-cart-icon">🛒</div>
+            <h3>Your cart is empty</h3>
+            <p>Add some items to get started!</p>
+          </div>
+        `;
+      return;
+    }
+
+    // Re-render cart items (simplified for demo)
+    location.reload();
+  }
+
+  function selectPayment(element) {
+    document.querySelectorAll('.payment-option').forEach(option => {
+      option.classList.remove('selected');
+    });
+    element.classList.add('selected');
+    element.querySelector('input[type="radio"]').checked = true;
+
+    const cardDetails = document.getElementById('cardDetails');
+    if (element.querySelector('input').value === 'card') {
+      cardDetails.style.display = 'block';
+    } else {
+      cardDetails.style.display = 'none';
+    }
+  }
+
+  document.getElementById('checkoutForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('Order placed successfully! Thank you for your purchase.');
+  });
+
+  // Add input animations
+  document.querySelectorAll('.form-input').forEach(input => {
+    input.addEventListener('focus', function() {
+      this.style.transform = 'translateY(-2px)';
+    });
+
+    input.addEventListener('blur', function() {
+      this.style.transform = 'translateY(0)';
+    });
+  });
+
+  // Initialize
+  updateTotals();
+</script>
+</body>
+</html>

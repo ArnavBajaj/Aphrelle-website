@@ -59,46 +59,73 @@
             will-change: transform;
             backface-visibility: hidden;
             box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+            overflow-x: visible;
+            padding: 10px;
         }
+
+        .product-image {
+            width: 100%;
+            max-height: 55%;
+            height: auto;
+            object-fit: cover;
+            border-radius: 12px;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .product-info {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1rem;
+            color: #333;
+            background: #fff;
+            margin-top: 10px;
+            border-radius: 10px;
+            box-sizing: border-box;
+        }
+
+
+        .product-info::-webkit-scrollbar {
+            width: 6px;
+        }
+        .product-info::-webkit-scrollbar-thumb {
+            background-color: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+        }
+
 
         .product-card:nth-child(1) {
             z-index: 3;
             transform: translateX(-50%) scale(1);
+            opacity: 1;
         }
 
         .product-card:nth-child(2) {
             z-index: 2;
             transform: translateX(-50%) scale(0.95) translateY(10px);
-            opacity: 0.8;
+            opacity: 0.2;
         }
 
         .product-card:nth-child(3) {
             z-index: 1;
             transform: translateX(-50%) scale(0.9) translateY(20px);
-            opacity: 0.6;
+            opacity: 0.1;
         }
 
         .product-card:nth-child(n+4) {
             z-index: 0;
             transform: translateX(-50%) scale(0.85) translateY(30px);
-            opacity: 0.4;
+            opacity: 0.05;
         }
 
-        .product-image {
-            width: 100%;
-            height: 60%;
-            border-radius: 15px 15px 0 0;
-            object-fit: cover;
-        }
 
-        .product-info {
-            padding: 20px;
-            color: #333;
-            overflow: hidden;
-        }
+
 
         .product-title {
-            font-size: 1.4rem;
+            font-size: 1.2rem;
             font-weight: 600;
             margin-bottom: 5px;
         }
@@ -120,7 +147,7 @@
             font-size: 0.9rem;
             color: #666;
             margin-bottom: 15px;
-            line-height: 1.4;
+            line-height: 1.5;
         }
 
         .product-options {
@@ -129,7 +156,8 @@
             gap: 10px;
             margin-bottom: 10px;
             max-width: 100%;
-            overflow: hidden;
+            overflow: visible;
+            padding: 5px 0;
         }
 
         .size-option, .color-option {
@@ -181,18 +209,29 @@
 
         .swipe-left {
             background: rgba(255, 87, 87, 0.8);
+            position: absolute;
+            top: 20px;
+            left: 0%;
+            opacity: 0%;
+
         }
 
         .swipe-right {
             background: rgba(70, 195, 120, 0.8);
+            position: absolute;
+            top: 20px;
+            left: 66.66%;
+            opacity:0%
+
         }
 
         .swipe-up {
             background: rgba(102, 126, 234, 0.8);
             position: absolute;
             top: 20px;
-            left: 50%;
+            left: 33.33%;
             transform: translateX(-50%);
+            opacity:0%
         }
 
         .overlay-text {
@@ -212,13 +251,13 @@
         .overlay-nope {
             color: #ff5757;
             border: 3px solid #ff5757;
-            transform: translate(-50%, -50%) rotate(-20deg);
+            transform: translate(-50%, -50%);
         }
 
         .overlay-like {
             color: #46c378;
             border: 3px solid #46c378;
-            transform: translate(-50%, -50%) rotate(20deg);
+            transform: translate(-50%, -50%);
         }
 
         .overlay-info {
@@ -238,7 +277,10 @@
             color: #666;
         }
 
-
+        .color-swatch:hover {
+            transform: scale(1.1);
+            transition: transform 0.2s ease;
+        }
 
 
         @keyframes swipeLeft {
@@ -247,7 +289,7 @@
                 opacity: 1;
             }
             to {
-                transform: translateX(-50%) translate(-150%, 0) rotate(-30deg);
+                transform: translateX(-50%) translate(-150%, 0) rotate(0deg);
                 opacity: 0;
             }
         }
@@ -258,7 +300,7 @@
                 opacity: 1;
             }
             to {
-                transform: translateX(-50%) translate(150%, 0) rotate(30deg);
+                transform: translateX(-50%) translate(0,-150%) rotate(0deg);
                 opacity: 0;
             }
         }
@@ -282,31 +324,37 @@
     top: 20px;
     right: 20px;
     z-index: 100;
-    background-color: #fea41c;
-    color: white;
-    border: none;
+    background-color: black;
+    border: 2px solid #fea41c;
+    color: #fea41c;
     border-radius: 20px;
-    padding: 8px 15px;
+    padding: 6px 14px;
     font-size: 0.9rem;
     cursor: pointer;
-">
-        View Cart
+    transition: all 0.3s ease;
+" onmouseover="this.style.backgroundColor='#fea41c'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='#fea41c';">
+         View Cart
     </button>
+
     <button id="Wishlist" style="
     position: absolute;
     top: 20px;
     left: 20px;
     z-index: 100;
-    background-color: #fea41c;
-    color: white;
-    border: none;
+    background-color: black;
+    border: 2px solid #fea41c;
+    color: #fea41c;
     border-radius: 20px;
-    padding: 8px 15px;
+    padding: 6px 14px;
     font-size: 0.9rem;
     cursor: pointer;
-" onclick="window.location.href='Wishlist.html'">
-        Wishlist
+    transition: all 0.3s ease;
+" onclick="window.location.href='Wishlist.html'"
+            onmouseover="this.style.backgroundColor='#fea41c'; this.style.color='black';"
+            onmouseout="this.style.backgroundColor='black'; this.style.color='#fea41c';">
+         Wishlist
     </button>
+
     <div class="card-stack" id="cardStack">
         <!-- Cards will be dynamically generated here -->
     </div>
@@ -388,11 +436,58 @@
         cursor: pointer;
     ">Close</button>
 </div>
+<div id="editModal" style="
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    color: black;
+    padding: 20px;
+    border-radius: 12px;
+    z-index: 9999;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+">
+    <h3 id="editTitle"></h3>
+    <p id="editBrand" style="color: #666; font-size: 0.9rem;"></p>
+    <label for="editSize">Size:</label>
+    <select id="editSize" style="display:block; width:100%; padding:8px; margin:10px 0;"></select>
+    <label for="editColor">Color:</label>
+    <div id="editColorOptions" style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0;"></div>
+
+
+    <button onclick="applyEdit()" style="margin-right: 10px; background: #fea41c; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+        Save
+    </button>
+    <button onclick="document.getElementById('editModal').style.display='none'" style="background: #ccc; color: black; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+        Cancel
+    </button>
+</div>
+<div id="toast" style="
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #323232;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    display: none;
+    z-index: 9999;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+">
+    Added to Wishlist!
+</div>
+
 </body>
 
 
 <script>
-
+    let wishlist = [];
     let cart = [];
     const products = [
         {
@@ -552,27 +647,40 @@
             cardStack.push(card);
         }
     }
-
     function createCard(product, index) {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.dataset.index = index;
+        card.selectedSize = null;
+        card.selectedColor = null;
 
         card.innerHTML = `
-            <img src="${product.image}" alt="${product.title}" class="product-image">
-            <div class="product-info">
-                <h2 class="product-title">${product.title}</h2>
-                <p class="product-brand">${product.brand}</p>
-                <p class="product-price">${product.price}</p>
-                <p class="product-description">${product.description}</p>
-                <div class="product-options">
-                    ${product.sizes.map(size => `<div class="size-option">${size}</div>`).join('')}
-                </div>
-                <div class="product-options">
-                    ${product.colors.map(color => `<div class="color-option" style="background: ${color}${color === '#fff' ? '; border: 1px solid #ddd' : ''}"></div>`).join('')}
-                </div>
+        <img src="${product.image}" alt="${product.title}" class="product-image">
+        <div class="product-info">
+            <h2 class="product-title">${product.title}</h2>
+            <p class="product-brand">${product.brand}</p>
+            <p class="product-price">${product.price}</p>
+            <p class="product-description">${product.description}</p>
+            <div class="product-options sizes">
+                ${product.sizes.map(size => `<div class="size-option">${size}</div>`).join('')}
             </div>
-        `;
+            <div class="product-options colors">
+                ${product.colors.map(color => `<div class="color-option" style="background: ${color}${color === '#fff' ? '; border: 1px solid #ddd' : ''}" data-color="${color}"></div>`).join('')}
+            </div>
+            <div style="text-align: right; margin-top: 8px;">
+    <button onclick="addToWishlist(${index})" style="
+        background: none;
+        border: none;
+        color: #e91e63;
+        font-size: 1.3rem;
+        cursor: pointer;
+    " title="Add to Wishlist">
+        <i class="fas fa-heart"></i>
+    </button>
+</div>
+
+        </div>
+    `;
 
         // Add overlay texts
         const overlays = {
@@ -580,12 +688,31 @@
             like: createOverlay('LIKE', 'overlay-like'),
             info: createOverlay('MORE INFO', 'overlay-info')
         };
-
         Object.values(overlays).forEach(overlay => card.appendChild(overlay));
         card.overlays = overlays;
 
+        // Handle size selection
+        card.querySelectorAll('.size-option').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                card.querySelectorAll('.size-option').forEach(b => b.style.border = '2px solid #ddd');
+                btn.style.border = '2px solid #fea41c';
+                card.selectedSize = btn.textContent;
+            });
+        });
+
+        // Handle color selection
+        card.querySelectorAll('.color-option').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                card.querySelectorAll('.color-option').forEach(b => b.style.outline = 'none');
+                btn.style.outline = '2px solid #fea41c';
+                card.selectedColor = btn.dataset.color;
+            });
+        });
+
         return card;
     }
+
+
 
     function createOverlay(text, className) {
         const overlay = document.createElement('div');
@@ -630,13 +757,13 @@
                 card.style.opacity = '1';
             } else if (index === 1) {
                 card.style.transform = 'translateX(-50%) scale(0.95) translateY(10px)';
-                card.style.opacity = '0.8';
+                card.style.opacity = '0.2';
             } else if (index === 2) {
                 card.style.transform = 'translateX(-50%) scale(0.9) translateY(20px)';
-                card.style.opacity = '0.6';
+                card.style.opacity = '0.1';
             } else {
                 card.style.transform = 'translateX(-50%) scale(0.85) translateY(30px)';
-                card.style.opacity = '0.4';
+                card.style.opacity = '0.05';
             }
         });
     }
@@ -778,14 +905,17 @@
             const topCard = cardStack[0];
 
             const productIndex = parseInt(topCard.dataset.index);
-
             if (animation === 'swipeRight') {
+                const card = cardStack[0];
                 const product = {
                     ...products[productIndex],
-                    cartId: `${Date.now()}-${Math.floor(Math.random() * 10000)}`
+                    cartId: `${Date.now()}-${Math.floor(Math.random() * 10000)}`,
+                    selectedSize: card.selectedSize || 'Not selected',
+                    selectedColor: card.selectedColor || 'Not selected'
                 };
                 cart.push(product);
             }
+
 
             if (animation === 'swipeUp') {
                 const product = products[productIndex];
@@ -837,23 +967,67 @@
         cart = cart.filter(item => item.cartId !== id);
         renderCart();
     };
+    let editingItemId = null;
 
     window.editCartItem = function(id) {
         const item = cart.find(p => p.cartId === id);
         if (!item) return;
 
-        const newTitle = prompt("Edit product title:", item.title);
-        if (newTitle !== null && newTitle.trim() !== "") {
-            item.title = newTitle;
-        }
+        editingItemId = id;
 
-        const newPrice = prompt("Edit product price:", item.price);
-        if (newPrice !== null && newPrice.trim() !== "") {
-            item.price = newPrice;
-        }
+        document.getElementById('editTitle').textContent = item.title;
+        document.getElementById('editBrand').textContent = item.brand;
 
-        renderCart();
+        const sizeSelect = document.getElementById('editSize');
+        sizeSelect.innerHTML = '';
+        item.sizes.forEach(size => {
+            const option = document.createElement('option');
+            option.value = size;
+            option.textContent = size;
+            if (item.selectedSize === size) option.selected = true;
+            sizeSelect.appendChild(option);
+        });
+
+        const colorOptionsContainer = document.getElementById('editColorOptions');
+        colorOptionsContainer.innerHTML = '';
+        item.colors.forEach(color => {
+            const swatch = document.createElement('div');
+            swatch.className = 'color-swatch';
+            swatch.style.background = color;
+            swatch.style.width = '30px';
+            swatch.style.height = '30px';
+            swatch.style.borderRadius = '50%';
+            swatch.style.cursor = 'pointer';
+            swatch.style.border = (item.selectedColor === color) ? '3px solid #000' : '2px solid #ccc';
+
+            swatch.addEventListener('click', () => {
+                // Clear all borders
+                [...colorOptionsContainer.children].forEach(child => {
+                    child.style.border = '2px solid #ccc';
+                });
+                // Highlight selected
+                swatch.style.border = '3px solid #000';
+                item.selectedColor = color;
+            });
+
+            colorOptionsContainer.appendChild(swatch);
+        });
+
+
+        document.getElementById('editModal').style.display = 'block';
     };
+
+    function applyEdit() {
+        const item = cart.find(p => p.cartId === editingItemId);
+        if (!item) return;
+
+        const newSize = document.getElementById('editSize').value;
+
+        item.selectedSize = newSize;
+
+        document.getElementById('editModal').style.display = 'none';
+        renderCart();
+    }
 
     function renderCart() {
         const cartItemsContainer = document.getElementById('cartItems');
@@ -866,18 +1040,49 @@
                 const itemDiv = document.createElement('div');
                 itemDiv.style.marginBottom = '10px';
                 itemDiv.innerHTML = `
-                <strong>${item.title}</strong><br>
-                <span>${item.price}</span><br>
-                <small style="color: #666;">${item.brand}</small><br>
-                <button onclick="editCartItem('${item.cartId}')" style="margin-top: 5px; margin-right: 5px; background: #ffcc00; color: black; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer;">Edit</button>
-                <button onclick="deleteCartItem('${item.cartId}')" style="margin-top: 5px; background: #ff4d4d; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer;">Delete</button>
-                <hr style="margin-top: 5px;">
-            `;
+    <strong>${item.title}</strong><br>
+    <span>${item.price}</span><br>
+    <small style="color: #666;">${item.brand}</small><br>
+    <span><strong>Size:</strong> ${item.selectedSize || "N/A"}</span><br>
+    <span style="display:flex; align-items:center; gap:5px;">
+        <strong>Color:</strong>
+        <div style="width: 14px; height: 14px; border-radius: 50%; background: ${item.selectedColor || "#ccc"}; border: 1px solid #999;"></div>
+    </span>
+    <div style="text-align: right; margin-top: 5px;">
+        <button onclick="editCartItem('${item.cartId}')" style="background: #ffcc00; color: black; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Edit</button>
+        <button onclick="deleteCartItem('${item.cartId}')" style="background: #ff4d4d; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer;">Delete</button>
+    </div>
+    <hr style="margin-top: 10px;">
+`;
+
+
                 cartItemsContainer.appendChild(itemDiv);
             });
         }
 
         document.getElementById('cartModal').style.display = 'block';
+    }
+    function addToWishlist(index) {
+        const item = products[index];
+        if (!wishlist.find(w => w.title === item.title)) {
+            wishlist.push(item);
+            showToast(`❤️ "${item.title}" added to Wishlist`);
+        } else {
+            showToast(`"${item.title}" is already in Wishlist`);
+        }
+    }
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        toast.style.opacity = '1';
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => {
+                toast.style.display = 'none';
+            }, 300);
+        }, 1500);
     }
 
 </script>

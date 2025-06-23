@@ -54,19 +54,6 @@
       margin-bottom: 30px;
     }
 
-    .back-arrow {
-      color: #666666;
-      text-decoration: none;
-      font-size: 24px;
-      margin-right: 20px;
-      transition: transform 0.3s ease;
-    }
-
-    .back-arrow:hover {
-      transform: translateX(-5px);
-      color: #999999;
-    }
-
     .logo {
       font-family: 'Imperial Script', sans-serif;
       font-size: 2.5rem;
@@ -270,7 +257,7 @@
     .form-input:focus {
       outline: none;
       border-color: #667eea;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(5, 5, 5, 0.95);
     }
 
     .form-row {
@@ -412,7 +399,14 @@
   <!-- Cart Section -->
   <div class="cart-section">
     <div class="header">
-      <a href="recommendations.html" class="back-arrow">←</a>
+      <span onclick="goBack()" style="
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 1.8rem;
+      color: grey;
+      cursor: pointer;
+  ">←</span>
       <div class="logo">Aphrelle</div>
     </div>
 
@@ -680,7 +674,13 @@
       this.style.transform = 'translateY(0)';
     });
   });
-
+  function goBack() {
+    if (document.referrer !== "") {
+      window.history.back();
+    } else {
+      window.location.href = "recommendations.html"; // fallback if no history
+    }
+  }
   // Initialize
   updateTotals();
 </script>

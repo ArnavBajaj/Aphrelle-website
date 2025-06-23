@@ -32,22 +32,6 @@
       color: white;
       animation: slideUp 0.8s ease-out;
     }
-    .back-arrow {
-      position: absolute;
-      top: 20px;
-      left: 20px;
-      color: #666666;
-      text-decoration: none;
-      font-size: 24px;
-      transition: transform 0.3s ease;
-    }
-
-    .back-arrow:hover {
-      transform: translateX(-5px);
-      color: #999999;
-    }
-
-
     .profile-section {
       margin-bottom: 30px;
     }
@@ -240,7 +224,14 @@
 </head>
 <body>
 <div class="container">
-  <a href="signup.html" class="back-arrow">←</a>
+ <span onclick="goBack()" style="
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 1.8rem;
+      color: grey;
+      cursor: pointer;
+  ">←</span>
   <h1 class="section-title">Create Your Profile</h1>
 
   <form id="profileForm" onsubmit="handleProfileSubmit(event)">
@@ -472,6 +463,13 @@
         window.location.href = 'login.html';
       }, 300);
     }, 1000);
+  }
+  function goBack() {
+    if (document.referrer !== "") {
+      window.history.back();
+    } else {
+      window.location.href = "signup.html"; // fallback
+    }
   }
 </script>
 </body>

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" type="image/png" href="logo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aphrelle - Discover</title>
@@ -1066,7 +1067,7 @@
         const item = products[index];
         if (!wishlist.find(w => w.title === item.title)) {
             wishlist.push(item);
-            showToast(`❤️ "${item.title}" added to Wishlist`);
+            showToast(`️ "${item.title}" added to Wishlist`);
         } else {
             showToast(`"${item.title}" is already in Wishlist`);
         }

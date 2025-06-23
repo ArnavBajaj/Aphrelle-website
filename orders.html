@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="icon" type="image/png" href="logo.png">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aphrelle - Orders</title>
+  <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+      background-attachment: fixed;
+      background-repeat: no-repeat;
+      background-size: cover;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .orders-container {
+      position: relative;
+      max-width: 1000px;
+      margin: 40px auto;
+      background: rgba(0, 0, 0, 0.95);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    h1 {
+      color: orange;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    .order-item {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid rgba(102, 126, 234, 0.2);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      padding: 20px;
+    }
+    .item-image {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border-radius: 10px;
+      margin-right: 20px;
+    }
+    .item-details {
+      flex: 1;
+    }
+    .item-details p {
+      margin: 4px 0;
+      color: #fff;
+    }
+    .status {
+      font-weight: bold;
+      margin-top: 5px;
+    }
+    .status.active { color: orange; }
+    .status.completed { color: #00e676; }
+    .status.cancelled { color: #ff5252; }
+    .order-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+    .btn-shipment {
+      background: linear-gradient(to right, #fea41c, #fff700);
+      border: none;
+      padding: 8px 16px;
+      color: #000;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .btn-shipment:hover {
+      background: linear-gradient(to right, #fff700, #fea41c);
+    }
+    .btn-reorder {
+      background: linear-gradient(to right, #667eea, #764ba2);
+      color: white;
+      padding: 8px 16px;
+      font-weight: 600;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 8px;
+    }
+    .btn-reorder:hover {
+      background: linear-gradient(to right, #764ba2, #667eea);
+    }
+
+
+
+    .cancel-btn { background: #ff4444; color: #fff; }
+    .cancel-btn[disabled] { background: #888; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+<div class="orders-container">
+  <span onclick="goBack()" style="
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 1.8rem;
+      color: grey;
+      cursor: pointer;
+  ">←</span>
+  <h1>Your Orders</h1>
+  <div id="ordersList"></div>
+</div>
+<div id="shipmentModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#000000aa; z-index:999; justify-content:center; align-items:center;">
+  <div style="background:#111; padding:30px; border-radius:12px; width:90%; max-width:500px; position:relative; color:#fff;">
+    <span onclick="closeShipmentModal()" style="position:absolute; top:10px; right:15px; font-size:1.5rem; cursor:pointer;">✖</span>
+    <h2 style="color:#fea41c; text-align:center; margin-bottom:20px;">Shipment Status</h2>
+    <div id="shipmentProgress" style="display:flex; flex-direction:column; gap:15px;">
+      <!-- dynamically injected steps -->
+    </div>
+  </div>
+</div>
+<div id="cancelConfirmModal" style="
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #111;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  z-index: 1000;
+  text-align: center;
+  color: white;
+  width: 80%;
+  max-width: 300px;
+">
+  <p style="margin-bottom: 20px;">Are you sure you want to cancel this order?</p>
+  <button onclick="confirmCancel()" style="background: #ff4d4d; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer; margin-right: 10px;">
+    Yes, Cancel
+  </button>
+  <button onclick="closeCancelModal()" style="background: #ccc; color: black; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+    No
+  </button>
+</div>
+
+<script>
+  const orders = [
+    {
+      id: 1,
+      title: "Premium Cotton T-Shirt",
+      brand: "Organic Co.",
+      size: "M",
+      color: "Black",
+      price: 49.99,
+      quantity: 1,
+      icon: "🍭",
+      status: "active"
+    },
+    {
+      id: 2,
+      title: "Slim Fit Jeans",
+      brand: "Denim Pro",
+      size: "32",
+      color: "Blue",
+      price: 89.99,
+      quantity: 1,
+      icon: "🍖",
+      status: "completed"
+    },
+    {
+      id: 3,
+      title: "Summer Dress",
+      brand: "StyleZone",
+      size: "S",
+      color: "Floral",
+      price: 129.99,
+      quantity: 1,
+      icon: "👗",
+      status: "cancelled"
+    }
+  ];
+
+  function renderOrders() {
+    const container = document.getElementById("ordersList");
+    container.innerHTML = "";
+
+    orders.forEach((order, i) => {
+      const div = document.createElement("div");
+      div.className = "order-item";
+      div.innerHTML = `
+        <div class="item-image">${order.icon}</div>
+        <div class="item-details">
+          <p><strong>${order.title}</strong></p>
+          <p>${order.brand}</p>
+          <p>Size: ${order.size}, Color: ${order.color}</p>
+          <p>Price: $${order.price}</p>
+          <p>Qty: ${order.quantity}</p>
+          <p class="status ${order.status}">Status: ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</p>
+        </div>
+        <div class="order-actions">
+          <button onclick="reorderItem(${i})" class="btn-reorder">Reorder</button>
+          <button class="btn cancel-btn" onclick="cancelOrder(${i})" ${order.status !== 'active' ? 'disabled' : ''}>Cancel Order</button>
+         <button onclick="trackShipment(${i})" class="btn-shipment">Track Shipment</button>
+        </div>
+      `;
+      container.appendChild(div);
+    });
+  }
+
+  let cancelIndex = null;
+
+  function cancelOrder(index) {
+    const status = orders[index].status;
+    if (status !== 'cancelled') {
+      cancelIndex = index;
+      document.getElementById("cancelConfirmModal").style.display = "block";
+    }
+  }
+
+  function confirmCancel() {
+    if (cancelIndex !== null) {
+      orders[cancelIndex].status = "cancelled";
+      renderOrders();
+      localStorage.setItem("orders", JSON.stringify(orders)); // Optional if using localStorage
+      closeCancelModal();
+    }
+  }
+
+  function closeCancelModal() {
+    cancelIndex = null;
+    document.getElementById("cancelConfirmModal").style.display = "none";
+  }
+
+  function trackShipment(orderIndex) {
+    // Example simulated shipment stages (you can customize per order)
+    const stages = [
+      { step: "Ordered", completed: true },
+      { step: "Shipped", completed: true },
+      { step: "Out for Delivery", completed: false },
+      { step: "Delivered", completed: false }
+    ];
+
+    const shipmentProgress = document.getElementById("shipmentProgress");
+    shipmentProgress.innerHTML = ""; // Clear previous
+
+    stages.forEach((stage, idx) => {
+      const dot = document.createElement("div");
+      dot.style.display = "flex";
+      dot.style.alignItems = "center";
+      dot.style.gap = "15px";
+
+      dot.innerHTML = `
+      <div style="width:20px; height:20px; border-radius:50%; background:${stage.completed ? '#00ff99' : '#555'};"></div>
+      <div style="flex:1; font-size:1rem; ${stage.completed ? 'color:#fff;' : 'color:#777;'}">${stage.step}</div>
+    `;
+      shipmentProgress.appendChild(dot);
+
+      if (idx < stages.length - 1) {
+        const line = document.createElement("div");
+        line.style.height = "2px";
+        line.style.background = stage.completed ? '#00ff99' : '#555';
+        line.style.margin = "5px 0 5px 10px";
+        line.style.width = "calc(100% - 30px)";
+        shipmentProgress.appendChild(line);
+      }
+    });
+
+    document.getElementById("shipmentModal").style.display = "flex";
+  }
+
+  function closeShipmentModal() {
+    document.getElementById("shipmentModal").style.display = "none";
+  }
+  function reorderItem(index) {
+    const item = orders[index];  // Use the in-memory 'orders' array
+
+    const cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    cart.push({
+      title: item.title,
+      brand: item.brand,
+      price: item.price,
+      size: item.size,
+      color: item.color,
+      image: "", // You can put item.image if it's available
+      quantity: item.quantity || 1
+    });
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    window.location.href = "cart.html";
+  }
+  function goBack() {
+    if (document.referrer !== "") {
+      window.history.back();
+    } else {
+      window.location.href = "recommendations.html"; // fallback if no history
+    }
+  }
+
+  renderOrders();
+</script>
+</body>
+</html>

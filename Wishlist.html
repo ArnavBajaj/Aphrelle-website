@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aphrelle - Wishlist</title>
     <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
     <style>
         * {
             margin: 0;
@@ -19,24 +19,27 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
             min-height: 100vh;
-            padding: 20px;
+            padding: 0;
         }
 
         .header {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            padding: 15px 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 30px;
-            max-width: 1200px;
-            margin-left: auto;
-            margin-right: auto;
         }
 
         .logo {
-            font-family: 'Imperial Script', cursive;
+            font-family: 'Imperial Script', sans-serif;
             font-size: 2.5rem;
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            font-weight: 800;
+            background: linear-gradient(#fea41c, #fff700);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            padding-right: 0.2em;
         }
 
         .nav-buttons {
@@ -45,9 +48,9 @@
         }
 
         .nav-btn {
-            background: rgba(0,0,0,1);
+            background: rgba(255,255,255,0.1);
             color: white;
-            border: 2px solid rgba(102, 126, 234, 0.3);
+            border: 2px solid rgba(252, 126, 0, 0.3);
             border-radius: 25px;
             padding: 10px 20px;
             font-size: 0.9rem;
@@ -57,58 +60,118 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
+            backdrop-filter: blur(10px);
         }
 
         .nav-btn:hover {
-            background: rgba(0,0,0,1);
-            border-color: #667eea;
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            border-color: #fc7e00;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .main-content {
+            padding: 20px;
         }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: rgba(255,255,255,0.95);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
             backdrop-filter: blur(10px);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(254, 164, 28, 0.1);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
             padding: 30px;
             min-height: 70vh;
+            color: white;
         }
 
         .wishlist-header {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .wishlist-title {
             font-size: 2.5rem;
-            color: #333;
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 10px;
             font-weight: 700;
         }
 
         .wishlist-subtitle {
-            color: #666;
+            color: #ccc;
             font-size: 1.1rem;
         }
+
+        .filter-bar {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            background: rgba(252, 126, 0, 0.1);
+            color: #fc7e00;
+            border: 2px solid rgba(252, 126, 0, 0.3);
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn.active {
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .filter-btn:hover {
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            color: #1a1a1a;
+            font-weight: 600;
+        }
+
+        .sort-select {
+            padding: 8px 12px;
+            border: 2px solid rgba(252, 126, 0, 0.3);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.1);
+            color: white;
+            cursor: pointer;
+        }
+
+        .sort-select option {
+            background: #2d2d2d;
+            color: white;
+        }
+
+
 
         .empty-state {
             text-align: center;
             padding: 80px 20px;
-            color: #666;
+            color: #ccc;
         }
 
         .empty-icon {
             font-size: 4rem;
-            color: #ddd;
+            color: #666;
             margin-bottom: 20px;
         }
 
         .empty-message {
             font-size: 1.3rem;
             margin-bottom: 10px;
+            color: white;
         }
 
         .empty-submessage {
@@ -117,8 +180,8 @@
         }
 
         .discover-btn {
-            background: linear-gradient(135deg, #fea41c, #fc7e00);
-            color: white;
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            color: #1a1a1a;
             border: none;
             border-radius: 25px;
             padding: 12px 30px;
@@ -129,11 +192,12 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
+            font-weight: 600;
         }
 
         .discover-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(254, 164, 28, 0.3);
+            box-shadow: 0 8px 25px rgba(252, 126, 0, 0.4);
         }
 
         .wishlist-grid {
@@ -144,17 +208,20 @@
         }
 
         .wishlist-item {
-            background: white;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
             position: relative;
         }
 
         .wishlist-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            border-color: rgba(252, 126, 0, 0.3);
         }
 
         .item-image {
@@ -170,12 +237,12 @@
         .item-title {
             font-size: 1.2rem;
             font-weight: 600;
-            color: #333;
+            color: white;
             margin-bottom: 5px;
         }
 
         .item-brand {
-            color: #666;
+            color: #ccc;
             font-size: 0.9rem;
             margin-bottom: 10px;
         }
@@ -183,7 +250,10 @@
         .item-price {
             font-size: 1.3rem;
             font-weight: 600;
-            color: #fea41c;
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             margin-bottom: 15px;
         }
 
@@ -204,24 +274,27 @@
             align-items: center;
             justify-content: center;
             gap: 5px;
+            font-weight: 500;
         }
 
         .add-to-cart-btn {
-            background: #fea41c;
-            color: white;
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            color: #1a1a1a;
         }
 
         .add-to-cart-btn:hover {
-            background: #e6930a;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
         }
 
         .remove-btn {
-            background: #ff4757;
+            background: rgba(255, 71, 87, 0.8);
             color: white;
         }
 
         .remove-btn:hover {
-            background: #ff3742;
+            background: #ff4757;
+            transform: translateY(-2px);
         }
 
         .heart-icon {
@@ -238,73 +311,86 @@
             50% { transform: scale(1.1); }
         }
 
-        .wishlist-stats {
-            background: rgba(254, 164, 28, 0.1);
-            border-radius: 10px;
-            padding: 20px;
-            margin-bottom: 30px;
+        /* Cart Modal Styles */
+        #cartModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 1px solid rgba(252, 126, 0, 0.3);
+        }
+
+        .modal-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            margin-bottom: 20px;
         }
 
-        .stats-item {
-            text-align: center;
+        .modal-header h2 {
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        .stats-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: #fea41c;
-        }
-
-        .stats-label {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .filter-bar {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .filter-btn {
-            background: rgba(254, 164, 28, 0.1);
-            color: #fea41c;
-            border: 2px solid rgba(254, 164, 28, 0.3);
-            border-radius: 20px;
-            padding: 8px 16px;
-            font-size: 0.9rem;
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
             cursor: pointer;
+            color: #ccc;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #fc7e00;
+        }
+
+        .continue-shopping-btn {
+            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            color: #1a1a1a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
             transition: all 0.3s ease;
         }
 
-        .filter-btn.active {
-            background: #fea41c;
-            color: white;
-        }
-
-        .filter-btn:hover {
-            background: #fea41c;
-            color: white;
-        }
-
-        .sort-select {
-            padding: 8px 12px;
-            border: 2px solid rgba(254, 164, 28, 0.3);
-            border-radius: 8px;
-            background: white;
-            color: #333;
-            cursor: pointer;
+        .continue-shopping-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
         }
 
         @media (max-width: 768px) {
             .header {
                 flex-direction: column;
                 gap: 20px;
+                padding: 15px;
+            }
+
+            .logo {
+                font-size: 2rem;
             }
 
             .wishlist-title {
@@ -322,6 +408,21 @@
 
             .container {
                 padding: 20px;
+            }
+
+            .main-content {
+                padding: 15px;
+            }
+
+            .wishlist-stats {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .stats-item {
+                display: flex;
+                align-items: center;
+                gap: 10px;
             }
         }
     </style>
@@ -341,101 +442,55 @@
     </div>
 </div>
 
-<div class="container">
-    <div class="wishlist-header">
-        <h1 class="wishlist-title">My Wishlist</h1>
-        <p class="wishlist-subtitle">Your favorite items saved for later</p>
-    </div>
-
-    <div id="wishlistStats" class="wishlist-stats" style="display: none;">
-        <div class="stats-item">
-            <div class="stats-number" id="totalItems">0</div>
-            <div class="stats-label">Items</div>
+<div class="main-content">
+    <div class="container">
+        <div class="wishlist-header">
+            <h1 class="wishlist-title">My Wishlist</h1>
+            <p class="wishlist-subtitle">Your favorite items saved for later</p>
         </div>
-        <div class="stats-item">
-            <div class="stats-number" id="totalValue">$0</div>
-            <div class="stats-label">Total Value</div>
-        </div>
-        <div class="stats-item">
-            <div class="stats-number" id="avgPrice">$0</div>
-            <div class="stats-label">Avg Price</div>
-        </div>
-    </div>
 
-    <div id="filterBar" class="filter-bar" style="display: none;">
-        <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
-        <button class="filter-btn" onclick="filterByCategory('dress')">Dresses</button>
-        <button class="filter-btn" onclick="filterByCategory('jacket')">Jackets</button>
-        <button class="filter-btn" onclick="filterByCategory('casual')">Casual</button>
-        <select class="sort-select" onchange="sortWishlist(this.value)">
-            <option value="recent">Recently Added</option>
-            <option value="price-low">Price: Low to High</option>
-            <option value="price-high">Price: High to Low</option>
-            <option value="name">Name A-Z</option>
-        </select>
-    </div>
-
-    <div id="emptyState" class="empty-state">
-        <div class="empty-icon">
-            <i class="fas fa-heart"></i>
+        <div id="filterBar" class="filter-bar" style="display: none;">
+            <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
+            <button class="filter-btn" onclick="filterByCategory('dress')">Dresses</button>
+            <button class="filter-btn" onclick="filterByCategory('jacket')">Jackets</button>
+            <button class="filter-btn" onclick="filterByCategory('casual')">Casual</button>
+            <select class="sort-select" onchange="sortWishlists(this.value)">
+                <option value="recent">Recently Added</option>
+                <option value="price-low">Price: Low to High</option>
+                <option value="price-high">Price: High to Low</option>
+                <option value="name">Name A-Z</option>
+            </select>
         </div>
-        <div class="empty-message">Your wishlist is empty</div>
-        <div class="empty-submessage">Start discovering amazing products to add to your wishlist!</div>
-        <a href="discover.html" class="discover-btn">
-            <i class="fas fa-search"></i>
-            Start Discovering
-        </a>
-    </div>
 
-    <div id="wishlistGrid" class="wishlist-grid"></div>
+
+
+        <div id="emptyState" class="empty-state">
+            <div class="empty-icon">
+                <i class="fas fa-heart"></i>
+            </div>
+            <div class="empty-message">Your wishlist is empty</div>
+            <div class="empty-submessage">Start discovering amazing products to add to your wishlist!</div>
+            <a href="recommendations.html" class="discover-btn">
+                <i class="fas fa-search"></i>
+                Start Discovering
+            </a>
+        </div>
+
+        <div id="wishlistGrid" class="wishlist-grid"></div>
+
+    </div>
 </div>
 
 <!-- Cart Modal -->
-<div id="cartModal" style="
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.5);
-        z-index: 1000;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    ">
-    <div style="
-            background: white;
-            color: black;
-            padding: 30px;
-            border-radius: 15px;
-            width: 90%;
-            max-width: 500px;
-            max-height: 80vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        ">
-        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+<div id="cartModal">
+    <div class="modal-content">
+        <div class="modal-header">
             <h2>Shopping Cart</h2>
-            <button onclick="closeCart()" style="
-                    background: none;
-                    border: none;
-                    font-size: 1.5rem;
-                    cursor: pointer;
-                    color: #666;
-                ">×</button>
+            <button onclick="closeCart()" class="close-btn">×</button>
         </div>
         <div id="cartItems"></div>
         <div style="text-align: center; margin-top: 20px;">
-            <button onclick="closeCart()" style="
-                    background: #fea41c;
-                    color: white;
-                    border: none;
-                    padding: 12px 24px;
-                    border-radius: 8px;
-                    cursor: pointer;
-                    font-size: 1rem;
-                ">Continue Shopping</button>
+            <button onclick="closeCart()" class="continue-shopping-btn">Continue Shopping</button>
         </div>
     </div>
 </div>
@@ -513,24 +568,18 @@
     function renderWishlist() {
         const emptyState = document.getElementById('emptyState');
         const wishlistGrid = document.getElementById('wishlistGrid');
-        const wishlistStats = document.getElementById('wishlistStats');
         const filterBar = document.getElementById('filterBar');
 
         if (wishlist.length === 0) {
             emptyState.style.display = 'block';
             wishlistGrid.style.display = 'none';
-            wishlistStats.style.display = 'none';
             filterBar.style.display = 'none';
             return;
         }
 
         emptyState.style.display = 'none';
         wishlistGrid.style.display = 'grid';
-        wishlistStats.style.display = 'flex';
         filterBar.style.display = 'flex';
-
-        // Update stats
-        updateStats();
 
         // Filter and sort wishlist
         let filteredWishlist = filterWishlist(wishlist, currentFilter);
@@ -544,15 +593,7 @@
         });
     }
 
-    function updateStats() {
-        const totalItems = wishlist.length;
-        const totalValue = wishlist.reduce((sum, item) => sum + item.price, 0);
-        const avgPrice = totalItems > 0 ? totalValue / totalItems : 0;
 
-        document.getElementById('totalItems').textContent = totalItems;
-        document.getElementById('totalValue').textContent = `$${totalValue.toFixed(2)}`;
-        document.getElementById('avgPrice').textContent = `$${avgPrice.toFixed(2)}`;
-    }
 
     function createWishlistItem(item) {
         const itemDiv = document.createElement('div');
@@ -613,7 +654,7 @@
         renderWishlist();
     }
 
-    function sortWishlist(value) {
+    function sortWishlists(value) {
         currentSort = value;
         renderWishlist();
     }
@@ -636,7 +677,7 @@
             button.style.background = '#2ecc71';
             setTimeout(() => {
                 button.innerHTML = originalText;
-                button.style.background = '#fea41c';
+                button.style.background = 'linear-gradient(135deg, #fc7e00, #ffee00)';
             }, 1500);
         }
     }
@@ -663,17 +704,17 @@
         cartItemsContainer.innerHTML = '';
 
         if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p style="text-align: center; color: #666;">Your cart is empty.</p>';
+            cartItemsContainer.innerHTML = '<p style="text-align: center; color: #ccc;">Your cart is empty.</p>';
         } else {
             cart.forEach(item => {
                 const itemDiv = document.createElement('div');
-                itemDiv.style.cssText = 'display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #eee;';
+                itemDiv.style.cssText = 'display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #444;';
                 itemDiv.innerHTML = `
                         <img src="${item.image}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 15px;" />
                         <div style="flex: 1;">
-                            <strong>${item.title}</strong><br>
-                            <span style="color: #666; font-size: 0.9rem;">${item.brand}</span><br>
-                            <span style="color: #fea41c; font-weight: bold;">${item.priceStr}</span>
+                            <strong style="color: white;">${item.title}</strong><br>
+                            <span style="color: #ccc; font-size: 0.9rem;">${item.brand}</span><br>
+                            <span style="background: linear-gradient(135deg, #fc7e00, #ffee00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold;">${item.priceStr}</span>
                         </div>
                         <button onclick="deleteCartItem('${item.cartId}')" style="
                             background: #ff4757;
@@ -683,7 +724,8 @@
                             border-radius: 6px;
                             cursor: pointer;
                             font-size: 0.8rem;
-                        ">Remove</button>
+                            transition: all 0.3s ease;
+                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Remove</button>
                     `;
                 cartItemsContainer.appendChild(itemDiv);
             });

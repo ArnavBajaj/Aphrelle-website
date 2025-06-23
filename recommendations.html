@@ -266,18 +266,6 @@
             border: 3px solid #667eea;
         }
 
-        .stats {
-            position: absolute;
-            bottom: 10px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: rgba(255,255,255,0.9);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: #666;
-        }
-
         .color-swatch:hover {
             transform: scale(1.1);
             transition: transform 0.2s ease;
@@ -455,17 +443,13 @@
     </button>
 
     <div class="card-stack" id="cardStack">
-        <!-- Cards will be dynamically generated here -->
+
     </div>
     <div class="swipe-indicators">
         <div class="swipe-indicator swipe-left"><i class="fas fa-times"></i></div>
         <div class="swipe-indicator swipe-up"><i class="fas fa-info"></i></div>
         <div class="swipe-indicator swipe-right"><i class="fas fa-heart"></i></div>
     </div>
-    <div class="stats">
-        <span id="cardCounter">1 of 15</span>
-    </div>
-</div>
 <div id="cartModal" style="
     display: none;
     position: fixed;

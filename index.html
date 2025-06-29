@@ -236,6 +236,13 @@
                 });
             });
         });
+        function handleGuest() {
+    // Optionally set a guest flag in localStorage
+    localStorage.setItem("isGuest", "true");
+
+    // Redirect to recommendations page
+    window.location.href = "recommendations.html";
+}
     </script>
 </body>
 </html>

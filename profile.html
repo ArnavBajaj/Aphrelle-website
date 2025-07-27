@@ -367,6 +367,13 @@
         <label class="form-label" for="age">Enter Your Height</label>
         <input type="text" id="height" class="form-select" placeholder="Enter your height in cm" required>
       </div>
+      <div class="profile-section">
+        <div class="section-divider"></div>
+        <h2 class="section-title">Weight</h2>
+        <div class="form-group">
+          <label class="form-label" for="age">Enter Your Weight</label>
+          <input type="text" id="weight" class="form-select" placeholder="Enter your weight in kg" required>
+        </div>
       <div class="section-divider"></div>
       <h2 class="section-title">Skin Tone</h2>
       <div class="skin-tone-options">
@@ -640,6 +647,7 @@
       photo: document.getElementById('preview').src,
       age: document.getElementById('age').value,
       height: document.getElementById('height').value,
+      weight: document.getElementById('weight').value,
       brandSizes: brandSizes
     };
 

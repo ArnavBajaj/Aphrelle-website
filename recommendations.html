@@ -81,12 +81,15 @@
             flex: 1;
             overflow-y: auto;
             padding: 1rem;
+            padding-bottom: 70px !important;
             color: #333;
             background: #fff;
             margin-top: 10px;
             border-radius: 10px;
             box-sizing: border-box;
+            position: relative;
         }
+
 
 
         .product-info::-webkit-scrollbar {
@@ -270,7 +273,21 @@
             transform: scale(1.1);
             transition: transform 0.2s ease;
         }
-
+        .tryon-button {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+            background-color: black;
+            border: 2px solid #fea41c;
+            color: #fea41c;
+            border-radius: 20px;
+            padding: 6px 14px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
 
         .modal {
             display: none;
@@ -351,26 +368,30 @@
             border: none;
         }
 
-        .tryon-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            background-color: black;
-            border: 2px solid #fea41c;
-            color: #fea41c;
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
 
-        .tryon-button:hover {
+            .tryon-button:hover {
             background-color: #fea41c;
             color: black;
         }
+        .product-header {
+            margin-bottom: 12px;
+        }
+
+        .product-options-container {
+            margin: 15px 0;
+        }
+
+        .button-container {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 0 15px;
+            background: linear-gradient(to top, rgba(255,255,255,1) 50%, rgba(255,255,255,0));
+            padding-top: 20px;
+        }
+
 
         /* Add padding to product-info to prevent overlap */
         .product-info {
@@ -549,6 +570,7 @@
     </button>
 
     <div class="card-stack" id="cardStack">
+
 
     </div>
     <div class="swipe-indicators">

@@ -622,27 +622,32 @@
   function handleProfileSubmit(event) {
     event.preventDefault();
 
-    if (!selectedGender || !selectedBodyType) {
+    // Get values directly from the select elements
+    const genderValue = document.getElementById('gender').value;
+    const bodyTypeValue = document.getElementById('bodyType').value;
+
+    if (!genderValue || !bodyTypeValue) {
       alert('Please select both gender and body type');
       return;
     }
+
     const brandSizes = brandSizeEntries.map(entry => ({
       brand: entry.brand,
       size: entry.size
     }));
 
-
     const formData = {
-      gender: selectedGender,
-      bodyType: selectedBodyType,
+      gender: genderValue,          // Use the direct value instead of selectedGender
+      bodyType: bodyTypeValue,      // Use the direct value instead of selectedBodyType
       photo: document.getElementById('preview').src,
       age: document.getElementById('age').value,
       height: document.getElementById('height').value,
       weight: document.getElementById('weight').value,
-      skinTone: document.querySelector('input[name="skinTone"]:checked').value,
+      skinTone: document.querySelector('input[name="skinTone"]:checked')?.value,
       brandSizes: brandSizes,
       additionalInfo: document.getElementById('additionalInfo').value
     };
+
 
 
     console.log('Profile data:', formData);
@@ -700,24 +705,25 @@
     const selectedGender = genderSelect.value;
     bodyTypeSelect.innerHTML = '';
 
-    if (selectedGender && bodyTypesByGender[selectedGender]) {
+    if (selectedGender) {
+      // Enable the body type select
       bodyTypeSelect.disabled = false;
 
-      // Add default option again (still requires user to pick)
+      // Add default option
       const defaultOption = document.createElement('option');
       defaultOption.textContent = 'Select Body Type';
       defaultOption.value = '';
-      defaultOption.disabled = true;
-      defaultOption.selected = true;
       bodyTypeSelect.appendChild(defaultOption);
 
+      // Add body type options based on selected gender
       bodyTypesByGender[selectedGender].forEach(type => {
-        const opt = document.createElement('option');
-        opt.value = type.toLowerCase().replace(/\s+/g, '_');
-        opt.textContent = type;
-        bodyTypeSelect.appendChild(opt);
+        const option = document.createElement('option');
+        option.value = type.toLowerCase().replace(/\s+/g, '_');
+        option.textContent = type;
+        bodyTypeSelect.appendChild(option);
       });
     } else {
+      // If no gender is selected, disable body type select
       bodyTypeSelect.disabled = true;
       const defaultOption = document.createElement('option');
       defaultOption.textContent = 'Select gender first';
@@ -725,6 +731,15 @@
       bodyTypeSelect.appendChild(defaultOption);
     }
   });
+
+  // Add change event listener for body type select
+  bodyTypeSelect.addEventListener('change', () => {
+    selectedBodyType = bodyTypeSelect.value;
+  });
+
+
+
+
 
 
 </script>

@@ -280,7 +280,43 @@
       opacity: 0.6;
       cursor: not-allowed;
     }
+     .body-type-popup {
+       display: none;
+       position: fixed;
+       top: 50%;
+       left: 50%;
+       transform: translate(-50%, -50%);
+       background: white;
+       padding: 20px;
+       border-radius: 12px;
+       z-index: 1000;
+       max-width: 90%;
+       width: 600px;
+       text-align: center;
+     }
 
+    .body-type-popup img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 0px;
+      margin-bottom: 15px;
+    }
+
+    .body-type-popup .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      color: black;
+      cursor: pointer;
+      font-size: 24px;
+    }
+
+    .body-type-info {
+      color: #667eea;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 1.2rem;
+    }
 
 
 
@@ -444,6 +480,13 @@
     <button type="submit" class="button">Create Profile</button>
   </form>
 </div>
+<div id="bodyTypePopup" class="body-type-popup">
+  <span class="close-btn" onclick="closeBodyTypePopup()">&times;</span>
+  <img id="bodyTypeImage" src="" alt="Body Type Image">
+  <p id="bodyTypeDescription" style="color: white;"></p>
+</div>
+
+
 
 <script>
   let selectedGender = null;
@@ -685,11 +728,11 @@
     const sizeInput = document.getElementById("brandSize");
 
     function handleEnterToAddBrand(e) {
-    if (e.key === "Enter") {
-    e.preventDefault(); // prevent form submission
-    addBrandSizeCard(); // trigger add
-  }
-  }
+      if (e.key === "Enter") {
+        e.preventDefault(); // prevent form submission
+        addBrandSizeCard(); // trigger add
+      }
+    }
 
 
     brandInput.addEventListener("keydown", handleEnterToAddBrand);
@@ -724,7 +767,12 @@
         option.textContent = type;
         bodyTypeSelect.appendChild(option);
       });
-    } else {
+
+      // Show body type popup if Male is selected
+      if (selectedGender === 'Male') {
+        showBodyTypePopup();
+      }
+    } else if(selectedGender === ''){
       // If no gender is selected, disable body type select
       bodyTypeSelect.disabled = true;
       const defaultOption = document.createElement('option');
@@ -734,10 +782,20 @@
     }
   });
 
-  // Add change event listener for body type select
-  bodyTypeSelect.addEventListener('change', () => {
-    selectedBodyType = bodyTypeSelect.value;
-  });
+  function showBodyTypePopup() {
+    const popup = document.getElementById('bodyTypePopup');
+    const image = document.getElementById('bodyTypeImage');
+    const description = document.getElementById('bodyTypeDescription');
+
+    image.src = 'male-body-types.jpeg';
+    popup.style.display = 'block';
+  }
+
+  function closeBodyTypePopup() {
+    document.getElementById('bodyTypePopup').style.display = 'none';
+  }
+
+
 
 
 

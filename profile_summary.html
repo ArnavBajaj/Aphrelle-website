@@ -171,12 +171,20 @@
                 <span id="gender">Not specified</span>
             </div>
             <div class="info-item">
+                <label>Body Type</label>
+                <span id="bodyType">Not specified</span>
+            </div>
+            <div class="info-item">
                 <label>Height</label>
                 <span id="height">Not specified</span>
             </div>
             <div class="info-item">
+                <label>Weight</label>
+                <span id="weight">Not specified</span>
+            </div>
+            <div class="info-item">
                 <label>Skin Tone</label>
-                <span id="skinToneSwatch" style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; border: 1px solid #fff;"></span>
+                <span id="skinTone" style="display: inline-block; width: 20px; height: 20px; border-radius: 50%; border: 1px solid #fff;"></span>
             </div>
         </div>
     </div>
@@ -184,7 +192,7 @@
 
     <div class="section">
         <h2 class="section-title">Sizing in Other Brands</h2>
-        <div id="brandSizeCards" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
+        <div id="brandSizes" style="display: flex; flex-wrap: wrap; gap: 10px;"></div>
     </div>
 
     <div class="section">
@@ -206,11 +214,13 @@
         // Update profile information
         document.getElementById('profilePic').src = profileData.photo || 'default-profile-pic.png';
         document.getElementById('gender').textContent = profileData.gender || 'Not specified';
+        document.getElementById('weight').textContent = profileData.weight || 'Not specified';
+        document.getElementById('height').textContent = profileData.height || 'Not specified';
         document.getElementById('bodyType').textContent = profileData.bodyType || 'Not specified';
-        document.getElementById('topSize').textContent = profileData.topSize || 'Not specified';
-        document.getElementById('bottomSize').textContent = profileData.bottomSize || 'Not specified';
-        document.getElementById('shoeSize').textContent = profileData.shoeSize || 'Not specified';
-
+        document.getElementById('age').textContent = profileData.age || 'Not specified';
+        document.getElementById('skinTone').textContent = profileData.skinTone;
+        document.getElementById('brandSizes').textContent = profileData.brandSizes;
+        document.getElementById('additionalInfo').textContent = profileData.additionalInfo || 'None';
         // You can add username and email once you have authentication implemented
         document.getElementById('username').textContent = localStorage.getItem('username') || 'Username';
         document.getElementById('userEmail').textContent = localStorage.getItem('email') || 'user@example.com';

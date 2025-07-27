@@ -418,14 +418,11 @@
         <datalist id="brands">
           <option value="Zara">
           <option value="H&M">
-          <option value="Nike">
-          <option value="Adidas">
-          <option value="Levi's">
-          <option value="Uniqlo">
-          <option value="Puma">
-          <option value="Forever 21">
-          <option value="GUCCI">
-          <option value="Louis Vuitton">
+          <option value="Souled Store">
+          <option value="Bluorng">
+          <option value="Rare Rabbit">
+          <option value="SHEIN">
+          <option value="NEWME">
         </datalist>
       </div>
 
@@ -638,14 +635,13 @@
     const formData = {
       gender: selectedGender,
       bodyType: selectedBodyType,
-      topSize: document.getElementById('topSize').value,
-      bottomSize: document.getElementById('bottomSize').value,
-      shoeSize: document.getElementById('shoeSize').value,
       photo: document.getElementById('preview').src,
       age: document.getElementById('age').value,
       height: document.getElementById('height').value,
       weight: document.getElementById('weight').value,
-      brandSizes: brandSizes
+      skinTone: document.querySelector('input[name="skinTone"]:checked').value,
+      brandSizes: brandSizes,
+      additionalInfo: document.getElementById('additionalInfo').value
     };
 
 

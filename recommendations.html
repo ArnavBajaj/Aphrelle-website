@@ -75,7 +75,26 @@
             border-radius: 12px;
             flex-shrink: 0;
             overflow: hidden;
+
         }
+        .product-image-container {
+            width: 100%;
+            aspect-ratio: 1 / 1; /* Force square aspect ratio */
+            position: relative;
+            overflow: hidden;
+            border-radius: 12px;
+            margin-bottom: 15px;
+        }
+
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
 
         .product-info {
             flex: 1;
@@ -724,145 +743,101 @@
 
 let wishlist = [];
     let cart = [];
-    const products = [
-        {
-            image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop",
-            title: "Elegant Summer Dress",
-            brand: "Bella Vista",
-            price: "$89.99",
-            description: "Light and breezy summer dress with floral pattern. Perfect for casual outings.",
-            sizes: ["S", "M", "L"],
-            colors: ["#000", "#fff", "#ff6b6b"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop",
-            title: "Classic Denim Jacket",
-            brand: "Urban Style",
-            price: "$124.99",
-            description: "Timeless denim jacket with a modern fit. A wardrobe essential for any season.",
-            sizes: ["XS", "S", "M", "L"],
-            colors: ["#4169E1", "#000080", "#6495ED"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=500&fit=crop",
-            title: "Bohemian Maxi Dress",
-            brand: "Free Spirit",
-            price: "$156.00",
-            description: "Flowing maxi dress with intricate patterns. Perfect for festivals and beach days.",
-            sizes: ["S", "M", "L", "XL"],
-            colors: ["#8B4513", "#DAA520", "#CD853F"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=500&fit=crop",
-            title: "Minimalist Blazer",
-            brand: "Modern Edge",
-            price: "$198.50",
-            description: "Clean lines and sharp tailoring define this sophisticated blazer.",
-            sizes: ["XS", "S", "M"],
-            colors: ["#000", "#2F4F4F", "#696969"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop",
-            title: "Vintage Band Tee",
-            brand: "Retro Vibes",
-            price: "$45.99",
-            description: "Authentic vintage band t-shirt with distressed finish. Rock your style.",
-            sizes: ["S", "M", "L", "XL"],
-            colors: ["#000", "#8B0000", "#FFFFFF"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1594633313593-bab3825d0caf?w=400&h=500&fit=crop",
-            title: "Silk Evening Gown",
-            brand: "Luxe Collection",
-            price: "$425.00",
-            description: "Luxurious silk gown perfect for special occasions and elegant evenings.",
-            sizes: ["XS", "S", "M"],
-            colors: ["#8B008B", "#000", "#B22222"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1509631179647-0177331693ae?w=400&h=500&fit=crop",
-            title: "Casual Knit Sweater",
-            brand: "Cozy Corner",
-            price: "$78.99",
-            description: "Soft knit sweater perfect for layering. Comfort meets style.",
-            sizes: ["S", "M", "L"],
-            colors: ["#DEB887", "#F5DEB3", "#D2691E"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1581338834647-b0fb40704e21?w=400&h=500&fit=crop",
-            title: "Athletic Yoga Set",
-            brand: "Active Life",
-            price: "$92.00",
-            description: "High-performance yoga set with moisture-wicking fabric. Move with confidence.",
-            sizes: ["XS", "S", "M", "L"],
-            colors: ["#000", "#4B0082", "#00CED1"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1617922001439-4a2e6562f328?w=400&h=500&fit=crop",
-            title: "Leather Biker Jacket",
-            brand: "Rebel Edge",
-            price: "$289.99",
-            description: "Genuine leather biker jacket with classic detailing. Timeless rebellion.",
-            sizes: ["S", "M", "L"],
-            colors: ["#000", "#8B4513", "#2F4F4F"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=400&h=500&fit=crop",
-            title: "Floral Print Blouse",
-            brand: "Garden Party",
-            price: "$67.50",
-            description: "Delicate floral print blouse with flowing silhouette. Feminine and fresh.",
-            sizes: ["XS", "S", "M", "L"],
-            colors: ["#FFB6C1", "#FFFFFF", "#98FB98"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?w=400&h=500&fit=crop",
-            title: "High-Waisted Jeans",
-            brand: "Denim Dreams",
-            price: "$89.99",
-            description: "Classic high-waisted jeans with perfect fit. A staple for every wardrobe.",
-            sizes: ["24", "26", "28", "30"],
-            colors: ["#4169E1", "#000080", "#87CEEB"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1564557287817-3785e38ec1f5?w=400&h=500&fit=crop",
-            title: "Cocktail Party Dress",
-            brand: "Night Out",
-            price: "$165.00",
-            description: "Stunning cocktail dress perfect for parties and special events.",
-            sizes: ["XS", "S", "M"],
-            colors: ["#000", "#8B008B", "#B22222"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1582418702059-97ebafb35d09?w=400&h=500&fit=crop",
-            title: "Oversized Hoodie",
-            brand: "Comfort Zone",
-            price: "$55.99",
-            description: "Ultra-soft oversized hoodie perfect for lounging and casual outings.",
-            sizes: ["S", "M", "L", "XL"],
-            colors: ["#708090", "#FFFFFF", "#F5F5DC"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1566479179817-0dbe1754e2fe?w=400&h=500&fit=crop",
-            title: "Striped Midi Skirt",
-            brand: "Classic Stripes",
-            price: "$72.00",
-            description: "Timeless striped midi skirt that pairs perfectly with any top.",
-            sizes: ["XS", "S", "M", "L"],
-            colors: ["#000", "#4169E1", "#B22222"]
-        },
-        {
-            image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?w=400&h=500&fit=crop",
-            title: "Statement Earrings",
-            brand: "Sparkle & Shine",
-            price: "$34.99",
-            description: "Bold statement earrings to elevate any outfit. Make your mark.",
-            sizes: ["One Size"],
-            colors: ["#FFD700", "#C0C0C0", "#CD7F32"]
-        }
-    ];
+      const products =  [
+          {
+              "image": "image5.png",
+              "title": "Colorblock Pullover Hoodie",
+              "brand": "SHEIN",
+              "price": "$32.99",
+              "description": "Cozy royal blue hoodie with neon green contrast trims. Features a front kangaroo pocket and adjustable drawstrings for comfort.",
+              "sizes": ["S", "M", "L", "XL"],
+              "colors": ["#2e4dbb", "#a9f2b3"]
+          },
+          {
+              "image": "image8.png",
+              "title": "Embroidered Denim Shirt",
+              "brand": "ZARA",
+              "price": "$35.99",
+              "description": "Casual light-wash denim shirt featuring subtle floral embroidery. Designed with a relaxed boxy silhouette.",
+              "sizes": ["S", "M", "L", "XL"],
+              "colors": ["#6b8fa2"]
+          },
+            {
+                "image": "image1.png",
+                "title": "Warrior Owl Graphic T-Shirt",
+                "brand": "SHEIN",
+                "price": "$17.99",
+                "description": "Soft beige oversized tee featuring a detailed warrior owl graphic with medieval elements. Made from lightweight cotton for a relaxed fit.",
+                "sizes": ["S", "M", "L", "XL"],
+                "colors": ["#f5ebd8", "#5b3c2b"]
+            },
+            {
+                "image": "image2.png",
+                "title": "Patchwork Fruit Print Dress",
+                "brand": "SHEIN",
+                "price": "$27.99",
+                "description": "A sleeveless mini dress with a vibrant patchwork design featuring fruits and floral motifs. Lightweight and perfect for summer outings.",
+                "sizes": ["XS", "S", "M", "L"],
+                "colors": ["#f9a94b", "#ff6f61", "#3c7c3d"]
+            },
+          {
+              "image": "image10.png",
+              "title": "Contrast Trim T-Shirt",
+              "brand": "ZARA",
+              "price": "$22.99",
+              "description": "Casual forest green tee with white contrast trims on the neck and sleeves. Comfortable cotton blend, perfect for daily wear.",
+              "sizes": ["S", "M", "L", "XL"],
+              "colors": ["#1c3328", "#ffffff"]
+          },
+            {
+                "image": "image3.png",
+                "title": "Heart Print Belted Shirt Dress",
+                "brand": "SHEIN",
+                "price": "$29.99",
+                "description": "Black button-down shirt dress adorned with colorful heart prints. Comes with a fabric belt for a flattering, cinched waistline.",
+                "sizes": ["S", "M", "L", "XL"],
+                "colors": ["#000000", "#f28dc6", "#5ec5ff"]
+            },
+            {
+                "image": "image4.png",
+                "title": "Black Panther Graphic Tee",
+                "brand": "Marvel x H&M",
+                "price": "$24.99",
+                "description": "Oversized black t-shirt with bold purple Black Panther artwork. Crafted from breathable cotton with a relaxed streetwear style.",
+                "sizes": ["S", "M", "L", "XL"],
+                "colors": ["#000000", "#3b2a50"]
+            },
+            {
+                "image": "image6.png",
+                "title": "Distressed Denim Shirt",
+                "brand": "ZARA",
+                "price": "$39.99",
+                "description": "A rugged washed denim shirt featuring distressed details and dual chest pockets. Perfect for casual layering.",
+                "sizes": ["S", "M", "L", "XL"],
+                "colors": ["#44506b"]
+            },
+            {
+                "image": "image7.png",
+                "title": "Blue Floral Hawaiian Shirt",
+                "brand": "H&M",
+                "price": "$25.99",
+                "description": "Light beige short-sleeved shirt with striking blue floral prints. Relaxed fit, ideal for summer vacations.",
+                "sizes": ["S", "M", "L", "XL"],
+                "colors": ["#f7f1e1", "#1f4b9c"]
+            },
+            {
+                "image": "image9.png",
+                "title": "Burgundy Knit Polo",
+                "brand": "ZARA",
+                "price": "$28.99",
+                "description": "Short-sleeve knit polo shirt in rich burgundy color. Soft fabric and minimalistic design for a classy casual look.",
+                "sizes": ["S", "M", "L", "XL"],
+                "colors": ["#6b2023"]
+            }
+        ]
 
-    let currentCardIndex = 0;
+
+        let currentCardIndex = 0;
     let cardStack = [];
 
     // Initialize the app

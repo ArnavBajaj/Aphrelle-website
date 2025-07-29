@@ -1098,7 +1098,7 @@ let wishlist = [];
 
                 // Reset state
                 startX = startY = moveX = moveY = 0;
-                velocity = { x: 0, y: 0 };
+                velocity = {x: 0, y: 0};
                 isDragging = false;
 
                 if (cardStack[0]) {
@@ -1134,7 +1134,7 @@ let wishlist = [];
 
             // Reset states
             startX = startY = moveX = moveY = 0;
-            velocity = { x: 0, y: 0 };
+            velocity = {x: 0, y: 0};
             isDragging = false;
 
             if (cardStack[0]) {
@@ -1183,6 +1183,7 @@ let wishlist = [];
         }
 
         let swipeTemporarilyDisabled = false;
+
         function resetCard() {
             if (cardStack[0]) {
                 const topCard = cardStack[0];
@@ -1213,28 +1214,26 @@ let wishlist = [];
         document.addEventListener('touchend', handleTouchEnd);
 
 
+        document.getElementById('viewCartBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // Block bubbling
 
-            document.getElementById('viewCartBtn').addEventListener('click', (e) => {
-                e.preventDefault();
-                e.stopPropagation(); // Block bubbling
+            swipeTemporarilyDisabled = true; // Disable swipe for a moment
 
-                swipeTemporarilyDisabled = true; // Disable swipe for a moment
+            renderCart();
+            document.getElementById('cartModal').style.display = 'block';
+            document.getElementById('cardStack').classList.add('blurred');
+            document.getElementById('viewCartBtn').classList.add('blurred');
+            document.getElementById('Wishlist').classList.add('blurred');
 
-                renderCart();
-                document.getElementById('cartModal').style.display = 'block';
-                document.getElementById('cardStack').classList.add('blurred');
-                document.getElementById('viewCartBtn').classList.add('blurred');
-                document.getElementById('Wishlist').classList.add('blurred');
-
-                // Re-enable swipe after 500ms
-                setTimeout(() => {
-                    swipeTemporarilyDisabled = false;
-                }, 500);
-            });
-
+            // Re-enable swipe after 500ms
+            setTimeout(() => {
+                swipeTemporarilyDisabled = false;
+            }, 500);
+        });
 
 
-            window.deleteCartItem = function (id) {
+        window.deleteCartItem = function (id) {
             cart = cart.filter(item => item.cartId !== id);
             renderCart();
         };
@@ -1334,6 +1333,7 @@ let wishlist = [];
             document.getElementById('cartModal').style.display = 'block';
         }
 
+
         function addToWishlist(index) {
             const item = products[index];
             if (!wishlist.find(w => w.title === item.title)) {
@@ -1357,6 +1357,35 @@ let wishlist = [];
             }, 1500);
         }
 
+
+
+
+        // Add this helper function for showing toast messages
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+        position: fixed;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #323232;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        z-index: 1002;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 2000);
+        }
+    }
         async function openTryOnCamera() {
             // Create modal container
             const previewModal = document.createElement('div');
@@ -1486,33 +1515,6 @@ let wishlist = [];
                 alert('Could not access camera. Please check permissions.');
             }
         }
-
-        // Add this helper function for showing toast messages
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #323232;
-        color: white;
-        padding: 12px 24px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        z-index: 1002;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    `;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => document.body.removeChild(toast), 300);
-            }, 2000);
-        }
-    }
         function closeCart() {
             document.getElementById('cartModal').style.display = 'none';
             document.getElementById('cardStack').classList.remove('blurred');

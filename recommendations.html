@@ -307,6 +307,12 @@
             cursor: pointer;
             transition: all 0.3s ease;
         }
+        .blurred {
+            filter: blur(5px);
+            pointer-events: none; /* Prevent clicking/swiping on blurred content */
+        }
+
+
 
         .modal {
             display: none;
@@ -551,8 +557,9 @@
 
 <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
 
-<div class="container">
-    <button id="viewCartBtn" style="
+<div class="container" id="container" >
+    <div class="top-buttons">
+        <button id="viewCartBtn" style="
     position: absolute;
     top: 20px;
     right: 20px;
@@ -566,10 +573,9 @@
     cursor: pointer;
     transition: all 0.3s ease;
 " onmouseover="this.style.backgroundColor='#fea41c'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='#fea41c';">
-         View Cart
-    </button>
-
-    <button id="Wishlist" style="
+            View Cart
+        </button>
+        <button id="Wishlist" style="
     position: absolute;
     top: 20px;
     left: 20px;
@@ -583,11 +589,11 @@
     cursor: pointer;
     transition: all 0.3s ease;
 " onclick="window.location.href='Wishlist.html'"
-            onmouseover="this.style.backgroundColor='#fea41c'; this.style.color='black';"
-            onmouseout="this.style.backgroundColor='black'; this.style.color='#fea41c';">
-         Wishlist
-    </button>
-
+                onmouseover="this.style.backgroundColor='#fea41c'; this.style.color='black';"
+                onmouseout="this.style.backgroundColor='black'; this.style.color='#fea41c';">
+            Wishlist
+        </button>
+    </div>
     <div class="card-stack" id="cardStack">
 
 
@@ -624,15 +630,16 @@
         padding: 8px 12px;
         border-radius: 6px;
         cursor: pointer;">To Cart</button>
-    <button onclick="document.getElementById('cartModal').style.display='none'" style="
-        margin-top: 15px;
-        background: #fea41c;
-        color: white;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 6px;
-        cursor: pointer;
-    ">Close</button>
+    <button onclick="closeCart()" style="
+    margin-top: 15px;
+    background: #fea41c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+">Close</button>
+
 </div>
 <div id="productDetailModal" style="
     display: none;
@@ -989,8 +996,8 @@ let wishlist = [];
         let startY = 0;
         let moveX = 0;
         let moveY = 0;
-        let velocity = { x: 0, y: 0 };
-        let lastPos = { x: 0, y: 0 };
+        let velocity = {x: 0, y: 0};
+        let lastPos = {x: 0, y: 0};
         let lastTime = Date.now();
         let isDragging = false;
 
@@ -1003,7 +1010,7 @@ let wishlist = [];
                 velocity.x = (x - lastPos.x) / dt;
                 velocity.y = (y - lastPos.y) / dt;
             }
-            lastPos = { x, y };
+            lastPos = {x, y};
             lastTime = now;
         }
 
@@ -1013,7 +1020,7 @@ let wishlist = [];
             const touch = e.type === 'mousedown' ? e : e.touches[0];
             startX = touch.clientX;
             startY = touch.clientY;
-            lastPos = { x: startX, y: startY };
+            lastPos = {x: startX, y: startY};
             lastTime = Date.now();
             isDragging = true;
 
@@ -1034,10 +1041,9 @@ let wishlist = [];
             updateVelocity(touch.clientX, touch.clientY);
 
             const topCard = cardStack[0];
-            const rotation = moveX * 0.1;
             const scale = Math.max(0.85, 1 - Math.abs(moveX) * 0.001);
 
-            topCard.style.transform = `translateX(-50%) translate(${moveX}px, ${moveY}px) rotate(${rotation}deg) scale(${scale})`;
+            topCard.style.transform = `translateX(-50%) translate(${moveX}px, ${moveY}px) scale(${scale})`;
 
             // Update overlays
             const absX = Math.abs(moveX);
@@ -1075,13 +1081,40 @@ let wishlist = [];
             }
         }
 
-        function handleTouchEnd() {
+        function handleTouchEnd(e) {
             if (!isDragging || cardStack.length === 0) return;
 
+            // 👇 Add this block to detect if drag ends on a control
+            const endTarget = e.changedTouches ? e.changedTouches[0].target : e.target;
+            const endedOnButton =
+                endTarget.closest('#viewCartBtn') ||
+                endTarget.closest('#Wishlist') ||
+                endTarget.closest('.floating-buttons') || // if you group buttons in a container
+                endTarget.closest('#cartModal');
+
+            if (endedOnButton) {
+                // Cancel any swipe or animation
+                resetCard();
+
+                // Reset state
+                startX = startY = moveX = moveY = 0;
+                velocity = { x: 0, y: 0 };
+                isDragging = false;
+
+                if (cardStack[0]) {
+                    Object.values(cardStack[0].overlays).forEach(overlay => overlay.style.opacity = 0);
+                }
+                indicators.style.opacity = '0';
+                indicators.querySelectorAll('.swipe-indicator').forEach(ind => ind.classList.remove('active'));
+
+                return;
+            }
+
+            // Proceed with your original swipe decision
             const absX = Math.abs(moveX);
             const absY = Math.abs(moveY);
-            const threshold = 100;
-            const velocityThreshold = 0.5;
+            const threshold = 30;
+            const velocityThreshold = 0.2;
 
             let animation = '';
 
@@ -1108,8 +1141,6 @@ let wishlist = [];
                 Object.values(cardStack[0].overlays).forEach(overlay => overlay.style.opacity = 0);
             }
             indicators.style.opacity = '0';
-
-            // Reset indicator states
             indicators.querySelectorAll('.swipe-indicator').forEach(ind => ind.classList.remove('active'));
         }
 
@@ -1137,121 +1168,149 @@ let wishlist = [];
                 document.getElementById('detailPrice').textContent = product.price;
                 document.getElementById('detailDescription').textContent = product.description;
                 document.getElementById('productDetailModal').style.display = 'block';
-                return; // Don't remove card on info swipe
+                const topCard = cardStack[0];
+                setTimeout(() => {
+                    topCard.style.transition = 'transform 0.4s ease';
+                    topCard.style.transform = 'translateX(-50%) scale(1)';
+                }, 200);
+                return;
             }
 
-            topCard.style.transition = 'all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            topCard.style.animation = `${animation} 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
+            topCard.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+            topCard.style.animation = `${animation} 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
 
             removeTopCard();
         }
 
-
+        let swipeTemporarilyDisabled = false;
         function resetCard() {
             if (cardStack[0]) {
                 const topCard = cardStack[0];
-                topCard.style.transition = 'transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                topCard.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
                 topCard.style.transform = 'translateX(-50%) scale(1)';
             }
         }
 
-        // Mouse events
+        function isOnViewCartButton(e) {
+            return e.target.closest('#viewCartBtn');
+        }
+
         document.addEventListener('mousedown', (e) => {
-            if (e.target.closest('.product-card')) {
+            const card = e.target.closest('.product-card');
+            if (card && !isOnViewCartButton(e)) {
                 handleTouchStart(e);
             }
         });
         document.addEventListener('mousemove', handleTouchMove);
         document.addEventListener('mouseup', handleTouchEnd);
-
-        // Touch events
         document.addEventListener('touchstart', (e) => {
-            if (e.target.closest('.product-card')) {
+            const card = e.target.closest('.product-card');
+            if (card && !isOnViewCartButton(e)) {
                 handleTouchStart(e);
             }
         });
         document.addEventListener('touchmove', handleTouchMove);
         document.addEventListener('touchend', handleTouchEnd);
-    }
-    document.getElementById('viewCartBtn').addEventListener('click', renderCart);
 
-    window.deleteCartItem = function(id) {
-        cart = cart.filter(item => item.cartId !== id);
-        renderCart();
-    };
-    let editingItemId = null;
 
-    window.editCartItem = function(id) {
-        const item = cart.find(p => p.cartId === id);
-        if (!item) return;
 
-        editingItemId = id;
+            document.getElementById('viewCartBtn').addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); // Block bubbling
 
-        document.getElementById('editTitle').textContent = item.title;
-        document.getElementById('editBrand').textContent = item.brand;
+                swipeTemporarilyDisabled = true; // Disable swipe for a moment
 
-        const sizeSelect = document.getElementById('editSize');
-        sizeSelect.innerHTML = '';
-        item.sizes.forEach(size => {
-            const option = document.createElement('option');
-            option.value = size;
-            option.textContent = size;
-            if (item.selectedSize === size) option.selected = true;
-            sizeSelect.appendChild(option);
-        });
+                renderCart();
+                document.getElementById('cartModal').style.display = 'block';
+                document.getElementById('cardStack').classList.add('blurred');
+                document.getElementById('viewCartBtn').classList.add('blurred');
+                document.getElementById('Wishlist').classList.add('blurred');
 
-        const colorOptionsContainer = document.getElementById('editColorOptions');
-        colorOptionsContainer.innerHTML = '';
-        item.colors.forEach(color => {
-            const swatch = document.createElement('div');
-            swatch.className = 'color-swatch';
-            swatch.style.background = color;
-            swatch.style.width = '30px';
-            swatch.style.height = '30px';
-            swatch.style.borderRadius = '50%';
-            swatch.style.cursor = 'pointer';
-            swatch.style.border = (item.selectedColor === color) ? '3px solid #000' : '2px solid #ccc';
-
-            swatch.addEventListener('click', () => {
-                // Clear all borders
-                [...colorOptionsContainer.children].forEach(child => {
-                    child.style.border = '2px solid #ccc';
-                });
-                // Highlight selected
-                swatch.style.border = '3px solid #000';
-                item.selectedColor = color;
+                // Re-enable swipe after 500ms
+                setTimeout(() => {
+                    swipeTemporarilyDisabled = false;
+                }, 500);
             });
 
-            colorOptionsContainer.appendChild(swatch);
-        });
 
 
-        document.getElementById('editModal').style.display = 'block';
-    };
+            window.deleteCartItem = function (id) {
+            cart = cart.filter(item => item.cartId !== id);
+            renderCart();
+        };
+        let editingItemId = null;
 
-    function applyEdit() {
-        const item = cart.find(p => p.cartId === editingItemId);
-        if (!item) return;
+        window.editCartItem = function (id) {
+            const item = cart.find(p => p.cartId === id);
+            if (!item) return;
 
-        const newSize = document.getElementById('editSize').value;
+            editingItemId = id;
 
-        item.selectedSize = newSize;
+            document.getElementById('editTitle').textContent = item.title;
+            document.getElementById('editBrand').textContent = item.brand;
 
-        document.getElementById('editModal').style.display = 'none';
-        renderCart();
-    }
+            const sizeSelect = document.getElementById('editSize');
+            sizeSelect.innerHTML = '';
+            item.sizes.forEach(size => {
+                const option = document.createElement('option');
+                option.value = size;
+                option.textContent = size;
+                if (item.selectedSize === size) option.selected = true;
+                sizeSelect.appendChild(option);
+            });
 
-    function renderCart() {
-        const cartItemsContainer = document.getElementById('cartItems');
-        cartItemsContainer.innerHTML = '';
+            const colorOptionsContainer = document.getElementById('editColorOptions');
+            colorOptionsContainer.innerHTML = '';
+            item.colors.forEach(color => {
+                const swatch = document.createElement('div');
+                swatch.className = 'color-swatch';
+                swatch.style.background = color;
+                swatch.style.width = '30px';
+                swatch.style.height = '30px';
+                swatch.style.borderRadius = '50%';
+                swatch.style.cursor = 'pointer';
+                swatch.style.border = (item.selectedColor === color) ? '3px solid #000' : '2px solid #ccc';
 
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-        } else {
-            cart.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.style.marginBottom = '10px';
-                itemDiv.innerHTML = `
+                swatch.addEventListener('click', () => {
+                    // Clear all borders
+                    [...colorOptionsContainer.children].forEach(child => {
+                        child.style.border = '2px solid #ccc';
+                    });
+                    // Highlight selected
+                    swatch.style.border = '3px solid #000';
+                    item.selectedColor = color;
+                });
+
+                colorOptionsContainer.appendChild(swatch);
+            });
+
+
+            document.getElementById('editModal').style.display = 'block';
+        };
+
+        function applyEdit() {
+            const item = cart.find(p => p.cartId === editingItemId);
+            if (!item) return;
+
+            const newSize = document.getElementById('editSize').value;
+
+            item.selectedSize = newSize;
+
+            document.getElementById('editModal').style.display = 'none';
+            renderCart();
+        }
+
+        function renderCart() {
+            const cartItemsContainer = document.getElementById('cartItems');
+            cartItemsContainer.innerHTML = '';
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+            } else {
+                cart.forEach(item => {
+                    const itemDiv = document.createElement('div');
+                    itemDiv.style.marginBottom = '10px';
+                    itemDiv.innerHTML = `
     <strong>${item.title}</strong><br>
     <span>${item.price}</span><br>
     <small style="color: #666;">${item.brand}</small><br>
@@ -1268,34 +1327,36 @@ let wishlist = [];
 `;
 
 
-                cartItemsContainer.appendChild(itemDiv);
-            });
+                    cartItemsContainer.appendChild(itemDiv);
+                });
+            }
+
+            document.getElementById('cartModal').style.display = 'block';
         }
 
-        document.getElementById('cartModal').style.display = 'block';
-    }
-    function addToWishlist(index) {
-        const item = products[index];
-        if (!wishlist.find(w => w.title === item.title)) {
-            wishlist.push(item);
-            showToast(`"${item.title}" added to Wishlist`);
-        } else {
-            showToast(`"${item.title}" is already in Wishlist`);
+        function addToWishlist(index) {
+            const item = products[index];
+            if (!wishlist.find(w => w.title === item.title)) {
+                wishlist.push(item);
+                showToast(`"${item.title}" added to Wishlist`);
+            } else {
+                showToast(`"${item.title}" is already in Wishlist`);
+            }
         }
-    }
 
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        toast.textContent = message;
-        toast.style.display = 'block';
-        toast.style.opacity = '1';
-        setTimeout(() => {
-            toast.style.opacity = '0';
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.display = 'block';
+            toast.style.opacity = '1';
             setTimeout(() => {
-                toast.style.display = 'none';
-            }, 300);
-        }, 1500);
-    }
+                toast.style.opacity = '0';
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                }, 300);
+            }, 1500);
+        }
+
         async function openTryOnCamera() {
             // Create modal container
             const previewModal = document.createElement('div');
@@ -1385,8 +1446,8 @@ let wishlist = [];
                 const stream = await navigator.mediaDevices.getUserMedia({
                     video: {
                         facingMode: "user",
-                        width: { ideal: 1280 },
-                        height: { ideal: 720 }
+                        width: {ideal: 1280},
+                        height: {ideal: 720}
                     }
                 });
                 video.srcObject = stream;
@@ -1450,6 +1511,13 @@ let wishlist = [];
                 toast.style.transition = 'opacity 0.3s ease';
                 setTimeout(() => document.body.removeChild(toast), 300);
             }, 2000);
+        }
+    }
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+            document.getElementById('cardStack').classList.remove('blurred');
+            document.getElementById('viewCartBtn').classList.remove('blurred');
+            document.getElementById('Wishlist').classList.remove('blurred');
         }
 </script>
 </body>

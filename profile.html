@@ -35,6 +35,7 @@
     }
     .profile-section {
       margin-bottom: 30px;
+      position: relative;
     }
 
     .section-title {
@@ -280,46 +281,32 @@
       opacity: 0.6;
       cursor: not-allowed;
     }
-     .body-type-popup {
-       display: none;
-       position: fixed;
-       top: 50%;
-       left: 50%;
-       transform: translate(-50%, -50%);
-       background: white;
-       padding: 20px;
-       border-radius: 12px;
-       z-index: 1000;
-       max-width: 90%;
-       width: 600px;
-       text-align: center;
-     }
+    .body-type-popup {
+      display: none;
+      position: absolute;
+      top: 100% ;
+      margin-top: 85px;
+      left: 0;
+      width: 100%;
+      background: rgba(1, 1, 1, 0.95);
+      border: 0.5px solid rgba(102, 126, 234, 0.3);
+      border-radius: 8px;
+      padding: 15px;
+      z-index: 10;
+      text-align: center;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+    }
 
     .body-type-popup img {
       max-width: 100%;
       height: auto;
-      border-radius: 0px;
-      margin-bottom: 15px;
+      border-radius: 8px;
+      margin-bottom: 10px;
     }
 
     .body-type-popup .close-btn {
-      position: absolute;
-      top: 10px;
-      right: 10px;
-      color: black;
-      cursor: pointer;
-      font-size: 24px;
+      display: none;  /* Hide the close button since we'll close on select */
     }
-
-    .body-type-info {
-      color: #667eea;
-      cursor: pointer;
-      margin-left: 10px;
-      font-size: 1.2rem;
-    }
-
-
-
 
     @keyframes slideUp {
       from {
@@ -390,9 +377,17 @@
 
     <div class="profile-section">
       <h2 class="section-title">Body Type</h2>
-      <select id="bodyType" class="info-select" disabled>
-        <option value="">Select gender first</option>
-      </select>
+      <div style="position: relative;">
+        <select id="bodyType" class="info-select" disabled>
+          <option value="">Select gender first</option>
+        </select>
+        <div id="bodyTypePopup" class="body-type-popup">
+          <img id="bodyTypeImage" src="" alt="Body Type Image">
+          <p id="bodyTypeDescription" style="color: white;"></p>
+        </div>
+      </div>
+
+
     </div>
 
     <div class="profile-section">
@@ -739,61 +734,85 @@
     sizeInput.addEventListener("keydown", handleEnterToAddBrand);
   const genderSelect = document.getElementById('gender');
   const bodyTypeSelect = document.getElementById('bodyType');
-
+  const popup = document.getElementById('bodyTypePopup');
   const bodyTypesByGender = {
     Male: ['Ectomorph', 'Mesomorph', 'Endomorph'],
     Female: ['Hourglass', 'Pear', 'Apple', 'Rectangle', 'Inverted Triangle'],
     Other: ['Ectomorph', 'Mesomorph', 'Endomorph', 'Hourglass', 'Pear', 'Apple', 'Rectangle', 'Inverted Triangle']
   };
-
-  genderSelect.addEventListener('change', () => {
-    const selectedGender = genderSelect.value;
-    bodyTypeSelect.innerHTML = '';
-
-    if (selectedGender) {
-      // Enable the body type select
-      bodyTypeSelect.disabled = false;
-
-      // Add default option
-      const defaultOption = document.createElement('option');
-      defaultOption.textContent = 'Select Body Type';
-      defaultOption.value = '';
-      bodyTypeSelect.appendChild(defaultOption);
-
-      // Add body type options based on selected gender
-      bodyTypesByGender[selectedGender].forEach(type => {
-        const option = document.createElement('option');
-        option.value = type.toLowerCase().replace(/\s+/g, '_');
-        option.textContent = type;
-        bodyTypeSelect.appendChild(option);
-      });
-
-      // Show body type popup if Male is selected
-      if (selectedGender === 'Male') {
-        showBodyTypePopup();
-      }
-    } else if(selectedGender === ''){
-      // If no gender is selected, disable body type select
-      bodyTypeSelect.disabled = true;
-      const defaultOption = document.createElement('option');
-      defaultOption.textContent = 'Select gender first';
-      defaultOption.value = '';
-      bodyTypeSelect.appendChild(defaultOption);
-    }
-  });
-
   function showBodyTypePopup() {
     const popup = document.getElementById('bodyTypePopup');
     const image = document.getElementById('bodyTypeImage');
-    const description = document.getElementById('bodyTypeDescription');
 
+    // Set the image source
     image.src = 'male-body-types.jpeg';
     popup.style.display = 'block';
   }
 
+  genderSelect.addEventListener('change', function () {
+    const selectedGender = genderSelect.value;
+
+    bodyTypeSelect.disabled = false;
+    bodyTypeSelect.innerHTML = '<option value="">Select Body Type</option>'; // Reset dropdown
+
+    if (selectedGender === 'Male') {
+      bodyTypeSelect.innerHTML += `
+      <option value="Ectomorph">Ectomorph</option>
+      <option value="Mesomorph">Mesomorph</option>
+      <option value="Endomorph">Endomorph</option>
+    `;
+    } else if (selectedGender === 'Female') {
+      bodyTypeSelect.innerHTML += `
+      <option value="Pear">Pear</option>
+      <option value="Apple">Apple</option>
+      <option value="Hourglass">Hourglass</option>
+    `;
+    } else {
+      bodyTypeSelect.innerHTML += `
+      <option value="Rectangle">Rectangle</option>
+      <option value="Oval">Oval</option>
+    `;
+    }
+
+    popup.style.display = 'none'; // hide popup on gender change
+  });
+
+
+  bodyTypeSelect.addEventListener('click', function () {
+    if (genderSelect.value === 'Male') {
+      const image = document.getElementById('bodyTypeImage');
+      const description = document.getElementById('bodyTypeDescription');
+
+      image.src = 'male-body-types.jpeg';
+
+
+      popup.style.display = 'block';
+    } else {
+      popup.style.display = 'none'; // Don't show popup if gender is not Male
+    }
+  });
+
+
+
+  // Hide popup when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!bodyTypeSelect.contains(e.target) && !popup.contains(e.target)) {
+      popup.style.display = 'none';
+    }
+  });
+
+  // Hide popup when a body type is selected
+  bodyTypeSelect.addEventListener('change', function () {
+    popup.style.display = 'none';
+  });
+
+
+  // Close popup function
   function closeBodyTypePopup() {
     document.getElementById('bodyTypePopup').style.display = 'none';
   }
+
+
 
 
 

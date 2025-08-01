@@ -445,11 +445,7 @@
     <button type="submit" class="button">Create Profile</button>
   </form>
 </div>
-<div id="bodyTypePopup" class="body-type-popup">
-  <span class="close-btn" onclick="closeBodyTypePopup()">&times;</span>
-  <img id="bodyTypeImage" src="" alt="Body Type Image">
-  <p id="bodyTypeDescription" style="color: white;"></p>
-</div>
+
 
 
 
@@ -704,12 +700,15 @@
     sizeInput.addEventListener("keydown", handleEnterToAddBrand);
   const genderSelect = document.getElementById('gender');
   const bodyTypeSelect = document.getElementById('bodyType');
+  const popup = document.getElementById('bodyTypePopup');
   const bodyTypesByGender = {
-
-    Male: ['Slim', 'Buff', 'Fat', 'Lean'],
+    Male: ['Lean', 'Bulky', 'Athletic'],
     Female: ['Hourglass', 'Pear', 'Apple', 'Rectangle', 'Inverted Triangle'],
-    Other: ['Slim', 'Buff', 'Fat', 'Lean', 'Hourglass', 'Pear', 'Apple', 'Rectangle', 'Inverted Triangle']
+    Other: ['Lean', 'Bulky', 'Athletic', 'Hourglass', 'Pear', 'Apple', 'Rectangle', 'Inverted Triangle']
   };
+
+
+
 
 
   genderSelect.addEventListener('change', function () {
@@ -717,6 +716,8 @@
 
     bodyTypeSelect.disabled = false;
     bodyTypeSelect.innerHTML = '<option value="">Select Body Type</option>';
+
+    // Populate body type options
     const bodyTypes = bodyTypesByGender[selectedGender] || [];
 
     bodyTypes.forEach(function (type) {
@@ -725,15 +726,8 @@
       option.textContent = type;
       bodyTypeSelect.appendChild(option);
     });
-
   });
 
-
- 
-
-
-
-  
 
 
 

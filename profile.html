@@ -281,33 +281,6 @@
       opacity: 0.6;
       cursor: not-allowed;
     }
-    .body-type-popup {
-      display: none;
-      position: absolute;
-      top: 100% ;
-      margin-top: 85px;
-      left: 0;
-      width: 100%;
-      background: rgba(1, 1, 1, 0.95);
-      border: 0.5px solid rgba(102, 126, 234, 0.3);
-      border-radius: 8px;
-      padding: 15px;
-      z-index: 10;
-      text-align: center;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    }
-
-    .body-type-popup img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 8px;
-      margin-bottom: 10px;
-    }
-
-    .body-type-popup .close-btn {
-      display: none;  /* Hide the close button since we'll close on select */
-    }
-
     @keyframes slideUp {
       from {
         opacity: 0;
@@ -381,10 +354,6 @@
         <select id="bodyType" class="info-select" disabled>
           <option value="">Select gender first</option>
         </select>
-        <div id="bodyTypePopup" class="body-type-popup">
-          <img id="bodyTypeImage" src="" alt="Body Type Image">
-          <p id="bodyTypeDescription" style="color: white;"></p>
-        </div>
       </div>
 
 
@@ -474,11 +443,6 @@
     </div>
     <button type="submit" class="button">Create Profile</button>
   </form>
-</div>
-<div id="bodyTypePopup" class="body-type-popup">
-  <span class="close-btn" onclick="closeBodyTypePopup()">&times;</span>
-  <img id="bodyTypeImage" src="" alt="Body Type Image">
-  <p id="bodyTypeDescription" style="color: white;"></p>
 </div>
 
 
@@ -736,9 +700,9 @@
   const bodyTypeSelect = document.getElementById('bodyType');
   const popup = document.getElementById('bodyTypePopup');
   const bodyTypesByGender = {
-    Male: ['Slim', 'Buff', 'Fat', 'Lean'],
+    Male: ['Athletic','Bulky', 'Lean'],
     Female: ['Hourglass', 'Pear', 'Apple', 'Rectangle', 'Inverted Triangle'],
-    Other: ['Ectomorph', 'Mesomorph', 'Endomorph', 'Hourglass', 'Pear', 'Apple', 'Rectangle', 'Inverted Triangle']
+    Other: [ 'Athletic','Bulky', 'Lean','Hourglass', 'Pear', 'Apple', 'Rectangle', 'Inverted Triangle']
   };
   function showBodyTypePopup() {
     const popup = document.getElementById('bodyTypePopup');
@@ -757,9 +721,9 @@
 
     if (selectedGender === 'Male') {
       bodyTypeSelect.innerHTML += `
-      <option value="Ectomorph">Ectomorph</option>
-      <option value="Mesomorph">Mesomorph</option>
-      <option value="Endomorph">Endomorph</option>
+      <option value="Athletic">Athletic</option>
+      <option value="Bulky">Bulky</option>
+      <option value="Lean">Lean</option>
     `;
     } else if (selectedGender === 'Female') {
       bodyTypeSelect.innerHTML += `

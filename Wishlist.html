@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aphrelle - Wishlist</title>
     <link href="https://fonts.cdnfonts.com/css/glacial-indifference-2" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 
     <style>
         * {
@@ -76,8 +78,8 @@
         }
 
         .main-content {
-                padding: 20px;
-            }
+            padding: 20px;
+        }
 
         .container {
             max-width: 1200px;
@@ -89,12 +91,12 @@
             padding: 30px;
             min-height: 70vh;
             color: #fff;
-            }
+        }
 
         .wishlist-header {
             text-align: center;
             margin-bottom: 30px;
-            }
+        }
 
         .wishlist-title {
             font-size: 2.5rem;
@@ -104,7 +106,7 @@
             background-clip: text;
             margin-bottom: 10px;
             font-weight: 500;
-            }
+        }
 
         .wishlist-subtitle {
             color: #ddd;
@@ -127,15 +129,15 @@
             border-radius: 20px;
             padding: 8px 16px;
             font-size: 0.9rem;
-                            cursor: pointer;
-                            transition: all 0.3s ease;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .filter-btn.active {
             background: #ffc107;
             color: #333;
             font-weight: 500;
-    }
+        }
 
         .filter-btn:hover {
             background: #ffc107;
@@ -333,7 +335,7 @@
         }
 
         .modal-content {
-            background: rgba(0, 0, 0, 0.8);
+            background: rgba(0, 0, 0, 0.9);
             color: #eee;
             padding: 30px;
             border-radius: 15px;
@@ -345,6 +347,38 @@
             border: 1px solid rgba(255, 193, 7, 0.3);
             backdrop-filter: blur(12px);
         }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .cart-item-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+        .cart-item-title {
+            font-weight: 500;
+            color: #eee;
+        }
+        .cart-item-price {
+            color: #ffc107;
+        }
+        .cart-item-size {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
 
         .modal-header {
             display: flex;
@@ -421,17 +455,6 @@
             .main-content {
                 padding: 15px;
             }
-
-            .wishlist-stats {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .stats-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
         }
     </style>
 </head>
@@ -439,9 +462,9 @@
 <div class="header">
     <div class="logo">Aphrelle</div>
     <div class="nav-buttons">
-        <a href="recommendations.html" class="nav-btn">
+        <a href="discover.html" class="nav-btn">
             <i class="fas fa-search"></i>
-            Recommendations
+            Discover
         </a>
         <button class="nav-btn" onclick="viewCart()">
             <i class="fas fa-shopping-cart"></i>
@@ -460,7 +483,7 @@
         <div id="filterBar" class="filter-bar" style="display: none;">
             <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
             <button class="filter-btn" onclick="filterByCategory('dress')">Dresses</button>
-            <button class="filter-btn" onclick="filterByCategory('jacket')">Jackets</button>
+            <button class="filter-btn" onclick="filterByCategory('hoodie')">Hoodies</button>
             <button class="filter-btn" onclick="filterByCategory('casual')">Casual</button>
             <select class="sort-select" onchange="sortWishlists(this.value)">
                 <option value="recent">Recently Added</option>
@@ -470,15 +493,13 @@
             </select>
         </div>
 
-
-
-        <div id="emptyState" class="empty-state">
+        <div id="emptyState" class="empty-state" style="display: none;">
             <div class="empty-icon">
                 <i class="fas fa-heart"></i>
             </div>
             <div class="empty-message">Your wishlist is empty</div>
             <div class="empty-submessage">Start discovering amazing products to add to your wishlist!</div>
-            <a href="recommendations.html" class="discover-btn">
+            <a href="discover.html" class="discover-btn">
                 <i class="fas fa-search"></i>
                 Start Discovering
             </a>
@@ -496,70 +517,28 @@
             <h2>Shopping Cart</h2>
             <button onclick="closeCart()" class="close-btn">×</button>
         </div>
-        <div id="cartItems"></div>
+        <div id="cartItems">Your cart is empty.</div>
         <div style="text-align: center; margin-top: 20px;">
-            <button onclick="closeCart()" class="continue-shopping-btn">Continue Shopping</button>
+            <a href="cart.html" class="continue-shopping-btn">Go to Cart</a>
         </div>
     </div>
 </div>
 
 <script>
-    // Sample wishlist data (in a real app, this would come from localStorage or a database)
     let wishlist = [];
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let cart = [];
     let currentFilter = 'all';
     let currentSort = 'recent';
 
-    // Sample products that could be in wishlist
-    const sampleProducts = [
-        {
-            id: 1,
-            image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop",
-            title: "Elegant Summer Dress",
-            brand: "Bella Vista",
-            price: 89.99,
-            priceStr: "$89.99",
-            category: "dress",
-            dateAdded: new Date('2024-01-15')
-        },
-        {
-            id: 2,
-            image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop",
-            title: "Classic Denim Jacket",
-            brand: "Urban Style",
-            price: 124.99,
-            priceStr: "$124.99",
-            category: "jacket",
-            dateAdded: new Date('2024-01-12')
-        },
-        {
-            id: 3,
-            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop",
-            title: "Vintage Band Tee",
-            brand: "Retro Vibes",
-            price: 45.99,
-            priceStr: "$45.99",
-category: "casual",
-            dateAdded: new Date('2024-01-10')
-    }
-    ];
-
-    // Initialize the page
     document.addEventListener('DOMContentLoaded', () => {
-        // Load wishlist from localStorage or use sample data
-        const savedWishlist = localStorage.getItem('wishlist');
-        if (savedWishlist) {
-            wishlist = JSON.parse(savedWishlist);
-            // Convert dateAdded strings back to Date objects
-            wishlist = wishlist.map(item => ({
-                ...item,
-                dateAdded: new Date(item.dateAdded)
-            }));
-        } else {
-            // For demo purposes, add some sample items
-            wishlist = [...sampleProducts];
-            saveWishlist();
-        }
+        wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        wishlist = wishlist.map((item, index) => ({
+            ...item,
+            id: item.id || `${Date.now()}-${index}`, // Ensure unique ID
+            dateAdded: item.dateAdded ? new Date(item.dateAdded) : new Date()
+        }));
 
         updateCartCount();
         renderWishlist();
@@ -567,6 +546,10 @@ category: "casual",
 
     function saveWishlist() {
         localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    }
+
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
 
     function updateCartCount() {
@@ -589,19 +572,15 @@ category: "casual",
         wishlistGrid.style.display = 'grid';
         filterBar.style.display = 'flex';
 
-        // Filter and sort wishlist
-        let filteredWishlist = filterWishlist(wishlist, currentFilter);
-        filteredWishlist = sortWishlist(filteredWishlist, currentSort);
+        let itemsToRender = filterWishlist(wishlist, currentFilter);
+        itemsToRender = sortWishlist(itemsToRender, currentSort);
 
-        // Render items
         wishlistGrid.innerHTML = '';
-        filteredWishlist.forEach(item => {
+        itemsToRender.forEach(item => {
             const itemElement = createWishlistItem(item);
             wishlistGrid.appendChild(itemElement);
         });
     }
-
-
 
     function createWishlistItem(item) {
         const itemDiv = document.createElement('div');
@@ -614,13 +593,13 @@ category: "casual",
                 <div class="item-info">
                     <h3 class="item-title">${item.title}</h3>
                     <p class="item-brand">${item.brand}</p>
-                    <p class="item-price">${item.priceStr}</p>
+                    <p class="item-price">${item.price}</p>
                     <div class="item-actions">
-                        <button class="action-btn add-to-cart-btn" onclick="addToCart(${item.id})">
+                        <button class="action-btn add-to-cart-btn" onclick="addToCart('${item.id}')">
                             <i class="fas fa-shopping-cart"></i>
                             Add to Cart
                         </button>
-                        <button class="action-btn remove-btn" onclick="removeFromWishlist(${item.id})">
+                        <button class="action-btn remove-btn" onclick="removeFromWishlist('${item.id}')">
                             <i class="fas fa-trash"></i>
                             Remove
                         </button>
@@ -630,9 +609,59 @@ category: "casual",
         return itemDiv;
     }
 
+    function removeFromWishlist(itemId) {
+        wishlist = wishlist.filter(item => item.id !== itemId);
+        saveWishlist();
+        renderWishlist();
+    }
+
+    function addToCart(itemId) {
+        const itemIndex = wishlist.findIndex(item => item.id === itemId);
+        if (itemIndex === -1) return;
+
+        const itemToAdd = wishlist[itemIndex];
+
+        const alreadyInCart = cart.some(item => item.title === itemToAdd.title && item.size === itemToAdd.size);
+        if (alreadyInCart) {
+            alert('This item is already in your cart.');
+            return;
+        }
+
+        cart.push(itemToAdd);
+        saveCart();
+        updateCartCount();
+
+        // Remove from wishlist after adding to cart
+        removeFromWishlist(itemId);
+        alert(`'${itemToAdd.title}' has been moved to your cart.`);
+    }
+
+    function filterByCategory(category) {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        currentFilter = category;
+        renderWishlist();
+    }
+
+    function sortWishlists(sortBy) {
+        currentSort = sortBy;
+        renderWishlist();
+    }
+
+    function parsePrice(price) {
+        if (typeof price === 'number') return price;
+        return Number(String(price).replace(/[^0-9.]/g, '')) || 0;
+    }
+
     function filterWishlist(items, category) {
         if (category === 'all') return items;
-        return items.filter(item => item.category === category);
+        return items.filter(item => {
+            const title = item.title.toLowerCase();
+            if (category === 'dress' && title.includes('dress')) return true;
+            if (category === 'hoodie' && title.includes('hoodie')) return true;
+            if (category === 'casual' && (title.includes('shirt') || title.includes('tee'))) return true;
+            return false;
+        });
     }
 
     function sortWishlist(items, sortBy) {
@@ -641,9 +670,9 @@ category: "casual",
             case 'recent':
                 return sorted.sort((a, b) => b.dateAdded - a.dateAdded);
             case 'price-low':
-                return sorted.sort((a, b) => a.price - b.price);
+                return sorted.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
             case 'price-high':
-                return sorted.sort((a, b) => b.price - a.price);
+                return sorted.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
             case 'name':
                 return sorted.sort((a, b) => a.title.localeCompare(b.title));
             default:
@@ -651,7 +680,36 @@ category: "casual",
         }
     }
 
-    function filterByCategory(category) {
+    function viewCart() {
+        const cartModal = document.getElementById('cartModal');
+        const cartItemsContainer = document.getElementById('cartItems');
+
+        cartItemsContainer.innerHTML = ''; // Clear previous items
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = 'Your cart is empty.';
+        } else {
+            cart.forEach(item => {
+                const cartItemDiv = document.createElement('div');
+                cartItemDiv.className = 'cart-item';
+                cartItemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.title}</div>
+                        <div class="cart-item-size">Size: ${item.size}</div>
+                        <div class="cart-item-price">${item.price}</div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItemDiv);
+            });
+        }
+        cartModal.style.display = 'flex';
+    }
+
+    function closeCart() {
+        document.getElementById('cartModal').style.display = 'none';
+    }
+
 </script>
 </body>
 </html>

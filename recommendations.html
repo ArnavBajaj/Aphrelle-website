@@ -314,6 +314,17 @@
             overflow: hidden;
             text-overflow: ellipsis;
         }
+        .tinder--card .card-size {
+            padding: 8px 16px;
+            text-align: left;
+        }
+        .tinder--card .card-size select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+
         .swipe-up-indicator {
             position: absolute;
             bottom: 10px;
@@ -587,233 +598,255 @@
 </div>
 
 
-    <script>
-        function toggleSidebar() {
-            document.getElementById("sidebar").classList.toggle("active");
-            document.getElementById("overlay").classList.toggle("active");
+<script>
+    function toggleSidebar() {
+        document.getElementById("sidebar").classList.toggle("active");
+        document.getElementById("overlay").classList.toggle("active");
+    }
+
+    let wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const products =  [
+        {
+            "image": "image5.png",
+            "title": "Colorblock Pullover Hoodie",
+            "brand": "SHEIN",
+            "price": "₹599",
+            "description": "Cozy royal blue hoodie with neon green contrast trims. Features a front kangaroo pocket and adjustable drawstrings for comfort.",
+            "sizes": ["S", "M", "L", "XL"],
+            "colors": ["#2e4dbb", "#a9f2b3"]
+        },
+        {
+            "image": "image8.png",
+            "title": "Embroidered Denim Shirt",
+            "brand": "ZARA",
+            "price": "₹599",
+            "description": "Casual light-wash denim shirt featuring subtle floral embroidery. Designed with a relaxed boxy silhouette.",
+            "sizes": ["S", "M", "L", "XL"],
+            "colors": ["#6b8fa2"]
+        },
+        {
+            "image": "image1.png",
+            "title": "Warrior Owl Graphic T-Shirt",
+            "brand": "SHEIN",
+            "price": "₹599",
+            "description": "Soft beige oversized tee featuring a detailed warrior owl graphic with medieval elements. Made from lightweight cotton for a relaxed fit.",
+            "sizes": ["S", "M", "L", "XL"],
+            "colors": ["#f5ebd8", "#5b3c2b"]
+        },
+        {
+            "image": "image2.png",
+            "title": "Patchwork Fruit Print Dress",
+            "brand": "SHEIN",
+            "price": "₹279",
+            "description": "A sleeveless mini dress with a vibrant patchwork design featuring fruits and floral motifs. Lightweight and perfect for summer outings.",
+            "sizes": ["XS", "S", "M", "L"],
+            "colors": ["#f9a94b", "#ff6f61", "#3c7c3d"]
         }
+    ];
 
-        let wishlist = [];
-        let cart = [];
-        const products =  [
-            {
-                "image": "image5.png",
-                "title": "Colorblock Pullover Hoodie",
-                "brand": "SHEIN",
-                "price": "₹599",
-                "description": "Cozy royal blue hoodie with neon green contrast trims. Features a front kangaroo pocket and adjustable drawstrings for comfort.",
-                "sizes": ["S", "M", "L", "XL"],
-                "colors": ["#2e4dbb", "#a9f2b3"]
-            },
-            {
-                "image": "image8.png",
-                "title": "Embroidered Denim Shirt",
-                "brand": "ZARA",
-                "price": "₹599",
-                "description": "Casual light-wash denim shirt featuring subtle floral embroidery. Designed with a relaxed boxy silhouette.",
-                "sizes": ["S", "M", "L", "XL"],
-                "colors": ["#6b8fa2"]
-            },
-            {
-                "image": "image1.png",
-                "title": "Warrior Owl Graphic T-Shirt",
-                "brand": "SHEIN",
-                "price": "₹599",
-                "description": "Soft beige oversized tee featuring a detailed warrior owl graphic with medieval elements. Made from lightweight cotton for a relaxed fit.",
-                "sizes": ["S", "M", "L", "XL"],
-                "colors": ["#f5ebd8", "#5b3c2b"]
-            },
-            {
-                "image": "image2.png",
-                "title": "Patchwork Fruit Print Dress",
-                "brand": "SHEIN",
-                "price": "₹279",
-                "description": "A sleeveless mini dress with a vibrant patchwork design featuring fruits and floral motifs. Lightweight and perfect for summer outings.",
-                "sizes": ["XS", "S", "M", "L"],
-                "colors": ["#f9a94b", "#ff6f61", "#3c7c3d"]
-            }
-        ];
-
-        function createProductCards() {
-            const cardsContainer = document.querySelector('.tinder--cards');
-            cardsContainer.innerHTML = '';
-            products.forEach(product => {
-                const card = document.createElement('div');
-                card.classList.add('tinder--card');
-                card.innerHTML = `
+    function createProductCards() {
+        const cardsContainer = document.querySelector('.tinder--cards');
+        cardsContainer.innerHTML = '';
+        products.forEach((product, index) => {
+            const card = document.createElement('div');
+            card.classList.add('tinder--card');
+            card.dataset.index = index;
+            card.innerHTML = `
                     <img src="${product.image}">
                     <h3>${product.title}</h3>
                     <p class="card-price">${product.price}</p>
+                    <div class="card-size">
+                        <select>
+                            ${product.sizes.map(size => `<option value="${size}" ${size === 'S' ? 'selected' : ''}>${size}</option>`).join('')}
+                        </select>
+                    </div>
                     <p class="card-desc">${product.description}</p>
                     <div class="swipe-up-indicator">
                         <i class="fa fa-chevron-up"></i>
                         <p>Details</p>
                     </div>
                 `;
-                cardsContainer.appendChild(card);
+            cardsContainer.appendChild(card);
+        });
+    }
+
+    function showProductDetails(productIndex) {
+        const product = products[productIndex];
+        if (!product) return;
+
+        document.getElementById('detailTitle').textContent = product.title;
+        document.getElementById('detailBrand').textContent = product.brand;
+        document.getElementById('detailImage').src = product.image;
+        document.getElementById('detailPrice').textContent = product.price;
+        document.getElementById('detailDescription').textContent = product.description;
+
+        document.getElementById('sizeList').textContent = product.sizes.join(', ');
+
+        const colorList = document.getElementById('colorList');
+        colorList.innerHTML = '';
+        product.colors.forEach(color => {
+            const colorDot = document.createElement('span');
+            colorDot.style.width = '20px';
+            colorDot.style.height = '20px';
+            colorDot.style.backgroundColor = color;
+            colorDot.style.borderRadius = '50%';
+            colorDot.style.border = '1px solid #ddd';
+            colorList.appendChild(colorDot);
+        });
+
+        document.getElementById('productDetailModal').style.display = 'block';
+    }
+
+
+    function initializeSwipe() {
+        'use strict';
+
+        var tinderContainer = document.querySelector('.tinder');
+        var allCards = document.querySelectorAll('.tinder--card');
+        var nope = document.getElementById('nope');
+        var love = document.getElementById('love');
+
+        function initCards() {
+            var newCards = document.querySelectorAll('.tinder--card:not(.removed)');
+
+            newCards.forEach(function (card, index) {
+                card.style.zIndex = allCards.length - index;
+                card.style.transform = 'scale(' + (20 - index) / 20 + ') translateY(-' + 30 * index + 'px)';
+                card.style.opacity = (10 - index) / 10;
             });
+
+            tinderContainer.classList.add('loaded');
         }
 
-        function showProductDetails(productIndex) {
-            const product = products[productIndex];
-            if (!product) return;
+        initCards();
 
-            document.getElementById('detailTitle').textContent = product.title;
-            document.getElementById('detailBrand').textContent = product.brand;
-            document.getElementById('detailImage').src = product.image;
-            document.getElementById('detailPrice').textContent = product.price;
-            document.getElementById('detailDescription').textContent = product.description;
+        allCards.forEach(function (el) {
+            var hammertime = new Hammer(el);
 
-            document.getElementById('sizeList').textContent = product.sizes.join(', ');
+            hammertime.on('pan', function (event) {
+                el.classList.add('moving');
+                if (event.deltaX === 0) return;
+                if (event.center.x === 0 && event.center.y === 0) return;
 
-            const colorList = document.getElementById('colorList');
-            colorList.innerHTML = '';
-            product.colors.forEach(color => {
-                const colorDot = document.createElement('span');
-                colorDot.style.width = '20px';
-                colorDot.style.height = '20px';
-                colorDot.style.backgroundColor = color;
-                colorDot.style.borderRadius = '50%';
-                colorDot.style.border = '1px solid #ddd';
-                colorList.appendChild(colorDot);
+                tinderContainer.classList.toggle('tinder_love', event.deltaX > 0);
+                tinderContainer.classList.toggle('tinder_nope', event.deltaX < 0);
+
+                var xMulti = event.deltaX * 0.03;
+                var yMulti = event.deltaY / 80;
+                var rotate = xMulti * yMulti;
+
+                event.target.style.transform = 'translate(' + event.deltaX + 'px, ' + event.deltaY + 'px) rotate(' + rotate + 'deg)';
             });
 
-            document.getElementById('productDetailModal').style.display = 'block';
-        }
+            hammertime.on('panend', function (event) {
+                el.classList.remove('moving');
+                tinderContainer.classList.remove('tinder_love');
+                tinderContainer.classList.remove('tinder_nope');
+                const productIndex = el.dataset.index;
+                const selectedSize = el.querySelector('select').value;
 
 
-        function initializeSwipe() {
-            'use strict';
+                if (event.deltaY < -100 && Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+                    showProductDetails(productIndex);
+                    event.target.style.transform = '';
+                    return;
+                }
 
-            var tinderContainer = document.querySelector('.tinder');
-            var allCards = document.querySelectorAll('.tinder--card');
-            var nope = document.getElementById('nope');
-            var love = document.getElementById('love');
+                var moveOutWidth = document.body.clientWidth;
+                var keep = Math.abs(event.deltaX) < 80 || Math.abs(event.velocityX) < 0.5;
 
-            function initCards() {
-                var newCards = document.querySelectorAll('.tinder--card:not(.removed)');
+                event.target.classList.toggle('removed', !keep);
 
-                newCards.forEach(function (card, index) {
-                    card.style.zIndex = allCards.length - index;
-                    card.style.transform = 'scale(' + (20 - index) / 20 + ') translateY(-' + 30 * index + 'px)';
-                    card.style.opacity = (10 - index) / 10;
-                });
-
-                tinderContainer.classList.add('loaded');
-            }
-
-            initCards();
-
-            allCards.forEach(function (el, index) {
-                var hammertime = new Hammer(el);
-
-                hammertime.on('pan', function (event) {
-                    el.classList.add('moving');
-                    if (event.deltaX === 0) return;
-                    if (event.center.x === 0 && event.center.y === 0) return;
-
-                    tinderContainer.classList.toggle('tinder_love', event.deltaX > 0);
-                    tinderContainer.classList.toggle('tinder_nope', event.deltaX < 0);
-
+                if (keep) {
+                    event.target.style.transform = '';
+                } else {
+                    var endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
+                    var toX = event.deltaX > 0 ? endX : -endX;
+                    var endY = Math.abs(event.velocityY) * moveOutWidth;
+                    var toY = event.deltaY > 0 ? endY : -endY;
                     var xMulti = event.deltaX * 0.03;
                     var yMulti = event.deltaY / 80;
                     var rotate = xMulti * yMulti;
 
-                    event.target.style.transform = 'translate(' + event.deltaX + 'px, ' + event.deltaY + 'px) rotate(' + rotate + 'deg)';
-                });
-
-                hammertime.on('panend', function (event) {
-                    el.classList.remove('moving');
-                    tinderContainer.classList.remove('tinder_love');
-                    tinderContainer.classList.remove('tinder_nope');
-
-                    // Check for a vertical swipe to show details
-                    if (event.deltaY < -100 && Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-                        showProductDetails(index);
-                        event.target.style.transform = ''; // Reset card position
-                        return;
-                    }
-
-                    var moveOutWidth = document.body.clientWidth;
-                    var keep = Math.abs(event.deltaX) < 80 || Math.abs(event.velocityX) < 0.5;
-
-                    event.target.classList.toggle('removed', !keep);
-
-                    if (keep) {
-                        event.target.style.transform = '';
+                    if(event.deltaX > 0) {
+                        addToCart(products[productIndex], selectedSize);
                     } else {
-                        var endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
-                        var toX = event.deltaX > 0 ? endX : -endX;
-                        var endY = Math.abs(event.velocityY) * moveOutWidth;
-                        var toY = event.deltaY > 0 ? endY : -endY;
-                        var xMulti = event.deltaX * 0.03;
-                        var yMulti = event.deltaY / 80;
-                        var rotate = xMulti * yMulti;
-
-                        if(event.deltaX > 0) {
-                            addToWishlist(products[index]);
-                        }
-
-                        event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
-                        initCards();
-                    }
-                });
-            });
-
-            function createButtonListener(loveAction) {
-                return function (event) {
-                    var cards = document.querySelectorAll('.tinder--card:not(.removed)');
-                    var moveOutWidth = document.body.clientWidth * 1.5;
-
-                    if (!cards.length) return false;
-
-                    var card = cards[0];
-                    var cardIndex = allCards.length - cards.length;
-
-                    card.classList.add('removed');
-
-                    if (loveAction) {
-                        card.style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
-                        addToWishlist(products[cardIndex]);
-                    } else {
-                        card.style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
+                        addToWishlist(products[productIndex], selectedSize);
                     }
 
+
+                    event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
                     initCards();
-                    event.preventDefault();
-                };
-            }
-
-            nope.addEventListener('click', createButtonListener(false));
-            love.addEventListener('click', createButtonListener(true));
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            createProductCards();
-            initializeSwipe();
+                }
+            });
         });
 
-        function addToWishlist(product) {
-            if (!wishlist.find(item => item.title === product.title)) {
-                wishlist.push(product);
-                showToast('Added to Wishlist!');
-                console.log('Wishlist:', wishlist);
-            }
+        function createButtonListener(loveAction) {
+            return function (event) {
+                var cards = document.querySelectorAll('.tinder--card:not(.removed)');
+                var moveOutWidth = document.body.clientWidth * 1.5;
+
+                if (!cards.length) return false;
+
+                var card = cards[0];
+                var productIndex = card.dataset.index;
+                const selectedSize = card.querySelector('select').value;
+
+                card.classList.add('removed');
+
+                if (loveAction) {
+                    card.style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
+                    addToCart(products[productIndex], selectedSize);
+                } else {
+                    card.style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
+                    addToWishlist(products[productIndex], selectedSize);
+                }
+
+                initCards();
+                event.preventDefault();
+            };
         }
 
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            toast.textContent = message;
-            toast.style.display = 'block';
-            setTimeout(() => {
-                toast.style.display = 'none';
-            }, 2000);
+        nope.addEventListener('click', createButtonListener(false));
+        love.addEventListener('click', createButtonListener(true));
+    }
 
+    document.addEventListener('DOMContentLoaded', () => {
+        createProductCards();
+        initializeSwipe();
+    });
+
+    function addToWishlist(product, size) {
+        if (!wishlist.find(item => item.title === product.title)) {
+            wishlist.push({...product, size});
+            localStorage.setItem('wishlist', JSON.stringify(wishlist));
+            showToast('Added to Wishlist!');
         }
-        async function openTryOnCamera() {
-            // Create modal container
-            const previewModal = document.createElement('div');
-            previewModal.style.cssText = `
+    }
+
+    function addToCart(product, size) {
+        if (!cart.find(item => item.title === product.title)) {
+            cart.push({...product, size});
+            localStorage.setItem('cart', JSON.stringify(cart));
+            showToast('Added to Cart!');
+        }
+    }
+
+
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        toast.textContent = message;
+        toast.style.display = 'block';
+        setTimeout(() => {
+            toast.style.display = 'none';
+        }, 2000);
+
+    }
+    async function openTryOnCamera() {
+        // Create modal container
+        const previewModal = document.createElement('div');
+        previewModal.style.cssText = `
         position: fixed;
         top: 0;
         left: 0;
@@ -827,9 +860,9 @@
         z-index: 1001;
     `;
 
-            // Create video container
-            const videoContainer = document.createElement('div');
-            videoContainer.style.cssText = `
+        // Create video container
+        const videoContainer = document.createElement('div');
+        videoContainer.style.cssText = `
         width: 90%;
         max-width: 500px;
         position: relative;
@@ -838,21 +871,21 @@
         border-radius: 16px;
     `;
 
-            // Create video element
-            const video = document.createElement('video');
-            video.style.cssText = `
+        // Create video element
+        const video = document.createElement('video');
+        video.style.cssText = `
         width: 100%;
         border-radius: 12px;
         transform: scaleX(-1);
     `;
-            video.autoplay = true;
-            video.playsInline = true;
-            video.muted = true;
+        video.autoplay = true;
+        video.playsInline = true;
+        video.muted = true;
 
-            // Create product overlay image
-            const productOverlay = document.createElement('img');
-            productOverlay.src = document.getElementById('detailImage').src;
-            productOverlay.style.cssText = `
+        // Create product overlay image
+        const productOverlay = document.createElement('img');
+        productOverlay.src = document.getElementById('detailImage').src;
+        productOverlay.style.cssText = `
         position: absolute;
         top: 50%;
         left: 50%;
@@ -863,90 +896,90 @@
         pointer-events: none;
     `;
 
-            // Create controls
-            const controls = document.createElement('div');
-            controls.style.cssText = `
+        // Create controls
+        const controls = document.createElement('div');
+        controls.style.cssText = `
         display: flex;
         justify-content: center;
         gap: 12px;
         margin-top: 15px;
     `;
 
-            // Create capture button
-            const captureBtn = document.createElement('button');
-            captureBtn.textContent = 'Capture';
-            captureBtn.className = 'capture-btn';
+        // Create capture button
+        const captureBtn = document.createElement('button');
+        captureBtn.textContent = 'Capture';
+        captureBtn.className = 'capture-btn';
 
-            // Create close button
-            const closeBtn = document.createElement('button');
-            closeBtn.textContent = 'Close';
-            closeBtn.className = 'close-btn';
+        // Create close button
+        const closeBtn = document.createElement('button');
+        closeBtn.textContent = 'Close';
+        closeBtn.className = 'close-btn';
 
-            // Add buttons to controls
-            controls.appendChild(captureBtn);
-            controls.appendChild(closeBtn);
+        // Add buttons to controls
+        controls.appendChild(captureBtn);
+        controls.appendChild(closeBtn);
 
-            // Add elements to containers
-            videoContainer.appendChild(video);
-            videoContainer.appendChild(productOverlay);
-            videoContainer.appendChild(controls);
-            previewModal.appendChild(videoContainer);
+        // Add elements to containers
+        videoContainer.appendChild(video);
+        videoContainer.appendChild(productOverlay);
+        videoContainer.appendChild(controls);
+        previewModal.appendChild(videoContainer);
 
-            // Add modal to body
-            document.body.appendChild(previewModal);
+        // Add modal to body
+        document.body.appendChild(previewModal);
 
-            try {
-                const stream = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        facingMode: "user",
-                        width: {ideal: 1280},
-                        height: {ideal: 720}
-                    }
-                });
-                video.srcObject = stream;
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: {
+                    facingMode: "user",
+                    width: {ideal: 1280},
+                    height: {ideal: 720}
+                }
+            });
+            video.srcObject = stream;
 
-                // Handle capture
-                captureBtn.onclick = () => {
-                    const canvas = document.createElement('canvas');
-                    canvas.width = video.videoWidth;
-                    canvas.height = video.videoHeight;
-                    const ctx = canvas.getContext('2d');
-                    ctx.scale(-1, 1); // Flip horizontally
-                    ctx.translate(-canvas.width, 0);
-                    ctx.drawImage(video, 0, 0);
+            // Handle capture
+            captureBtn.onclick = () => {
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.scale(-1, 1); // Flip horizontally
+                ctx.translate(-canvas.width, 0);
+                ctx.drawImage(video, 0, 0);
 
-                    // Save the captured image or do something with it
-                    const capturedImage = canvas.toDataURL('image/png');
-                    console.log('Captured image:', capturedImage);
+                // Save the captured image or do something with it
+                const capturedImage = canvas.toDataURL('image/png');
+                console.log('Captured image:', capturedImage);
 
-                    // Clean up
-                    stream.getTracks().forEach(track => track.stop());
-                    document.body.removeChild(previewModal);
-
-                    // Show success message
-                    showToast('Photo captured successfully!');
-                };
-
-                // Handle close
-                closeBtn.onclick = () => {
-                    stream.getTracks().forEach(track => track.stop());
-                    document.body.removeChild(previewModal);
-                };
-
-            } catch (err) {
-                console.error('Camera error:', err);
+                // Clean up
+                stream.getTracks().forEach(track => track.stop());
                 document.body.removeChild(previewModal);
-                alert('Could not access camera. Please check permissions.');
-            }
+
+                // Show success message
+                showToast('Photo captured successfully!');
+            };
+
+            // Handle close
+            closeBtn.onclick = () => {
+                stream.getTracks().forEach(track => track.stop());
+                document.body.removeChild(previewModal);
+            };
+
+        } catch (err) {
+            console.error('Camera error:', err);
+            document.body.removeChild(previewModal);
+            alert('Could not access camera. Please check permissions.');
         }
-        function closeCart() {
-            document.getElementById('cartModal').style.display = 'none';
-            document.getElementById('cardStack').classList.remove('blurred');
-            document.getElementById('viewCartBtn').classList.remove('blurred');
-            document.getElementById('Wishlist').classList.remove('blurred');
-        }
+    }
+    function closeCart() {
+        document.getElementById('cartModal').style.display = 'none';
+        document.getElementById('cardStack').classList.remove('blurred');
+        document.getElementById('viewCartBtn').classList.remove('blurred');
+        document.getElementById('Wishlist').classList.remove('blurred');
+    }
 
 
-    </script>
+</script>
 </body>
 </html>

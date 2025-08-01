@@ -7,6 +7,7 @@
     <title>Aphrelle - Discover</title>
     <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
     <style>
         * {
             margin: 0;
@@ -16,12 +17,13 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+            background: linear-gradient(135deg, #f7f3e3 0%, #f2e7d3 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            overflow: hidden;
         }
 
         .container {
@@ -32,287 +34,10 @@
             padding: 20px;
             width: 100%;
             max-width: 400px;
-            height: 80vh;
+            height: 85vh;
             position: relative;
             overflow: hidden;
         }
-
-        .card-stack {
-            position: relative;
-            width: 100%;
-            height: calc(100% - 60px);
-        }
-
-        .product-card {
-            width: 90%;
-            height: 100%;
-            background: #fff;
-            border-radius: 15px;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            transform-origin: 50% 100%;
-            cursor: grab;
-            user-select: none;
-            touch-action: none;
-            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
-            will-change: transform;
-            backface-visibility: hidden;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            display: flex;
-            flex-direction: column;
-            overflow-y: auto;
-            overflow-x: visible;
-            padding: 10px;
-        }
-
-        .product-image {
-            width: 100%;
-            max-height: 55%;
-            height: auto;
-            object-fit: cover;
-            border-radius: 12px;
-            flex-shrink: 0;
-            overflow: hidden;
-
-        }
-        .product-image-container {
-            width: 100%;
-            aspect-ratio: 1 / 1; /* Force square aspect ratio */
-            position: relative;
-            overflow: hidden;
-            border-radius: 12px;
-            margin-bottom: 15px;
-        }
-
-        .product-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-
-
-        .product-info {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1rem;
-            padding-bottom: 70px !important;
-            color: #333;
-            background: #fff;
-            margin-top: 10px;
-            border-radius: 10px;
-            box-sizing: border-box;
-            position: relative;
-        }
-
-
-
-        .product-info::-webkit-scrollbar {
-            width: 6px;
-        }
-        .product-info::-webkit-scrollbar-thumb {
-            background-color: rgba(0, 0, 0, 0.1);
-            border-radius: 4px;
-        }
-
-
-        .product-card:nth-child(1) {
-            z-index: 3;
-            transform: translateX(-50%) scale(1);
-            opacity: 1;
-        }
-
-        .product-card:nth-child(2) {
-            z-index: 2;
-            transform: translateX(-50%) scale(0.95) translateY(10px);
-            opacity: 0.2;
-        }
-
-        .product-card:nth-child(3) {
-            z-index: 1;
-            transform: translateX(-50%) scale(0.9) translateY(20px);
-            opacity: 0.1;
-        }
-
-        .product-card:nth-child(n+4) {
-            z-index: 0;
-            transform: translateX(-50%) scale(0.85) translateY(30px);
-            opacity: 0.05;
-        }
-
-
-
-
-        .product-title {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        .product-brand {
-            color: #666;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        .product-price {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #fea41c;
-            margin-bottom: 10px;
-        }
-
-        .product-description {
-            font-size: 0.9rem;
-            color: #666;
-            margin-bottom: 15px;
-            line-height: 1.5;
-        }
-
-        .product-options {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 10px;
-            max-width: 100%;
-            overflow: visible;
-            padding: 5px 0;
-        }
-
-        .size-option, .color-option {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            border: 2px solid #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 0.8rem;
-            position: relative;
-            flex-shrink: 0;
-        }
-
-        .color-option {
-            border: none;
-        }
-
-        .swipe-indicators {
-            position: absolute;
-            top: 50%;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 0 30px;
-            pointer-events: none;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .swipe-indicator {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            color: white;
-            transition: opacity 0.3s ease, transform 0.3s ease;
-            transform: scale(0.8);
-        }
-
-        .swipe-indicator.active {
-            transform: scale(1);
-        }
-
-        .swipe-left {
-            background: rgba(255, 87, 87, 0.8);
-            position: absolute;
-            top: 20px;
-            left: 0%;
-            opacity: 0%;
-
-        }
-
-        .swipe-right {
-            background: rgba(70, 195, 120, 0.8);
-            position: absolute;
-            top: 20px;
-            left: 66.66%;
-            opacity:0%
-
-        }
-
-        .swipe-up {
-            background: rgba(102, 126, 234, 0.8);
-            position: absolute;
-            top: 20px;
-            left: 33.33%;
-            transform: translateX(-50%);
-            opacity:0%
-        }
-
-        .overlay-text {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2rem;
-            font-weight: bold;
-            padding: 15px 30px;
-            border-radius: 10px;
-            opacity: 0;
-            transition: opacity 0.2s ease;
-            z-index: 10;
-        }
-
-        .overlay-nope {
-            color: #ff5757;
-            border: 3px solid #ff5757;
-            transform: translate(-50%, -50%);
-        }
-
-        .overlay-like {
-            color: #46c378;
-            border: 3px solid #46c378;
-            transform: translate(-50%, -50%);
-        }
-
-        .overlay-info {
-            color: #667eea;
-            border: 3px solid #667eea;
-        }
-
-        .color-swatch:hover {
-            transform: scale(1.1);
-            transition: transform 0.2s ease;
-        }
-        .tryon-button {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 100;
-            background-color: black;
-            border: 2px solid #fea41c;
-            color: #fea41c;
-            border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .blurred {
-            filter: blur(5px);
-            pointer-events: none; /* Prevent clicking/swiping on blurred content */
-        }
-
-
 
         .modal {
             display: none;
@@ -343,7 +68,7 @@
 
         .camera-container {
             width: 100%;
-            height: calc(100% - 120px); /* Account for header and controls */
+            height: calc(100% - 120px);
             display: flex;
             justify-content: center;
             align-items: center;
@@ -393,154 +118,260 @@
             border: none;
         }
 
-
-            .tryon-button:hover {
-            background-color: #fea41c;
-            color: black;
+    </style>
+    <style>
+        .hamburger {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 1.8rem;
+            cursor: pointer;
+            z-index: 1001;
+            color: #fea41c;
+            background: black;
+            border-radius: 6px;
+            padding: 5px 12px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
         }
-        .product-header {
-            margin-bottom: 12px;
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -250px;
+            width: 250px;
+            height: 100%;
+            background-color: black;
+            padding: 20px;
+            transition: right 0.3s ease-in-out;
+            z-index: 1000;
+            box-shadow: -2px 0 6px rgba(0,0,0,0.3);
         }
 
-        .product-options-container {
-            margin: 15px 0;
-        }
-
-        .button-container {
-            position: absolute;
-            bottom: 15px;
-            left: 0;
+        .sidebar.active {
             right: 0;
+        }
+
+        .sidebar-header {
             text-align: center;
-            padding: 0 15px;
-            background: linear-gradient(to top, rgba(255,255,255,1) 50%, rgba(255,255,255,0));
-            padding-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        .sidebar .profile-pic {
+            width: 80px;
+            height: 80px;
+            aspect-ratio: 1 / 1;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fea41c;
+            display: block;
+            margin: 0 auto;
         }
 
 
-        /* Add padding to product-info to prevent overlap */
-        .product-info {
-            padding-bottom: 60px !important; /* Ensure space for the button */
-        }
-        @keyframes swipeLeft {
-            from {
-                transform: translateX(-50%) translate(0) rotate(0deg);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(-50%) translate(-150%, 0) rotate(0deg);
-                opacity: 0;
-            }
+        .sidebar .username {
+            margin-top: 10px;
+            font-size: 1.1rem;
+            color: #fea41c;
         }
 
-        @keyframes swipeRight {
-            from {
-                transform: translateX(-50%) translate(0) rotate(0deg);
-                opacity: 1;
-            }
-            to {
-                transform: translateX(-50%) translate(0,-150%) rotate(0deg);
-                opacity: 0;
-            }
+        .sidebar a {
+            display: block;
+            padding: 10px 0;
+            color:#fea41c;
+            text-decoration: none;
+            border-bottom: 1px solid #333;
+            transition: background 0.2s;
         }
 
-        @keyframes swipeUp {
-            from {
-                transform: translateX(-50%) translate(0, 0) scale(1);
-                opacity: 1;
+        .sidebar a:hover {
+            background-color: #222;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.3);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+    </style>
+    <style>
+        *, *:before, *:after {
+            box-sizing: border-box;
+            padding: 0;
+            margin: 0;
+        }
+
+        .tinder {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.1s ease-in-out;
+        }
+        .loaded.tinder {
+            opacity: 1;
+        }
+        .tinder--status {
+            position: absolute;
+            top: 50%;
+            margin-top: -30px;
+            z-index: 2;
+            width: 100%;
+            text-align: center;
+            pointer-events: none;
+        }
+        .tinder--status i {
+            font-size: 100px;
+            opacity: 0;
+            transform: scale(0.3);
+            transition: all 0.2s ease-in-out;
+            position: absolute;
+            width: 100px;
+            margin-left: -50px;
+        }
+        .tinder_love .fa-heart {
+            color: #FFACE4;
+            opacity: 0.7;
+            transform: scale(1);
+        }
+        .tinder_nope .fa-remove {
+            color: #CDD6DD;
+            opacity: 0.7;
+            transform: scale(1);
+        }
+        .tinder--cards {
+            flex-grow: 1;
+            padding-top: 40px;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1;
+        }
+        .tinder--card {
+            display: inline-block;
+            width: 90vw;
+            max-width: 350px;
+            height: 70vh; /* Adjusted card height */
+            background: #FFFFFF;
+            padding-bottom: 40px;
+            border-radius: 8px;
+            overflow: hidden;
+            position: absolute;
+            will-change: transform;
+            transition: all 0.3s ease-in-out;
+            cursor: -webkit-grab;
+            cursor: -moz-grab;
+            cursor: grab;
+        }
+        .moving.tinder--card {
+            transition: none;
+            cursor: -webkit-grabbing;
+            cursor: -moz-grabbing;
+            cursor: grabbing;
+        }
+        .tinder--card img {
+            width: 100%;
+            height: 55%; /* Adjusted image height */
+            object-fit: cover;
+            pointer-events: none;
+        }
+        .tinder--card h3 {
+            margin-top: 16px;
+            font-size: 22px;
+            padding: 0 16px;
+            pointer-events: none;
+            text-align: left;
+        }
+        .tinder--card .card-price {
+            margin-top: 8px;
+            font-size: 18px;
+            padding: 0 16px;
+            color: #fea41c;
+            font-weight: bold;
+            pointer-events: none;
+            text-align: left;
+        }
+        .tinder--card .card-desc {
+            font-size: 14px;
+            color: #555;
+            padding: 8px 16px;
+            text-align: left;
+            pointer-events: none;
+            height: 60px; /* Limit height for description */
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .swipe-up-indicator {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: #aaa;
+            animation: bounce 2s infinite;
+            pointer-events: none;
+        }
+        .swipe-up-indicator i {
+            font-size: 20px;
+        }
+        .swipe-up-indicator p {
+            font-size: 12px;
+            margin: 0;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translate(-50%, 0);
             }
-            to {
-                transform: translateX(-50%) translate(0, -150%) scale(0.8);
-                opacity: 0;
+            40% {
+                transform: translate(-50%, -10px);
             }
+            60% {
+                transform: translate(-50%, -5px);
+            }
+        }
+        .tinder--buttons {
+            flex: 0 0 100px;
+            text-align: center;
+            padding-top: 40px;
+            z-index: 5;
+        }
+        .tinder--buttons button {
+            border-radius: 50%;
+            line-height: 60px;
+            width: 60px;
+            border: 0;
+            background: #FFFFFF;
+            display: inline-block;
+            margin: 0 8px;
+        }
+        .tinder--buttons button:focus {
+            outline: 0;
+        }
+        .tinder--buttons i {
+            font-size: 32px;
+            vertical-align: middle;
+        }
+        .fa-heart {
+            color: #FFACE4;
+        }
+        .fa-remove {
+            color: #CDD6DD;
         }
     </style>
-</head>
-<style>
-    .hamburger {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        font-size: 1.8rem;
-        cursor: pointer;
-        z-index: 1001;
-        color: #fea41c;
-        background: black;
-        border-radius: 6px;
-        padding: 5px 12px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-    }
-
-    .sidebar {
-        position: fixed;
-        top: 0;
-        right: -250px;
-        width: 250px;
-        height: 100%;
-        background-color: black;
-        color: rgba(0,0,0,0.3);
-        padding: 20px;
-        transition: right 0.3s ease-in-out;
-        z-index: 1000;
-        box-shadow: -2px 0 6px rgba(0,0,0,0.3);
-    }
-
-    .sidebar.active {
-        right: 0;
-    }
-
-    .sidebar-header {
-        text-align: center;
-        margin-bottom: 20px;
-    }
-
-    .sidebar .profile-pic {
-        width: 80px;
-        height: 80px;
-        aspect-ratio: 1 / 1;
-        border-radius: 50%;
-        object-fit: cover;
-        border: 3px solid #fea41c;
-        display: block;
-        margin: 0 auto;
-    }
-
-
-    .sidebar .username {
-        margin-top: 10px;
-        font-size: 1.1rem;
-        color: #fea41c;
-    }
-
-    .sidebar a {
-        display: block;
-        padding: 10px 0;
-        color:#fea41c;
-        text-decoration: none;
-        border-bottom: 1px solid #333;
-        transition: background 0.2s;
-    }
-
-    .sidebar a:hover {
-        background-color: #222;
-    }
-
-    .overlay {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: rgba(0,0,0,0.3);
-        display: none;
-        z-index: 999;
-    }
-
-    .overlay.active {
-        display: block;
-    }
-
-</style>
 <body>
 <div class="hamburger" onclick="toggleSidebar()">☰</div>
 
@@ -572,7 +403,8 @@
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.3s ease;
-" onmouseover="this.style.backgroundColor='#fea41c'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='#fea41c';">
+
+" onclick="window.location.href='cart.html'" onmouseover="this.style.backgroundColor='#fea41c'; this.style.color='black';" onmouseout="this.style.backgroundColor='black'; this.style.color='#fea41c';">
             View Cart
         </button>
         <button id="Wishlist" style="
@@ -594,16 +426,21 @@
             Wishlist
         </button>
     </div>
-    <div class="card-stack" id="cardStack">
+    <div class="tinder">
+        <div class="tinder--status">
+            <i class="fa fa-remove"></i>
+            <i class="fa fa-heart"></i>
+        </div>
 
+        <div class="tinder--cards">
+        </div>
 
+        <div class="tinder--buttons">
+            <button id="nope"><i class="fa fa-remove"></i></button>
+            <button id="love"><i class="fa fa-heart"></i></button>
+        </div>
     </div>
-    <div class="swipe-indicators">
-        <div class="swipe-indicator swipe-left"><i class="fas fa-times"></i></div>
-        <div class="swipe-indicator swipe-up"><i class="fas fa-info"></i></div>
-        <div class="swipe-indicator swipe-right"><i class="fas fa-heart"></i></div>
-    </div>
-<div id="cartModal" style="
+    <div id="cartModal" style="
     display: none;
     position: fixed;
     top: 50%;
@@ -620,9 +457,9 @@
     overflow-y: auto;
     box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 ">
-    <h2 style="margin-bottom: 10px;">Your Cart</h2>
-    <div id="cartItems"></div>
-    <button onclick="window.location.href='cart.html'" style="
+        <h2 style="margin-bottom: 10px;">Your Cart</h2>
+        <div id="cartItems"></div>
+        <button onclick="window.location.href='cart.html'" style="
         margin-top: 15px;
         background: #fea41c;
         color: white;
@@ -630,7 +467,7 @@
         padding: 8px 12px;
         border-radius: 6px;
         cursor: pointer;">To Cart</button>
-    <button onclick="closeCart()" style="
+        <button onclick="closeCart()" style="
     margin-top: 15px;
     background: #fea41c;
     color: white;
@@ -640,8 +477,8 @@
     cursor: pointer;
 ">Close</button>
 
-</div>
-<div id="productDetailModal" style="
+    </div>
+    <div id="productDetailModal" style="
     display: none;
     position: fixed;
     top: 50%;
@@ -652,20 +489,30 @@
     padding: 20px;
     border-radius: 12px;
     z-index: 9999;
-    width: 80%;
+    width: 90%;
     max-width: 400px;
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 ">
-    <h2 id="detailTitle"></h2>
-    <p id="detailBrand" style="color: #666; font-size: 0.9rem;"></p>
-    <img id="detailImage" style="width: 100%; border-radius: 10px; margin: 10px 0;" />
-    <p id="detailPrice" style="color: #fea41c; font-weight: bold;"></p>
-    <p id="detailDescription" style="margin: 10px 0;"></p>
-    <button class="tryon-button" onclick="openTryOnCamera()">3D Try-On</button>
-    <button onclick="document.getElementById('productDetailModal').style.display='none'" style="
+        <h2 id="detailTitle"></h2>
+        <p id="detailBrand" style="color: #666; font-size: 0.9rem; margin-bottom: 10px;"></p>
+        <img id="detailImage" style="width: 100%; border-radius: 10px; margin: 10px 0;" />
+        <p id="detailPrice" style="color: #fea41c; font-weight: bold; font-size: 1.2rem;"></p>
+        <p id="detailDescription" style="margin: 10px 0;"></p>
+
+        <div id="detailSizes" style="margin: 15px 0;">
+            <strong>Available Sizes:</strong> <span id="sizeList"></span>
+        </div>
+        <div id="detailColors" style="margin: 15px 0; display: flex; align-items: center; gap: 10px;">
+            <strong>Colors:</strong>
+            <div id="colorList" style="display: flex; gap: 8px;"></div>
+        </div>
+
+        <button class="tryon-button" onclick="openTryOnCamera()" style="width: 100%; padding: 10px; margin-top: 10px; background: #333; color: #fea41c; border: 1px solid #fea41c; border-radius: 8px;">3D Try-On</button>
+        <button onclick="document.getElementById('productDetailModal').style.display='none'" style="
         margin-top: 10px;
+        width: 100%;
         background: #fea41c;
         color: white;
         border: none;
@@ -673,11 +520,9 @@
         border-radius: 6px;
         cursor: pointer;
     ">Close</button>
+    </div>
 
-
-
-</div>
-<div id="editModal" style="
+    <div id="editModal" style="
     display: none;
     position: fixed;
     top: 50%;
@@ -692,22 +537,22 @@
     max-width: 400px;
     box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 ">
-    <h3 id="editTitle"></h3>
-    <p id="editBrand" style="color: #666; font-size: 0.9rem;"></p>
-    <label for="editSize">Size:</label>
-    <select id="editSize" style="display:block; width:100%; padding:8px; margin:10px 0;"></select>
-    <label for="editColor">Color:</label>
-    <div id="editColorOptions" style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0;"></div>
+        <h3 id="editTitle"></h3>
+        <p id="editBrand" style="color: #666; font-size: 0.9rem;"></p>
+        <label for="editSize">Size:</label>
+        <select id="editSize" style="display:block; width:100%; padding:8px; margin:10px 0;"></select>
+        <label>Color:</label>
+        <div id="editColorOptions" style="display:flex; gap:10px; flex-wrap:wrap; margin:10px 0;"></div>
 
 
-    <button onclick="applyEdit()" style="margin-right: 10px; background: #fea41c; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
-        Save
-    </button>
-    <button onclick="document.getElementById('editModal').style.display='none'" style="background: #ccc; color: black; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
-        Cancel
-    </button>
-</div>
-<div id="toast" style="
+        <button onclick="applyEdit()" style="margin-right: 10px; background: #fea41c; color: white; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+            Save
+        </button>
+        <button onclick="document.getElementById('editModal').style.display='none'" style="background: #ccc; color: black; border: none; padding: 8px 12px; border-radius: 6px; cursor: pointer;">
+            Cancel
+        </button>
+    </div>
+    <div id="toast" style="
     position: fixed;
     bottom: 30px;
     left: 50%;
@@ -721,11 +566,12 @@
     z-index: 9999;
     box-shadow: 0 6px 20px rgba(0,0,0,0.3);
 ">
-    Added to Wishlist!
+        Added to Wishlist!
+    </div>
     <!-- Try-On Modal -->
     <div id="tryOnModal" class="modal">
         <div class="modal-content centered-tryon">
-            <span class="close" onclick="closeTryOn()">&times;</span>
+            <span class="close" onclick="closeTryOn()">×</span>
             <h2 style="text-align: center; color: white; margin-bottom: 15px;">3D Try-On</h2>
             <div class="camera-container">
                 <video id="cameraFeed" autoplay playsinline muted></video>
@@ -738,42 +584,41 @@
         </div>
     </div>
 
+</div>
 
 
-
-<script>
+    <script>
         function toggleSidebar() {
-        document.getElementById("sidebar").classList.toggle("active");
-        document.getElementById("overlay").classList.toggle("active");
-    }
+            document.getElementById("sidebar").classList.toggle("active");
+            document.getElementById("overlay").classList.toggle("active");
+        }
 
-
-let wishlist = [];
-    let cart = [];
-      const products =  [
-          {
-              "image": "image5.png",
-              "title": "Colorblock Pullover Hoodie",
-              "brand": "SHEIN",
-              "price": "$32.99",
-              "description": "Cozy royal blue hoodie with neon green contrast trims. Features a front kangaroo pocket and adjustable drawstrings for comfort.",
-              "sizes": ["S", "M", "L", "XL"],
-              "colors": ["#2e4dbb", "#a9f2b3"]
-          },
-          {
-              "image": "image8.png",
-              "title": "Embroidered Denim Shirt",
-              "brand": "ZARA",
-              "price": "$35.99",
-              "description": "Casual light-wash denim shirt featuring subtle floral embroidery. Designed with a relaxed boxy silhouette.",
-              "sizes": ["S", "M", "L", "XL"],
-              "colors": ["#6b8fa2"]
-          },
+        let wishlist = [];
+        let cart = [];
+        const products =  [
+            {
+                "image": "image5.png",
+                "title": "Colorblock Pullover Hoodie",
+                "brand": "SHEIN",
+                "price": "₹599",
+                "description": "Cozy royal blue hoodie with neon green contrast trims. Features a front kangaroo pocket and adjustable drawstrings for comfort.",
+                "sizes": ["S", "M", "L", "XL"],
+                "colors": ["#2e4dbb", "#a9f2b3"]
+            },
+            {
+                "image": "image8.png",
+                "title": "Embroidered Denim Shirt",
+                "brand": "ZARA",
+                "price": "₹599",
+                "description": "Casual light-wash denim shirt featuring subtle floral embroidery. Designed with a relaxed boxy silhouette.",
+                "sizes": ["S", "M", "L", "XL"],
+                "colors": ["#6b8fa2"]
+            },
             {
                 "image": "image1.png",
                 "title": "Warrior Owl Graphic T-Shirt",
                 "brand": "SHEIN",
-                "price": "$17.99",
+                "price": "₹599",
                 "description": "Soft beige oversized tee featuring a detailed warrior owl graphic with medieval elements. Made from lightweight cotton for a relaxed fit.",
                 "sizes": ["S", "M", "L", "XL"],
                 "colors": ["#f5ebd8", "#5b3c2b"]
@@ -782,565 +627,177 @@ let wishlist = [];
                 "image": "image2.png",
                 "title": "Patchwork Fruit Print Dress",
                 "brand": "SHEIN",
-                "price": "$27.99",
+                "price": "₹279",
                 "description": "A sleeveless mini dress with a vibrant patchwork design featuring fruits and floral motifs. Lightweight and perfect for summer outings.",
                 "sizes": ["XS", "S", "M", "L"],
                 "colors": ["#f9a94b", "#ff6f61", "#3c7c3d"]
-            },
-          {
-              "image": "image10.png",
-              "title": "Contrast Trim T-Shirt",
-              "brand": "ZARA",
-              "price": "$22.99",
-              "description": "Casual forest green tee with white contrast trims on the neck and sleeves. Comfortable cotton blend, perfect for daily wear.",
-              "sizes": ["S", "M", "L", "XL"],
-              "colors": ["#1c3328", "#ffffff"]
-          },
-            {
-                "image": "image3.png",
-                "title": "Heart Print Belted Shirt Dress",
-                "brand": "SHEIN",
-                "price": "$29.99",
-                "description": "Black button-down shirt dress adorned with colorful heart prints. Comes with a fabric belt for a flattering, cinched waistline.",
-                "sizes": ["S", "M", "L", "XL"],
-                "colors": ["#000000", "#f28dc6", "#5ec5ff"]
-            },
-            {
-                "image": "image4.png",
-                "title": "Black Panther Graphic Tee",
-                "brand": "Marvel x H&M",
-                "price": "$24.99",
-                "description": "Oversized black t-shirt with bold purple Black Panther artwork. Crafted from breathable cotton with a relaxed streetwear style.",
-                "sizes": ["S", "M", "L", "XL"],
-                "colors": ["#000000", "#3b2a50"]
-            },
-            {
-                "image": "image6.png",
-                "title": "Distressed Denim Shirt",
-                "brand": "ZARA",
-                "price": "$39.99",
-                "description": "A rugged washed denim shirt featuring distressed details and dual chest pockets. Perfect for casual layering.",
-                "sizes": ["S", "M", "L", "XL"],
-                "colors": ["#44506b"]
-            },
-            {
-                "image": "image7.png",
-                "title": "Blue Floral Hawaiian Shirt",
-                "brand": "H&M",
-                "price": "$25.99",
-                "description": "Light beige short-sleeved shirt with striking blue floral prints. Relaxed fit, ideal for summer vacations.",
-                "sizes": ["S", "M", "L", "XL"],
-                "colors": ["#f7f1e1", "#1f4b9c"]
-            },
-            {
-                "image": "image9.png",
-                "title": "Burgundy Knit Polo",
-                "brand": "ZARA",
-                "price": "$28.99",
-                "description": "Short-sleeve knit polo shirt in rich burgundy color. Soft fabric and minimalistic design for a classy casual look.",
-                "sizes": ["S", "M", "L", "XL"],
-                "colors": ["#6b2023"]
             }
-        ]
+        ];
 
-
-        let currentCardIndex = 0;
-    let cardStack = [];
-
-    // Initialize the app
-    document.addEventListener('DOMContentLoaded', () => {
-        generateInitialCards();
-        setupSwipeHandlers();
-        updateCounter();
-    });
-
-    function generateInitialCards() {
-        const stackContainer = document.getElementById('cardStack');
-
-        // Generate first 4 cards for the stack
-        for (let i = 0; i < Math.min(4, products.length); i++) {
-            const card = createCard(products[i], i);
-            stackContainer.appendChild(card);
-            cardStack.push(card);
-        }
-    }
-    function createCard(product, index) {
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.dataset.index = index;
-        card.selectedSize = null;
-        card.selectedColor = null;
-
-        card.innerHTML = `
-        <img src="${product.image}" alt="${product.title}" class="product-image">
-        <div class="product-info">
-            <h2 class="product-title">${product.title}</h2>
-            <p class="product-brand">${product.brand}</p>
-            <p class="product-price">${product.price}</p>
-            <p class="product-description">${product.description}</p>
-
-            <div class="product-options sizes">
-                ${product.sizes.map(size => `<div class="size-option">${size}</div>`).join('')}
-            </div>
-            <div class="product-options colors">
-                ${product.colors.map(color => `<div class="color-option" style="background: ${color}${color === '#fff' ? '; border: 1px solid #ddd' : ''}" data-color="${color}"></div>`).join('')}
-            </div>
-            <div style="text-align: right; margin-top: 8px;">
-                <button onclick="addToWishlist(${index})" style="
-                    background: none;
-                    border: none;
-                    color: #e91e63;
-                    font-size: 1.3rem;
-                    cursor: pointer;
-                " title="Add to Wishlist">
-                    <i class="fas fa-heart"></i>
-                </button>
-            </div>
-        </div>
-                    <button class="tryon-button" onclick="openTryOnCamera()">3D Try-On</button>
-    `;
-
-        // Add overlay texts
-        const overlays = {
-            nope: createOverlay('NOPE', 'overlay-nope'),
-            like: createOverlay('LIKE', 'overlay-like'),
-            info: createOverlay('MORE INFO', 'overlay-info')
-        };
-        Object.values(overlays).forEach(overlay => card.appendChild(overlay));
-        card.overlays = overlays;
-
-        // Handle size selection
-        card.querySelectorAll('.size-option').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                card.querySelectorAll('.size-option').forEach(b => b.style.border = '2px solid #ddd');
-                btn.style.border = '2px solid #fea41c';
-                card.selectedSize = btn.textContent;
+        function createProductCards() {
+            const cardsContainer = document.querySelector('.tinder--cards');
+            cardsContainer.innerHTML = '';
+            products.forEach(product => {
+                const card = document.createElement('div');
+                card.classList.add('tinder--card');
+                card.innerHTML = `
+                    <img src="${product.image}">
+                    <h3>${product.title}</h3>
+                    <p class="card-price">${product.price}</p>
+                    <p class="card-desc">${product.description}</p>
+                    <div class="swipe-up-indicator">
+                        <i class="fa fa-chevron-up"></i>
+                        <p>Details</p>
+                    </div>
+                `;
+                cardsContainer.appendChild(card);
             });
-        });
+        }
 
-        // Handle color selection
-        card.querySelectorAll('.color-option').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                card.querySelectorAll('.color-option').forEach(b => b.style.outline = 'none');
-                btn.style.outline = '2px solid #fea41c';
-                card.selectedColor = btn.dataset.color;
+        function showProductDetails(productIndex) {
+            const product = products[productIndex];
+            if (!product) return;
+
+            document.getElementById('detailTitle').textContent = product.title;
+            document.getElementById('detailBrand').textContent = product.brand;
+            document.getElementById('detailImage').src = product.image;
+            document.getElementById('detailPrice').textContent = product.price;
+            document.getElementById('detailDescription').textContent = product.description;
+
+            document.getElementById('sizeList').textContent = product.sizes.join(', ');
+
+            const colorList = document.getElementById('colorList');
+            colorList.innerHTML = '';
+            product.colors.forEach(color => {
+                const colorDot = document.createElement('span');
+                colorDot.style.width = '20px';
+                colorDot.style.height = '20px';
+                colorDot.style.backgroundColor = color;
+                colorDot.style.borderRadius = '50%';
+                colorDot.style.border = '1px solid #ddd';
+                colorList.appendChild(colorDot);
             });
-        });
 
-        return card;
-    }
-
-
-
-    function createOverlay(text, className) {
-        const overlay = document.createElement('div');
-        overlay.textContent = text;
-        overlay.className = `overlay-text ${className}`;
-        return overlay;
-    }
-
-    function addNewCard() {
-        const nextIndex = currentCardIndex + cardStack.length;
-        if (nextIndex < products.length) {
-            const newCard = createCard(products[nextIndex], nextIndex);
-            const stackContainer = document.getElementById('cardStack');
-            stackContainer.appendChild(newCard);
-            cardStack.push(newCard);
-            updateCardPositions();
-        }
-    }
-
-    function removeTopCard() {
-        if (cardStack.length > 0) {
-            const topCard = cardStack.shift();
-            setTimeout(() => {
-                if (topCard.parentNode) {
-                    topCard.parentNode.removeChild(topCard);
-                }
-            }, 500);
-
-            currentCardIndex++;
-            updateCardPositions();
-            addNewCard();
-            updateCounter();
-        }
-    }
-
-    function updateCardPositions() {
-        cardStack.forEach((card, index) => {
-            card.style.zIndex = cardStack.length - index;
-
-            if (index === 0) {
-                card.style.transform = 'translateX(-50%) scale(1)';
-                card.style.opacity = '1';
-            } else if (index === 1) {
-                card.style.transform = 'translateX(-50%) scale(0.95) translateY(10px)';
-                card.style.opacity = '0.2';
-            } else if (index === 2) {
-                card.style.transform = 'translateX(-50%) scale(0.9) translateY(20px)';
-                card.style.opacity = '0.1';
-            } else {
-                card.style.transform = 'translateX(-50%) scale(0.85) translateY(30px)';
-                card.style.opacity = '0.05';
-            }
-        });
-    }
-
-    function updateCounter() {
-        const counter = document.getElementById('cardCounter');
-        counter.textContent = `${currentCardIndex + 1} of ${products.length}`;
-    }
-
-    function setupSwipeHandlers() {
-        let startX = 0;
-        let startY = 0;
-        let moveX = 0;
-        let moveY = 0;
-        let velocity = {x: 0, y: 0};
-        let lastPos = {x: 0, y: 0};
-        let lastTime = Date.now();
-        let isDragging = false;
-
-        const indicators = document.querySelector('.swipe-indicators');
-
-        function updateVelocity(x, y) {
-            const now = Date.now();
-            const dt = now - lastTime;
-            if (dt > 0) {
-                velocity.x = (x - lastPos.x) / dt;
-                velocity.y = (y - lastPos.y) / dt;
-            }
-            lastPos = {x, y};
-            lastTime = now;
-        }
-
-        function handleTouchStart(e) {
-            if (cardStack.length === 0) return;
-
-            const touch = e.type === 'mousedown' ? e : e.touches[0];
-            startX = touch.clientX;
-            startY = touch.clientY;
-            lastPos = {x: startX, y: startY};
-            lastTime = Date.now();
-            isDragging = true;
-
-            const topCard = cardStack[0];
-            topCard.style.transition = 'none';
-            indicators.style.opacity = '0.3';
+            document.getElementById('productDetailModal').style.display = 'block';
         }
 
 
-        function handleTouchMove(e) {
-            if (!isDragging || cardStack.length === 0) return;
-            e.preventDefault();
+        function initializeSwipe() {
+            'use strict';
 
-            const touch = e.type === 'mousemove' ? e : e.touches[0];
-            moveX = touch.clientX - startX;
-            moveY = touch.clientY - startY;
+            var tinderContainer = document.querySelector('.tinder');
+            var allCards = document.querySelectorAll('.tinder--card');
+            var nope = document.getElementById('nope');
+            var love = document.getElementById('love');
 
-            updateVelocity(touch.clientX, touch.clientY);
+            function initCards() {
+                var newCards = document.querySelectorAll('.tinder--card:not(.removed)');
 
-            const topCard = cardStack[0];
-            const scale = Math.max(0.85, 1 - Math.abs(moveX) * 0.001);
+                newCards.forEach(function (card, index) {
+                    card.style.zIndex = allCards.length - index;
+                    card.style.transform = 'scale(' + (20 - index) / 20 + ') translateY(-' + 30 * index + 'px)';
+                    card.style.opacity = (10 - index) / 10;
+                });
 
-            topCard.style.transform = `translateX(-50%) translate(${moveX}px, ${moveY}px) scale(${scale})`;
-
-            // Update overlays
-            const absX = Math.abs(moveX);
-            const absY = Math.abs(moveY);
-
-            if (absX > absY) {
-                topCard.overlays.nope.style.opacity = moveX < 0 ? Math.min(absX / 100, 1) : 0;
-                topCard.overlays.like.style.opacity = moveX > 0 ? Math.min(absX / 100, 1) : 0;
-                topCard.overlays.info.style.opacity = 0;
-            } else if (moveY < 0) {
-                topCard.overlays.info.style.opacity = Math.min(absY / 100, 1);
-                topCard.overlays.nope.style.opacity = 0;
-                topCard.overlays.like.style.opacity = 0;
+                tinderContainer.classList.add('loaded');
             }
 
-            updateIndicators(moveX, moveY);
-        }
+            initCards();
 
-        function updateIndicators(moveX, moveY) {
-            const absX = Math.abs(moveX);
-            const absY = Math.abs(moveY);
+            allCards.forEach(function (el, index) {
+                var hammertime = new Hammer(el);
 
-            const leftInd = indicators.querySelector('.swipe-left');
-            const rightInd = indicators.querySelector('.swipe-right');
-            const upInd = indicators.querySelector('.swipe-up');
+                hammertime.on('pan', function (event) {
+                    el.classList.add('moving');
+                    if (event.deltaX === 0) return;
+                    if (event.center.x === 0 && event.center.y === 0) return;
 
-            if (absX > absY) {
-                leftInd.classList.toggle('active', moveX < -50);
-                rightInd.classList.toggle('active', moveX > 50);
-                upInd.classList.remove('active');
-            } else {
-                upInd.classList.toggle('active', moveY < -50);
-                leftInd.classList.remove('active');
-                rightInd.classList.remove('active');
-            }
-        }
+                    tinderContainer.classList.toggle('tinder_love', event.deltaX > 0);
+                    tinderContainer.classList.toggle('tinder_nope', event.deltaX < 0);
 
-        function handleTouchEnd(e) {
-            if (!isDragging || cardStack.length === 0) return;
+                    var xMulti = event.deltaX * 0.03;
+                    var yMulti = event.deltaY / 80;
+                    var rotate = xMulti * yMulti;
 
-            // 👇 Add this block to detect if drag ends on a control
-            const endTarget = e.changedTouches ? e.changedTouches[0].target : e.target;
-            const endedOnButton =
-                endTarget.closest('#viewCartBtn') ||
-                endTarget.closest('#Wishlist') ||
-                endTarget.closest('.floating-buttons') || // if you group buttons in a container
-                endTarget.closest('#cartModal');
+                    event.target.style.transform = 'translate(' + event.deltaX + 'px, ' + event.deltaY + 'px) rotate(' + rotate + 'deg)';
+                });
 
-            if (endedOnButton) {
-                // Cancel any swipe or animation
-                resetCard();
+                hammertime.on('panend', function (event) {
+                    el.classList.remove('moving');
+                    tinderContainer.classList.remove('tinder_love');
+                    tinderContainer.classList.remove('tinder_nope');
 
-                // Reset state
-                startX = startY = moveX = moveY = 0;
-                velocity = {x: 0, y: 0};
-                isDragging = false;
+                    // Check for a vertical swipe to show details
+                    if (event.deltaY < -100 && Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
+                        showProductDetails(index);
+                        event.target.style.transform = ''; // Reset card position
+                        return;
+                    }
 
-                if (cardStack[0]) {
-                    Object.values(cardStack[0].overlays).forEach(overlay => overlay.style.opacity = 0);
-                }
-                indicators.style.opacity = '0';
-                indicators.querySelectorAll('.swipe-indicator').forEach(ind => ind.classList.remove('active'));
+                    var moveOutWidth = document.body.clientWidth;
+                    var keep = Math.abs(event.deltaX) < 80 || Math.abs(event.velocityX) < 0.5;
 
-                return;
-            }
+                    event.target.classList.toggle('removed', !keep);
 
-            // Proceed with your original swipe decision
-            const absX = Math.abs(moveX);
-            const absY = Math.abs(moveY);
-            const threshold = 30;
-            const velocityThreshold = 0.2;
+                    if (keep) {
+                        event.target.style.transform = '';
+                    } else {
+                        var endX = Math.max(Math.abs(event.velocityX) * moveOutWidth, moveOutWidth);
+                        var toX = event.deltaX > 0 ? endX : -endX;
+                        var endY = Math.abs(event.velocityY) * moveOutWidth;
+                        var toY = event.deltaY > 0 ? endY : -endY;
+                        var xMulti = event.deltaX * 0.03;
+                        var yMulti = event.deltaY / 80;
+                        var rotate = xMulti * yMulti;
 
-            let animation = '';
+                        if(event.deltaX > 0) {
+                            addToWishlist(products[index]);
+                        }
 
-            if (absX > absY) {
-                if (absX > threshold || Math.abs(velocity.x) > velocityThreshold) {
-                    animation = moveX > 0 ? 'swipeRight' : 'swipeLeft';
-                }
-            } else if (moveY < -threshold || velocity.y < -velocityThreshold) {
-                animation = 'swipeUp';
-            }
+                        event.target.style.transform = 'translate(' + toX + 'px, ' + (toY + event.deltaY) + 'px) rotate(' + rotate + 'deg)';
+                        initCards();
+                    }
+                });
+            });
 
-            if (animation) {
-                handleSwipe(animation);
-            } else {
-                resetCard();
-            }
+            function createButtonListener(loveAction) {
+                return function (event) {
+                    var cards = document.querySelectorAll('.tinder--card:not(.removed)');
+                    var moveOutWidth = document.body.clientWidth * 1.5;
 
-            // Reset states
-            startX = startY = moveX = moveY = 0;
-            velocity = {x: 0, y: 0};
-            isDragging = false;
+                    if (!cards.length) return false;
 
-            if (cardStack[0]) {
-                Object.values(cardStack[0].overlays).forEach(overlay => overlay.style.opacity = 0);
-            }
-            indicators.style.opacity = '0';
-            indicators.querySelectorAll('.swipe-indicator').forEach(ind => ind.classList.remove('active'));
-        }
+                    var card = cards[0];
+                    var cardIndex = allCards.length - cards.length;
 
-        function handleSwipe(animation) {
-            const topCard = cardStack[0];
+                    card.classList.add('removed');
 
-            const productIndex = parseInt(topCard.dataset.index);
-            if (animation === 'swipeRight') {
-                const card = cardStack[0];
-                const product = {
-                    ...products[productIndex],
-                    cartId: `${Date.now()}-${Math.floor(Math.random() * 10000)}`,
-                    selectedSize: card.selectedSize || 'Not selected',
-                    selectedColor: card.selectedColor || 'Not selected'
+                    if (loveAction) {
+                        card.style.transform = 'translate(' + moveOutWidth + 'px, -100px) rotate(-30deg)';
+                        addToWishlist(products[cardIndex]);
+                    } else {
+                        card.style.transform = 'translate(-' + moveOutWidth + 'px, -100px) rotate(30deg)';
+                    }
+
+                    initCards();
+                    event.preventDefault();
                 };
-                cart.push(product);
             }
 
-
-            if (animation === 'swipeUp') {
-                const product = products[productIndex];
-                document.getElementById('detailTitle').textContent = product.title;
-                document.getElementById('detailBrand').textContent = product.brand;
-                document.getElementById('detailImage').src = product.image;
-                document.getElementById('detailPrice').textContent = product.price;
-                document.getElementById('detailDescription').textContent = product.description;
-                document.getElementById('productDetailModal').style.display = 'block';
-                const topCard = cardStack[0];
-                setTimeout(() => {
-                    topCard.style.transition = 'transform 0.4s ease';
-                    topCard.style.transform = 'translateX(-50%) scale(1)';
-                }, 200);
-                return;
-            }
-
-            topCard.style.transition = 'all 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-            topCard.style.animation = `${animation} 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards`;
-
-            removeTopCard();
+            nope.addEventListener('click', createButtonListener(false));
+            love.addEventListener('click', createButtonListener(true));
         }
 
-        let swipeTemporarilyDisabled = false;
-
-        function resetCard() {
-            if (cardStack[0]) {
-                const topCard = cardStack[0];
-                topCard.style.transition = 'transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                topCard.style.transform = 'translateX(-50%) scale(1)';
-            }
-        }
-
-        function isOnViewCartButton(e) {
-            return e.target.closest('#viewCartBtn');
-        }
-
-        document.addEventListener('mousedown', (e) => {
-            const card = e.target.closest('.product-card');
-            if (card && !isOnViewCartButton(e)) {
-                handleTouchStart(e);
-            }
-        });
-        document.addEventListener('mousemove', handleTouchMove);
-        document.addEventListener('mouseup', handleTouchEnd);
-        document.addEventListener('touchstart', (e) => {
-            const card = e.target.closest('.product-card');
-            if (card && !isOnViewCartButton(e)) {
-                handleTouchStart(e);
-            }
-        });
-        document.addEventListener('touchmove', handleTouchMove);
-        document.addEventListener('touchend', handleTouchEnd);
-
-
-        document.getElementById('viewCartBtn').addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation(); // Block bubbling
-
-            swipeTemporarilyDisabled = true; // Disable swipe for a moment
-
-            renderCart();
-            document.getElementById('cartModal').style.display = 'block';
-            document.getElementById('cardStack').classList.add('blurred');
-            document.getElementById('viewCartBtn').classList.add('blurred');
-            document.getElementById('Wishlist').classList.add('blurred');
-
-            // Re-enable swipe after 500ms
-            setTimeout(() => {
-                swipeTemporarilyDisabled = false;
-            }, 500);
+        document.addEventListener('DOMContentLoaded', () => {
+            createProductCards();
+            initializeSwipe();
         });
 
-
-        window.deleteCartItem = function (id) {
-            cart = cart.filter(item => item.cartId !== id);
-            renderCart();
-        };
-        let editingItemId = null;
-
-        window.editCartItem = function (id) {
-            const item = cart.find(p => p.cartId === id);
-            if (!item) return;
-
-            editingItemId = id;
-
-            document.getElementById('editTitle').textContent = item.title;
-            document.getElementById('editBrand').textContent = item.brand;
-
-            const sizeSelect = document.getElementById('editSize');
-            sizeSelect.innerHTML = '';
-            item.sizes.forEach(size => {
-                const option = document.createElement('option');
-                option.value = size;
-                option.textContent = size;
-                if (item.selectedSize === size) option.selected = true;
-                sizeSelect.appendChild(option);
-            });
-
-            const colorOptionsContainer = document.getElementById('editColorOptions');
-            colorOptionsContainer.innerHTML = '';
-            item.colors.forEach(color => {
-                const swatch = document.createElement('div');
-                swatch.className = 'color-swatch';
-                swatch.style.background = color;
-                swatch.style.width = '30px';
-                swatch.style.height = '30px';
-                swatch.style.borderRadius = '50%';
-                swatch.style.cursor = 'pointer';
-                swatch.style.border = (item.selectedColor === color) ? '3px solid #000' : '2px solid #ccc';
-
-                swatch.addEventListener('click', () => {
-                    // Clear all borders
-                    [...colorOptionsContainer.children].forEach(child => {
-                        child.style.border = '2px solid #ccc';
-                    });
-                    // Highlight selected
-                    swatch.style.border = '3px solid #000';
-                    item.selectedColor = color;
-                });
-
-                colorOptionsContainer.appendChild(swatch);
-            });
-
-
-            document.getElementById('editModal').style.display = 'block';
-        };
-
-        function applyEdit() {
-            const item = cart.find(p => p.cartId === editingItemId);
-            if (!item) return;
-
-            const newSize = document.getElementById('editSize').value;
-
-            item.selectedSize = newSize;
-
-            document.getElementById('editModal').style.display = 'none';
-            renderCart();
-        }
-
-        function renderCart() {
-            const cartItemsContainer = document.getElementById('cartItems');
-            cartItemsContainer.innerHTML = '';
-
-            if (cart.length === 0) {
-                cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
-            } else {
-                cart.forEach(item => {
-                    const itemDiv = document.createElement('div');
-                    itemDiv.style.marginBottom = '10px';
-                    itemDiv.innerHTML = `
-    <strong>${item.title}</strong><br>
-    <span>${item.price}</span><br>
-    <small style="color: #666;">${item.brand}</small><br>
-    <span><strong>Size:</strong> ${item.selectedSize || "N/A"}</span><br>
-    <span style="display:flex; align-items:center; gap:5px;">
-        <strong>Color:</strong>
-        <div style="width: 14px; height: 14px; border-radius: 50%; background: ${item.selectedColor || "#ccc"}; border: 1px solid #999;"></div>
-    </span>
-    <div style="text-align: right; margin-top: 5px;">
-        <button onclick="editCartItem('${item.cartId}')" style="background: #ffcc00; color: black; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer; margin-right: 5px;">Edit</button>
-        <button onclick="deleteCartItem('${item.cartId}')" style="background: #ff4d4d; color: white; border: none; padding: 5px 8px; border-radius: 4px; cursor: pointer;">Delete</button>
-    </div>
-    <hr style="margin-top: 10px;">
-`;
-
-
-                    cartItemsContainer.appendChild(itemDiv);
-                });
-            }
-
-            document.getElementById('cartModal').style.display = 'block';
-        }
-
-
-        function addToWishlist(index) {
-            const item = products[index];
-            if (!wishlist.find(w => w.title === item.title)) {
-                wishlist.push(item);
-                showToast(`"${item.title}" added to Wishlist`);
-            } else {
-                showToast(`"${item.title}" is already in Wishlist`);
+        function addToWishlist(product) {
+            if (!wishlist.find(item => item.title === product.title)) {
+                wishlist.push(product);
+                showToast('Added to Wishlist!');
+                console.log('Wishlist:', wishlist);
             }
         }
 
@@ -1348,44 +805,11 @@ let wishlist = [];
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.style.display = 'block';
-            toast.style.opacity = '1';
             setTimeout(() => {
-                toast.style.opacity = '0';
-                setTimeout(() => {
-                    toast.style.display = 'none';
-                }, 300);
-            }, 1500);
-        }
-
-
-
-
-        // Add this helper function for showing toast messages
-        function showToast(message) {
-            const toast = document.createElement('div');
-            toast.style.cssText = `
-        position: fixed;
-        bottom: 30px;
-        left: 50%;
-        transform: translateX(-50%);
-        background: #323232;
-        color: white;
-        padding: 12px 24px;
-        border-radius: 20px;
-        font-size: 0.9rem;
-        z-index: 1002;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    `;
-            toast.textContent = message;
-            document.body.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transition = 'opacity 0.3s ease';
-                setTimeout(() => document.body.removeChild(toast), 300);
+                toast.style.display = 'none';
             }, 2000);
+
         }
-    }
         async function openTryOnCamera() {
             // Create modal container
             const previewModal = document.createElement('div');
@@ -1521,6 +945,8 @@ let wishlist = [];
             document.getElementById('viewCartBtn').classList.remove('blurred');
             document.getElementById('Wishlist').classList.remove('blurred');
         }
-</script>
+
+
+    </script>
 </body>
 </html>

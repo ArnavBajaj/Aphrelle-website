@@ -1,12 +1,12 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="icon" type="image/png" href="logo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aphrelle - Wishlist</title>
-    <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/glacial-indifference-2" rel="stylesheet">
 
     <style>
         * {
@@ -16,30 +16,33 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+            font-family: 'Glacial Indifference', sans-serif;
+            background: linear-gradient(135deg, #f7f3e3 0%, #f2e7d3 100%);
             min-height: 100vh;
             padding: 0;
         }
 
         .header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: rgba(0, 0, 0, 0.8);
             padding: 15px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 193, 7, 0.1);
         }
 
         .logo {
-            font-family: 'Imperial Script', sans-serif;
+            font-family: 'Glacial Indifference', sans-serif;
             font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(#fea41c, #fff700);
+            font-weight: 500;
+            background: linear-gradient(to right, #ffc107, #ff9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             padding-right: 0.2em;
+            text-transform: lowercase;
         }
 
         .nav-buttons {
@@ -48,9 +51,9 @@
         }
 
         .nav-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 2px solid rgba(252, 126, 0, 0.3);
+            background: rgba(255, 193, 7, 0.05);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
             border-radius: 25px;
             padding: 10px 20px;
             font-size: 0.9rem;
@@ -64,47 +67,47 @@
         }
 
         .nav-btn:hover {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            border-color: #fc7e00;
+            background: #ffc107;
+            color: #333;
+            border-color: #ffc107;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
-            color: #1a1a1a;
-            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+            font-weight: 500;
         }
 
         .main-content {
-            padding: 20px;
-        }
+                padding: 20px;
+            }
 
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             padding: 30px;
             min-height: 70vh;
-            color: white;
-        }
+            color: #fff;
+            }
 
         .wishlist-header {
             text-align: center;
             margin-bottom: 30px;
-        }
+            }
 
         .wishlist-title {
             font-size: 2.5rem;
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            background: linear-gradient(to right, #ffc107, #ff9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 10px;
-            font-weight: 700;
-        }
+            font-weight: 500;
+            }
 
         .wishlist-subtitle {
-            color: #ccc;
+            color: #ddd;
             font-size: 1.1rem;
         }
 
@@ -118,43 +121,41 @@
         }
 
         .filter-btn {
-            background: rgba(252, 126, 0, 0.1);
-            color: #fc7e00;
-            border: 2px solid rgba(252, 126, 0, 0.3);
+            background: rgba(255, 193, 7, 0.05);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
             border-radius: 20px;
             padding: 8px 16px;
             font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
+                            cursor: pointer;
+                            transition: all 0.3s ease;
         }
 
         .filter-btn.active {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
-            font-weight: 600;
-        }
+            background: #ffc107;
+            color: #333;
+            font-weight: 500;
+    }
 
         .filter-btn:hover {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
-            font-weight: 600;
+            background: #ffc107;
+            color: #333;
+            font-weight: 500;
         }
 
         .sort-select {
             padding: 8px 12px;
-            border: 2px solid rgba(252, 126, 0, 0.3);
+            border: 1px solid rgba(255, 193, 7, 0.3);
             border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ddd;
             cursor: pointer;
         }
 
         .sort-select option {
             background: #2d2d2d;
-            color: white;
+            color: #ddd;
         }
-
-
 
         .empty-state {
             text-align: center;
@@ -171,7 +172,7 @@
         .empty-message {
             font-size: 1.3rem;
             margin-bottom: 10px;
-            color: white;
+            color: #eee;
         }
 
         .empty-submessage {
@@ -180,8 +181,8 @@
         }
 
         .discover-btn {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
+            background: linear-gradient(to right, #ffc107, #ff9800);
+            color: #333;
             border: none;
             border-radius: 25px;
             padding: 12px 30px;
@@ -192,12 +193,12 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .discover-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(252, 126, 0, 0.4);
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
         }
 
         .wishlist-grid {
@@ -208,20 +209,20 @@
         }
 
         .wishlist-item {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 193, 7, 0.1);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
             position: relative;
         }
 
         .wishlist-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            border-color: rgba(252, 126, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 193, 7, 0.3);
         }
 
         .item-image {
@@ -236,8 +237,8 @@
 
         .item-title {
             font-size: 1.2rem;
-            font-weight: 600;
-            color: white;
+            font-weight: 500;
+            color: #eee;
             margin-bottom: 5px;
         }
 
@@ -250,7 +251,7 @@
         .item-price {
             font-size: 1.3rem;
             font-weight: 600;
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            background: linear-gradient(to right, #ffc107, #ff9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -278,22 +279,22 @@
         }
 
         .add-to-cart-btn {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
+            background: linear-gradient(to right, #ffc107, #ff9800);
+            color: #333;
         }
 
         .add-to-cart-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
         }
 
         .remove-btn {
-            background: rgba(255, 71, 87, 0.8);
-            color: white;
+            background: rgba(229, 57, 53, 0.8);
+            color: #eee;
         }
 
         .remove-btn:hover {
-            background: #ff4757;
+            background: #e53935;
             transform: translateY(-2px);
         }
 
@@ -307,8 +308,14 @@
         }
 
         @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         /* Cart Modal Styles */
@@ -319,23 +326,24 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             align-items: center;
             justify-content: center;
         }
 
         .modal-content {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: white;
+            background: rgba(0, 0, 0, 0.8);
+            color: #eee;
             padding: 30px;
             border-radius: 15px;
             width: 90%;
             max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 1px solid rgba(252, 126, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            backdrop-filter: blur(12px);
         }
 
         .modal-header {
@@ -346,7 +354,7 @@
         }
 
         .modal-header h2 {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            background: linear-gradient(to right, #ffc107, #ff9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -357,29 +365,29 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #ccc;
+            color: #ddd;
             transition: color 0.3s ease;
         }
 
         .close-btn:hover {
-            color: #fc7e00;
+            color: #ffc107;
         }
 
         .continue-shopping-btn {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
+            background: linear-gradient(to right, #ffc107, #ff9800);
+            color: #333;
             border: none;
             padding: 12px 24px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .continue-shopping-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -531,9 +539,9 @@
             brand: "Retro Vibes",
             price: 45.99,
             priceStr: "$45.99",
-            category: "casual",
+category: "casual",
             dateAdded: new Date('2024-01-10')
-        }
+    }
     ];
 
     // Initialize the page
@@ -644,126 +652,6 @@
     }
 
     function filterByCategory(category) {
-        currentFilter = category;
-
-        // Update active filter button
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        event.target.classList.add('active');
-
-        renderWishlist();
-    }
-
-    function sortWishlists(value) {
-        currentSort = value;
-        renderWishlist();
-    }
-
-    function addToCart(itemId) {
-        const item = wishlist.find(item => item.id === itemId);
-        if (item) {
-            const cartItem = {
-                ...item,
-                cartId: `${Date.now()}-${Math.floor(Math.random() * 10000)}`
-            };
-            cart.push(cartItem);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-
-            // Show success feedback
-            const button = event.target;
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Added!';
-            button.style.background = '#2ecc71';
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.style.background = 'linear-gradient(135deg, #fc7e00, #ffee00)';
-            }, 1500);
-        }
-    }
-
-    function removeFromWishlist(itemId) {
-        if (confirm('Remove this item from your wishlist?')) {
-            wishlist = wishlist.filter(item => item.id !== itemId);
-            saveWishlist();
-            renderWishlist();
-        }
-    }
-
-    function viewCart() {
-        renderCart();
-        document.getElementById('cartModal').style.display = 'flex';
-    }
-
-    function closeCart() {
-        document.getElementById('cartModal').style.display = 'none';
-    }
-
-    function renderCart() {
-        const cartItemsContainer = document.getElementById('cartItems');
-        cartItemsContainer.innerHTML = '';
-
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p style="text-align: center; color: #ccc;">Your cart is empty.</p>';
-        } else {
-            cart.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.style.cssText = 'display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #444;';
-                itemDiv.innerHTML = `
-                        <img src="${item.image}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 15px;" />
-                        <div style="flex: 1;">
-                            <strong style="color: white;">${item.title}</strong><br>
-                            <span style="color: #ccc; font-size: 0.9rem;">${item.brand}</span><br>
-                            <span style="background: linear-gradient(135deg, #fc7e00, #ffee00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold;">${item.priceStr}</span>
-                        </div>
-                        <button onclick="deleteCartItem('${item.cartId}')" style="
-                            background: #ff4757;
-                            color: white;
-                            border: none;
-                            padding: 8px 12px;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-size: 0.8rem;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Remove</button>
-                    `;
-                cartItemsContainer.appendChild(itemDiv);
-            });
-        }
-    }
-
-    function deleteCartItem(cartId) {
-        cart = cart.filter(item => item.cartId !== cartId);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-        renderCart();
-    }
-
-    // Add some sample items for demo (remove this in production)
-    function addSampleItem() {
-        const newItem = {
-            id: Date.now(),
-            image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=500&fit=crop",
-            title: "Minimalist Blazer",
-            brand: "Modern Edge",
-            price: 198.50,
-            priceStr: "$198.50",
-            category: "jacket",
-            dateAdded: new Date()
-        };
-        wishlist.unshift(newItem);
-        saveWishlist();
-        renderWishlist();
-    }
-
-    // Keyboard shortcuts for demo
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'a' && e.ctrlKey) {
-            e.preventDefault();
-            addSampleItem();
-        }
-    });
 </script>
 </body>
 </html>

@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="logo.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aphrelle Sign Up</title>
-  <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/glacial-indifference-2" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -14,158 +15,183 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+            font-family: 'Glacial Indifference', sans-serif;
+            background: linear-gradient(135deg, #f7f3e3 0%, #f2e7d3 100%);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+            color: #eee;
     }
 
     .container {
       position: relative;
-      background: rgba(1, 1, 1, 0.95);
-      backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
       border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(254, 164, 28, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
       padding: 40px;
       text-align: center;
       max-width: 500px;
       width: 100%;
       animation: slideUp 0.8s ease-out;
     }
+
     @keyframes slideUp {
       from {
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    .logo {
-      font-family: 'Imperial Script', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 800;
-      background: linear-gradient(#fea41c, #fff700);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 10px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      color: #fff;
-      font-size: 0.9rem;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 12px;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: #667eea;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .button {
-      width: 100%;
-      padding: 16px 24px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-bottom: 16px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
-    }
-
-    .login-link {
-      color: #999;
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: color 0.3s ease;
-    }
-
-    .login-link:hover {
-      color: #667eea;
-    }
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 25px;
-      background: rgba(5, 5, 5, 0.95);
-      color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.5s ease;
-      z-index: 1000;
-    }
-
-    .notification.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 30px 20px;
-      }
+        .logoimage {
+            display: none;
+        }
 
       .logo {
-        font-size: 2.5rem;
+            font-family: 'Glacial Indifference', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 500;
+            background: linear-gradient(to right, #ffc107, #ff9800);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            text-transform: lowercase;
       }
 
-      .form-input {
-        padding: 10px;
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
       }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eee;
+            font-size: 0.9rem;
     }
-  </style>
-</head>
-<body>
-<div class="container">
-   <span onclick="goBack()" style="
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 1.8rem;
-      color: grey;
+
+        .form-input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #eee;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ffc107;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
       cursor: pointer;
-  ">←</span>
-  <div class="logoimage"><img src="logo.png" alt="Description" width="80"></div>
-  <div class="logo">Aphrelle</div>
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: #333;
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 152, 0, 0.4);
+        }
+
+        .login-link {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .login-link:hover {
+            color: #ffc107;
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.8);
+            color: #eee;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.5s ease;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 30px 20px;
+            }
+
+            .logo {
+                font-size: 2.5rem;
+            }
+
+            .form-input {
+                padding: 10px;
+            }
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #eee;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            margin: 10px;
+        }
+
+        .back-arrow:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <span onclick="goBack()" class="back-arrow">←</span>
+        <div class="logo">aphrelle</div>
 
   <form id="signupForm" onsubmit="handleSignup(event)">
     <div class="form-group">
@@ -242,6 +268,7 @@
       this.style.transform = 'translateY(0)';
     });
   });
+
   function goBack() {
     if (document.referrer !== "") {
       window.history.back();
@@ -251,4 +278,5 @@
   }
 </script>
 </body>
+
 </html>

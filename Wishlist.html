@@ -1,12 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <link rel="icon" type="image/png" href="logo.png">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Aphrelle - Wishlist</title>
-    <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/glacial-indifference-2" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
 
     <style>
         * {
@@ -16,30 +18,33 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+            font-family: 'Glacial Indifference', sans-serif;
+            background: linear-gradient(135deg, #f7f3e3 0%, #f2e7d3 100%);
             min-height: 100vh;
             padding: 0;
         }
 
         .header {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            background: rgba(0, 0, 0, 0.8);
             padding: 15px 20px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 193, 7, 0.1);
         }
 
         .logo {
-            font-family: 'Imperial Script', sans-serif;
+            font-family: 'Glacial Indifference', sans-serif;
             font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(#fea41c, #fff700);
+            font-weight: 500;
+            background: linear-gradient(to right, #ffc107, #ff9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             padding-right: 0.2em;
+            text-transform: lowercase;
         }
 
         .nav-buttons {
@@ -48,9 +53,9 @@
         }
 
         .nav-btn {
-            background: rgba(255,255,255,0.1);
-            color: white;
-            border: 2px solid rgba(252, 126, 0, 0.3);
+            background: rgba(255, 193, 7, 0.05);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
             border-radius: 25px;
             padding: 10px 20px;
             font-size: 0.9rem;
@@ -64,12 +69,12 @@
         }
 
         .nav-btn:hover {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            border-color: #fc7e00;
+            background: #ffc107;
+            color: #333;
+            border-color: #ffc107;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
-            color: #1a1a1a;
-            font-weight: 600;
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
+            font-weight: 500;
         }
 
         .main-content {
@@ -79,13 +84,13 @@
         .container {
             max-width: 1200px;
             margin: 0 auto;
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
             border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
             padding: 30px;
             min-height: 70vh;
-            color: white;
+            color: #fff;
         }
 
         .wishlist-header {
@@ -95,16 +100,16 @@
 
         .wishlist-title {
             font-size: 2.5rem;
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            background: linear-gradient(to right, #ffc107, #ff9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin-bottom: 10px;
-            font-weight: 700;
+            font-weight: 500;
         }
 
         .wishlist-subtitle {
-            color: #ccc;
+            color: #ddd;
             font-size: 1.1rem;
         }
 
@@ -118,9 +123,9 @@
         }
 
         .filter-btn {
-            background: rgba(252, 126, 0, 0.1);
-            color: #fc7e00;
-            border: 2px solid rgba(252, 126, 0, 0.3);
+            background: rgba(255, 193, 7, 0.05);
+            color: #ffc107;
+            border: 1px solid rgba(255, 193, 7, 0.3);
             border-radius: 20px;
             padding: 8px 16px;
             font-size: 0.9rem;
@@ -129,32 +134,30 @@
         }
 
         .filter-btn.active {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
-            font-weight: 600;
+            background: #ffc107;
+            color: #333;
+            font-weight: 500;
         }
 
         .filter-btn:hover {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
-            font-weight: 600;
+            background: #ffc107;
+            color: #333;
+            font-weight: 500;
         }
 
         .sort-select {
             padding: 8px 12px;
-            border: 2px solid rgba(252, 126, 0, 0.3);
+            border: 1px solid rgba(255, 193, 7, 0.3);
             border-radius: 8px;
-            background: rgba(255,255,255,0.1);
-            color: white;
+            background: rgba(0, 0, 0, 0.8);
+            color: #ddd;
             cursor: pointer;
         }
 
         .sort-select option {
             background: #2d2d2d;
-            color: white;
+            color: #ddd;
         }
-
-
 
         .empty-state {
             text-align: center;
@@ -171,7 +174,7 @@
         .empty-message {
             font-size: 1.3rem;
             margin-bottom: 10px;
-            color: white;
+            color: #eee;
         }
 
         .empty-submessage {
@@ -180,8 +183,8 @@
         }
 
         .discover-btn {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
+            background: linear-gradient(to right, #ffc107, #ff9800);
+            color: #333;
             border: none;
             border-radius: 25px;
             padding: 12px 30px;
@@ -192,12 +195,12 @@
             display: inline-flex;
             align-items: center;
             gap: 10px;
-            font-weight: 600;
+            font-weight: 500;
         }
 
         .discover-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(252, 126, 0, 0.4);
+            box-shadow: 0 8px 25px rgba(255, 193, 7, 0.4);
         }
 
         .wishlist-grid {
@@ -208,20 +211,20 @@
         }
 
         .wishlist-item {
-            background: rgba(255,255,255,0.1);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 193, 7, 0.1);
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
             position: relative;
         }
 
         .wishlist-item:hover {
             transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            border-color: rgba(252, 126, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            border-color: rgba(255, 193, 7, 0.3);
         }
 
         .item-image {
@@ -236,8 +239,8 @@
 
         .item-title {
             font-size: 1.2rem;
-            font-weight: 600;
-            color: white;
+            font-weight: 500;
+            color: #eee;
             margin-bottom: 5px;
         }
 
@@ -250,7 +253,7 @@
         .item-price {
             font-size: 1.3rem;
             font-weight: 600;
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            background: linear-gradient(to right, #ffc107, #ff9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -278,22 +281,22 @@
         }
 
         .add-to-cart-btn {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
+            background: linear-gradient(to right, #ffc107, #ff9800);
+            color: #333;
         }
 
         .add-to-cart-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
         }
 
         .remove-btn {
-            background: rgba(255, 71, 87, 0.8);
-            color: white;
+            background: rgba(229, 57, 53, 0.8);
+            color: #eee;
         }
 
         .remove-btn:hover {
-            background: #ff4757;
+            background: #e53935;
             transform: translateY(-2px);
         }
 
@@ -307,8 +310,14 @@
         }
 
         @keyframes heartbeat {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.1);
+            }
         }
 
         /* Cart Modal Styles */
@@ -319,24 +328,57 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
             align-items: center;
             justify-content: center;
         }
 
         .modal-content {
-            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
-            color: white;
+            background: rgba(0, 0, 0, 0.9);
+            color: #eee;
             padding: 30px;
             border-radius: 15px;
             width: 90%;
             max-width: 500px;
             max-height: 80vh;
             overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 1px solid rgba(252, 126, 0, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            backdrop-filter: blur(12px);
         }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 193, 7, 0.2);
+        }
+
+        .cart-item-img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-info {
+            flex-grow: 1;
+        }
+        .cart-item-title {
+            font-weight: 500;
+            color: #eee;
+        }
+        .cart-item-price {
+            color: #ffc107;
+        }
+        .cart-item-size {
+            color: #ccc;
+            font-size: 0.9rem;
+        }
+
 
         .modal-header {
             display: flex;
@@ -346,7 +388,7 @@
         }
 
         .modal-header h2 {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
+            background: linear-gradient(to right, #ffc107, #ff9800);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
@@ -357,29 +399,29 @@
             border: none;
             font-size: 1.5rem;
             cursor: pointer;
-            color: #ccc;
+            color: #ddd;
             transition: color 0.3s ease;
         }
 
         .close-btn:hover {
-            color: #fc7e00;
+            color: #ffc107;
         }
 
         .continue-shopping-btn {
-            background: linear-gradient(135deg, #fc7e00, #ffee00);
-            color: #1a1a1a;
+            background: linear-gradient(to right, #ffc107, #ff9800);
+            color: #333;
             border: none;
             padding: 12px 24px;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1rem;
-            font-weight: 600;
+            font-weight: 500;
             transition: all 0.3s ease;
         }
 
         .continue-shopping-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(252, 126, 0, 0.3);
+            box-shadow: 0 5px 15px rgba(255, 193, 7, 0.3);
         }
 
         @media (max-width: 768px) {
@@ -413,17 +455,6 @@
             .main-content {
                 padding: 15px;
             }
-
-            .wishlist-stats {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .stats-item {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-            }
         }
     </style>
 </head>
@@ -431,9 +462,9 @@
 <div class="header">
     <div class="logo">Aphrelle</div>
     <div class="nav-buttons">
-        <a href="recommendations.html" class="nav-btn">
+        <a href="discover.html" class="nav-btn">
             <i class="fas fa-search"></i>
-            Recommendations
+            Discover
         </a>
         <button class="nav-btn" onclick="viewCart()">
             <i class="fas fa-shopping-cart"></i>
@@ -452,7 +483,7 @@
         <div id="filterBar" class="filter-bar" style="display: none;">
             <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
             <button class="filter-btn" onclick="filterByCategory('dress')">Dresses</button>
-            <button class="filter-btn" onclick="filterByCategory('jacket')">Jackets</button>
+            <button class="filter-btn" onclick="filterByCategory('hoodie')">Hoodies</button>
             <button class="filter-btn" onclick="filterByCategory('casual')">Casual</button>
             <select class="sort-select" onchange="sortWishlists(this.value)">
                 <option value="recent">Recently Added</option>
@@ -462,15 +493,13 @@
             </select>
         </div>
 
-
-
-        <div id="emptyState" class="empty-state">
+        <div id="emptyState" class="empty-state" style="display: none;">
             <div class="empty-icon">
                 <i class="fas fa-heart"></i>
             </div>
             <div class="empty-message">Your wishlist is empty</div>
             <div class="empty-submessage">Start discovering amazing products to add to your wishlist!</div>
-            <a href="recommendations.html" class="discover-btn">
+            <a href="discover.html" class="discover-btn">
                 <i class="fas fa-search"></i>
                 Start Discovering
             </a>
@@ -488,70 +517,28 @@
             <h2>Shopping Cart</h2>
             <button onclick="closeCart()" class="close-btn">×</button>
         </div>
-        <div id="cartItems"></div>
+        <div id="cartItems">Your cart is empty.</div>
         <div style="text-align: center; margin-top: 20px;">
-            <button onclick="closeCart()" class="continue-shopping-btn">Continue Shopping</button>
+            <a href="cart.html" class="continue-shopping-btn">Go to Cart</a>
         </div>
     </div>
 </div>
 
 <script>
-    // Sample wishlist data (in a real app, this would come from localStorage or a database)
     let wishlist = [];
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    let cart = [];
     let currentFilter = 'all';
     let currentSort = 'recent';
 
-    // Sample products that could be in wishlist
-    const sampleProducts = [
-        {
-            id: 1,
-            image: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?w=400&h=500&fit=crop",
-            title: "Elegant Summer Dress",
-            brand: "Bella Vista",
-            price: 89.99,
-            priceStr: "$89.99",
-            category: "dress",
-            dateAdded: new Date('2024-01-15')
-        },
-        {
-            id: 2,
-            image: "https://images.unsplash.com/photo-1434389677669-e08b4cac3105?w=400&h=500&fit=crop",
-            title: "Classic Denim Jacket",
-            brand: "Urban Style",
-            price: 124.99,
-            priceStr: "$124.99",
-            category: "jacket",
-            dateAdded: new Date('2024-01-12')
-        },
-        {
-            id: 3,
-            image: "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=400&h=500&fit=crop",
-            title: "Vintage Band Tee",
-            brand: "Retro Vibes",
-            price: 45.99,
-            priceStr: "$45.99",
-            category: "casual",
-            dateAdded: new Date('2024-01-10')
-        }
-    ];
-
-    // Initialize the page
     document.addEventListener('DOMContentLoaded', () => {
-        // Load wishlist from localStorage or use sample data
-        const savedWishlist = localStorage.getItem('wishlist');
-        if (savedWishlist) {
-            wishlist = JSON.parse(savedWishlist);
-            // Convert dateAdded strings back to Date objects
-            wishlist = wishlist.map(item => ({
-                ...item,
-                dateAdded: new Date(item.dateAdded)
-            }));
-        } else {
-            // For demo purposes, add some sample items
-            wishlist = [...sampleProducts];
-            saveWishlist();
-        }
+        wishlist = JSON.parse(localStorage.getItem('wishlist') || '[]');
+        cart = JSON.parse(localStorage.getItem('cart') || '[]');
+
+        wishlist = wishlist.map((item, index) => ({
+            ...item,
+            id: item.id || `${Date.now()}-${index}`, // Ensure unique ID
+            dateAdded: item.dateAdded ? new Date(item.dateAdded) : new Date()
+        }));
 
         updateCartCount();
         renderWishlist();
@@ -559,6 +546,10 @@
 
     function saveWishlist() {
         localStorage.setItem('wishlist', JSON.stringify(wishlist));
+    }
+
+    function saveCart() {
+        localStorage.setItem('cart', JSON.stringify(cart));
     }
 
     function updateCartCount() {
@@ -581,19 +572,15 @@
         wishlistGrid.style.display = 'grid';
         filterBar.style.display = 'flex';
 
-        // Filter and sort wishlist
-        let filteredWishlist = filterWishlist(wishlist, currentFilter);
-        filteredWishlist = sortWishlist(filteredWishlist, currentSort);
+        let itemsToRender = filterWishlist(wishlist, currentFilter);
+        itemsToRender = sortWishlist(itemsToRender, currentSort);
 
-        // Render items
         wishlistGrid.innerHTML = '';
-        filteredWishlist.forEach(item => {
+        itemsToRender.forEach(item => {
             const itemElement = createWishlistItem(item);
             wishlistGrid.appendChild(itemElement);
         });
     }
-
-
 
     function createWishlistItem(item) {
         const itemDiv = document.createElement('div');
@@ -606,13 +593,13 @@
                 <div class="item-info">
                     <h3 class="item-title">${item.title}</h3>
                     <p class="item-brand">${item.brand}</p>
-                    <p class="item-price">${item.priceStr}</p>
+                    <p class="item-price">${item.price}</p>
                     <div class="item-actions">
-                        <button class="action-btn add-to-cart-btn" onclick="addToCart(${item.id})">
+                        <button class="action-btn add-to-cart-btn" onclick="addToCart('${item.id}')">
                             <i class="fas fa-shopping-cart"></i>
                             Add to Cart
                         </button>
-                        <button class="action-btn remove-btn" onclick="removeFromWishlist(${item.id})">
+                        <button class="action-btn remove-btn" onclick="removeFromWishlist('${item.id}')">
                             <i class="fas fa-trash"></i>
                             Remove
                         </button>
@@ -622,9 +609,59 @@
         return itemDiv;
     }
 
+    function removeFromWishlist(itemId) {
+        wishlist = wishlist.filter(item => item.id !== itemId);
+        saveWishlist();
+        renderWishlist();
+    }
+
+    function addToCart(itemId) {
+        const itemIndex = wishlist.findIndex(item => item.id === itemId);
+        if (itemIndex === -1) return;
+
+        const itemToAdd = wishlist[itemIndex];
+
+        const alreadyInCart = cart.some(item => item.title === itemToAdd.title && item.size === itemToAdd.size);
+        if (alreadyInCart) {
+            alert('This item is already in your cart.');
+            return;
+        }
+
+        cart.push(itemToAdd);
+        saveCart();
+        updateCartCount();
+
+        // Remove from wishlist after adding to cart
+        removeFromWishlist(itemId);
+        alert(`'${itemToAdd.title}' has been moved to your cart.`);
+    }
+
+    function filterByCategory(category) {
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        event.target.classList.add('active');
+        currentFilter = category;
+        renderWishlist();
+    }
+
+    function sortWishlists(sortBy) {
+        currentSort = sortBy;
+        renderWishlist();
+    }
+
+    function parsePrice(price) {
+        if (typeof price === 'number') return price;
+        return Number(String(price).replace(/[^0-9.]/g, '')) || 0;
+    }
+
     function filterWishlist(items, category) {
         if (category === 'all') return items;
-        return items.filter(item => item.category === category);
+        return items.filter(item => {
+            const title = item.title.toLowerCase();
+            if (category === 'dress' && title.includes('dress')) return true;
+            if (category === 'hoodie' && title.includes('hoodie')) return true;
+            if (category === 'casual' && (title.includes('shirt') || title.includes('tee'))) return true;
+            return false;
+        });
     }
 
     function sortWishlist(items, sortBy) {
@@ -633,9 +670,9 @@
             case 'recent':
                 return sorted.sort((a, b) => b.dateAdded - a.dateAdded);
             case 'price-low':
-                return sorted.sort((a, b) => a.price - b.price);
+                return sorted.sort((a, b) => parsePrice(a.price) - parsePrice(b.price));
             case 'price-high':
-                return sorted.sort((a, b) => b.price - a.price);
+                return sorted.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
             case 'name':
                 return sorted.sort((a, b) => a.title.localeCompare(b.title));
             default:
@@ -643,127 +680,36 @@
         }
     }
 
-    function filterByCategory(category) {
-        currentFilter = category;
-
-        // Update active filter button
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        event.target.classList.add('active');
-
-        renderWishlist();
-    }
-
-    function sortWishlists(value) {
-        currentSort = value;
-        renderWishlist();
-    }
-
-    function addToCart(itemId) {
-        const item = wishlist.find(item => item.id === itemId);
-        if (item) {
-            const cartItem = {
-                ...item,
-                cartId: `${Date.now()}-${Math.floor(Math.random() * 10000)}`
-            };
-            cart.push(cartItem);
-            localStorage.setItem('cart', JSON.stringify(cart));
-            updateCartCount();
-
-            // Show success feedback
-            const button = event.target;
-            const originalText = button.innerHTML;
-            button.innerHTML = '<i class="fas fa-check"></i> Added!';
-            button.style.background = '#2ecc71';
-            setTimeout(() => {
-                button.innerHTML = originalText;
-                button.style.background = 'linear-gradient(135deg, #fc7e00, #ffee00)';
-            }, 1500);
-        }
-    }
-
-    function removeFromWishlist(itemId) {
-        if (confirm('Remove this item from your wishlist?')) {
-            wishlist = wishlist.filter(item => item.id !== itemId);
-            saveWishlist();
-            renderWishlist();
-        }
-    }
-
     function viewCart() {
-        renderCart();
-        document.getElementById('cartModal').style.display = 'flex';
+        const cartModal = document.getElementById('cartModal');
+        const cartItemsContainer = document.getElementById('cartItems');
+
+        cartItemsContainer.innerHTML = ''; // Clear previous items
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = 'Your cart is empty.';
+        } else {
+            cart.forEach(item => {
+                const cartItemDiv = document.createElement('div');
+                cartItemDiv.className = 'cart-item';
+                cartItemDiv.innerHTML = `
+                    <img src="${item.image}" alt="${item.title}" class="cart-item-img">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.title}</div>
+                        <div class="cart-item-size">Size: ${item.size}</div>
+                        <div class="cart-item-price">${item.price}</div>
+                    </div>
+                `;
+                cartItemsContainer.appendChild(cartItemDiv);
+            });
+        }
+        cartModal.style.display = 'flex';
     }
 
     function closeCart() {
         document.getElementById('cartModal').style.display = 'none';
     }
 
-    function renderCart() {
-        const cartItemsContainer = document.getElementById('cartItems');
-        cartItemsContainer.innerHTML = '';
-
-        if (cart.length === 0) {
-            cartItemsContainer.innerHTML = '<p style="text-align: center; color: #ccc;">Your cart is empty.</p>';
-        } else {
-            cart.forEach(item => {
-                const itemDiv = document.createElement('div');
-                itemDiv.style.cssText = 'display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #444;';
-                itemDiv.innerHTML = `
-                        <img src="${item.image}" style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px; margin-right: 15px;" />
-                        <div style="flex: 1;">
-                            <strong style="color: white;">${item.title}</strong><br>
-                            <span style="color: #ccc; font-size: 0.9rem;">${item.brand}</span><br>
-                            <span style="background: linear-gradient(135deg, #fc7e00, #ffee00); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-weight: bold;">${item.priceStr}</span>
-                        </div>
-                        <button onclick="deleteCartItem('${item.cartId}')" style="
-                            background: #ff4757;
-                            color: white;
-                            border: none;
-                            padding: 8px 12px;
-                            border-radius: 6px;
-                            cursor: pointer;
-                            font-size: 0.8rem;
-                            transition: all 0.3s ease;
-                        " onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='translateY(0)'">Remove</button>
-                    `;
-                cartItemsContainer.appendChild(itemDiv);
-            });
-        }
-    }
-
-    function deleteCartItem(cartId) {
-        cart = cart.filter(item => item.cartId !== cartId);
-        localStorage.setItem('cart', JSON.stringify(cart));
-        updateCartCount();
-        renderCart();
-    }
-
-    // Add some sample items for demo (remove this in production)
-    function addSampleItem() {
-        const newItem = {
-            id: Date.now(),
-            image: "https://images.unsplash.com/photo-1551698618-1dfe5d97d256?w=400&h=500&fit=crop",
-            title: "Minimalist Blazer",
-            brand: "Modern Edge",
-            price: 198.50,
-            priceStr: "$198.50",
-            category: "jacket",
-            dateAdded: new Date()
-        };
-        wishlist.unshift(newItem);
-        saveWishlist();
-        renderWishlist();
-    }
-
-    // Keyboard shortcuts for demo
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'a' && e.ctrlKey) {
-            e.preventDefault();
-            addSampleItem();
-        }
-    });
 </script>
 </body>
 </html>

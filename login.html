@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <link rel="icon" type="image/png" href="logo.png">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Aphrelle Login</title>
-  <link href="https://fonts.googleapis.com/css2?family=Imperial+Script&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/glacial-indifference-2" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -14,240 +15,166 @@
     }
 
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #fc7e00 0%, #ffee00 100%);
+            font-family: 'Glacial Indifference', sans-serif;
+            background: linear-gradient(135deg, #f7f3e3 0%, #f2e7d3 100%);
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
+            color: #eee;
     }
 
     .container {
       position: relative;
-      background: rgba(1, 1, 1, 0.95);
-      backdrop-filter: blur(10px);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(12px);
       border-radius: 20px;
-      box-shadow: 0 20px 40px rgba(254, 164, 28, 0.1);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
       padding: 40px;
       text-align: center;
       max-width: 450px;
       width: 100%;
       animation: slideUp 0.8s ease-out;
     }
-    .remember-me {
-      display: flex;
-      align-items: center;
-      margin-bottom: 20px;
-      color: #999;
-    }
-
-    .checkbox-container {
-      display: flex;
-      align-items: center;
-      position: relative;
-      padding-left: 35px;
-      cursor: pointer;
-      font-size: 0.9rem;
-      user-select: none;
-    }
-
-    .checkbox-container input {
-      position: absolute;
-      opacity: 0;
-      cursor: pointer;
-      height: 0;
-      width: 0;
-    }
-
-    .checkmark {
-      position: absolute;
-      left: 0;
-      height: 20px;
-      width: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-radius: 4px;
-      transition: all 0.3s ease;
-    }
-
-    .checkbox-container:hover input ~ .checkmark {
-      background: rgba(102, 126, 234, 0.1);
-    }
-
-    .checkbox-container input:checked ~ .checkmark {
-      background: #667eea;
-      border-color: #667eea;
-    }
-
-    .checkmark:after {
-      content: "";
-      position: absolute;
-      display: none;
-      left: 6px;
-      top: 2px;
-      width: 5px;
-      height: 10px;
-      border: solid white;
-      border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
-    }
-
-    .checkbox-container input:checked ~ .checkmark:after {
-      display: block;
-    }
-
 
     @keyframes slideUp {
       from {
         opacity: 0;
         transform: translateY(30px);
       }
+
       to {
         opacity: 1;
         transform: translateY(0);
       }
     }
 
-    .logo {
-      font-family: 'Imperial Script', sans-serif;
-      font-size: 3.5rem;
-      font-weight: 800;
-      background: linear-gradient(#fea41c, #fff700);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      margin-bottom: 20px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-      text-align: left;
-    }
-
-    .form-label {
-      display: block;
-      margin-bottom: 8px;
-      color: #fff;
-      font-size: 0.9rem;
-    }
-
-    .form-input {
-      width: 100%;
-      padding: 14px;
-      border: 2px solid rgba(102, 126, 234, 0.3);
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.05);
-      color: #fff;
-      font-size: 1rem;
-      transition: all 0.3s ease;
-    }
-
-    .form-input:focus {
-      outline: none;
-      border-color: #667eea;
-      background: rgba(255, 255, 255, 0.1);
-    }
-
-    .button {
-      width: 100%;
-      padding: 16px 24px;
-      border: none;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      margin-bottom: 16px;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      color: white;
-      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 12px 25px rgba(102, 126, 234, 0.4);
-    }
-
-    .forgot-password {
-      display: block;
-      text-align: right;
-      color: #667eea;
-      text-decoration: none;
-      font-size: 0.9rem;
-      margin-top: -15px;
-      margin-bottom: 20px;
-    }
-
-    .signup-link {
-      color: #999;
-      text-decoration: none;
-      font-size: 0.95rem;
-      transition: color 0.3s ease;
-    }
-
-    .signup-link:hover {
-      color: #667eea;
-    }
-
-    .error-message {
-      color: #ff4444;
-      font-size: 0.9rem;
-      margin-top: 5px;
+        .logoimage {
       display: none;
     }
-    .notification {
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      padding: 15px 25px;
-      background: rgba(5, 5, 5, 0.95);
-      color: white;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      opacity: 0;
-      transform: translateY(-20px);
-      transition: all 0.5s ease;
-      z-index: 1000;
-    }
-
-    .notification.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-
-
-    @media (max-width: 480px) {
-      .container {
-        padding: 30px 20px;
-      }
 
       .logo {
-        font-size: 2.5rem;
+        font-family: 'Glacial Indifference', sans-serif;
+        font-size: 3.5rem;
+        font-weight: 500;
+        background: linear-gradient(to right, #ffc107, #ff9800);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 5px;
+        letter-spacing: -1px;
+        text-transform: lowercase;
       }
 
-      .form-input {
-        padding: 12px;
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
       }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #eee;
+            font-size: 0.9rem;
     }
-  </style>
-</head>
-<body>
-<div class="container">
-  <span onclick="goBack()" style="
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 1.8rem;
-      color: grey;
+
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid rgba(255, 193, 7, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #eee;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #ffc107;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .button {
+            width: 100%;
+            padding: 16px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
       cursor: pointer;
-  ">←</span>
-  <div class="logoimage"><img src="logo.png" alt="Description" width="80"></div>
-  <div class="logo">Aphrelle</div>
+            transition: all 0.3s ease;
+            margin-bottom: 16px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #ffc107, #ff9800);
+            color: #333;
+            box-shadow: 0 8px 20px rgba(255, 193, 7, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 25px rgba(255, 152, 0, 0.4);
+        }
+
+        .forgot-password {
+            display: block;
+            text-align: right;
+            color: #ffc107;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-top: -15px;
+            margin-bottom: 20px;
+        }
+
+        .signup-link {
+            color: #ddd;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .signup-link:hover {
+            color: #ffc107;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 0.9rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .back-arrow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: #eee;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            transition: background 0.3s ease;
+            margin: 10px;
+        }
+
+        .back-arrow:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <span onclick="goBack()" class="back-arrow">←</span>
+        <div class="logo">aphrelle</div>
 
   <form id="loginForm" onsubmit="handleLogin(event)">
     <div class="form-group">
@@ -267,15 +194,6 @@
     <button type="submit" class="button btn-primary">Log In</button>
   </form>
 
-
-  <div class="remember-me">
-    <label class="checkbox-container">
-      <input type="checkbox" id="rememberMe">
-      <span class="checkmark"></span>
-      Remember Me
-    </label>
-  </div>
-
   <a href="signup.html" class="signup-link">Don't have an account? Sign up</a>
 </div>
 
@@ -283,59 +201,19 @@
   function handleLogin(event) {
     event.preventDefault();
 
-    // Reset error messages
     document.querySelectorAll('.error-message').forEach(elem => {
       elem.style.display = 'none';
     });
 
     const email = document.getElementById('email').value;
     const password = document.getElementById('password').value;
-    const rememberMe = document.getElementById('rememberMe').checked;
-
-    // Basic validation
-    if (!isValidEmail(email)) {
-      showError('emailError', 'Please enter a valid email address');
-      return;
-    }
-
-    if (password.length < 6) {
-      showError('passwordError', 'Password must be at least 6 characters');
-      return;
-    }
-
-    // If remember me is checked, save the email
-    if (rememberMe) {
-      localStorage.setItem('rememberedEmail', email);
-    } else {
-      localStorage.removeItem('rememberedEmail');
-    }
-
-    // Save email for profile page
     localStorage.setItem('email', email);
 
-    // Create and show notification
-    const notification = document.createElement('div');
-    notification.className = 'notification';
-    notification.textContent = 'Login successful!';
-    document.body.appendChild(notification);
-
-    // Show notification
-    setTimeout(() => notification.classList.add('show'), 100);
-
-    // Hide notification and redirect after 1.5 seconds
-    setTimeout(() => {
-      notification.style.opacity = '0';
-      setTimeout(() => {
         window.location.href = 'profile_summary.html';
-      }, 300);
-    }, 1000);
   }
 
-
-
-
   function isValidEmail(email) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
   function showError(elementId, message) {
@@ -344,7 +222,6 @@
     errorElement.style.display = 'block';
   }
 
-  // Add form input animations
   document.querySelectorAll('.form-input').forEach(input => {
     input.addEventListener('focus', function() {
       this.style.transform = 'translateY(-2px)';
@@ -354,13 +231,7 @@
       this.style.transform = 'translateY(0)';
     });
   });
-  document.addEventListener('DOMContentLoaded', function() {
-    const rememberedEmail = localStorage.getItem('rememberedEmail');
-    if (rememberedEmail) {
-      document.getElementById('email').value = rememberedEmail;
-      document.getElementById('rememberMe').checked = true;
-    }
-  });
+
   function goBack() {
     if (document.referrer !== "") {
       window.history.back();
@@ -368,36 +239,7 @@
       window.location.href = "index.html";
     }
   }
-    document.getElementById("login-form").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    const username = document.getElementById("username").value;
-    const password = document.getElementById("password").value;
-
-    const response = await fetch("http://127.0.0.1:8000/token", {
-    method: "POST",
-    headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
-  },
-    body: new URLSearchParams({
-    username: username,
-    password: password
-  })
-  });
-
-    const data = await response.json();
-
-    if (response.ok) {
-    // Store token in localStorage or cookie
-    localStorage.setItem("token", data.access_token);
-    alert("Login successful!");
-    window.location.href = "/home.html";  // Redirect as needed
-  } else {
-    alert(data.detail || "Login failed");
-  }
-  });
-
-
 </script>
 </body>
+
 </html>
